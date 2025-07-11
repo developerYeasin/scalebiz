@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Monitor, Smartphone } from "lucide-react";
+import { Monitor, Smartphone, Search } from "lucide-react"; // Added Search
 import { Button } from "@/components/ui/button";
 
 const ShopPreview = () => {
