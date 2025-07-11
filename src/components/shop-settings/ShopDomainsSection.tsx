@@ -17,14 +17,14 @@ const ShopDomainsSection = () => {
       <CardContent>
         <h3 className="text-lg font-semibold mb-2">Your Free Domain</h3>
         <div className="flex flex-wrap gap-2 mb-4">
-          <Button variant="outline" className="px-4 py-2 rounded-md">zatiqeasy.com</Button>
+          <Button variant="outline" className="px-4 py-2 rounded-md">scalebiz.com</Button>
           <Button variant="outline" className="px-4 py-2 rounded-md">sellbd.shop</Button>
           <Button variant="outline" className="px-4 py-2 rounded-md">myecom.site</Button>
           <Button variant="outline" className="px-4 py-2 rounded-md">bdcsite.net</Button>
         </div>
         <div className="flex items-center gap-2 mb-6">
           <Input placeholder="myshop" className="flex-1" />
-          <span className="text-muted-foreground">.zatiqeasy.com</span>
+          <span className="text-muted-foreground">.scalebiz.com</span>
           <Button>Save Domain</Button>
         </div>
 
@@ -49,7 +49,7 @@ const ShopDomainsSection = () => {
               <tr>
                 <td className="p-2">CNAME</td>
                 <td className="p-2 flex items-center justify-between">
-                  <span>procname.zatiqeasy.com</span>
+                  <span>procname.scalebiz.com</span>
                   <Button variant="ghost" size="icon">
                     <Copy className="h-4 w-4" />
                   </Button>
@@ -60,7 +60,7 @@ const ShopDomainsSection = () => {
         </div>
 
         <div className="flex items-center gap-2 mb-4">
-          <Input defaultValue="omnionlineshopbd.com" readOnly className="flex-1 bg-muted" />
+          <Input defaultValue="scalebiz.com" readOnly className="flex-1 bg-muted" />
           <Button variant="outline" size="icon">
             <Copy className="h-4 w-4" />
           </Button>

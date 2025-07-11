@@ -16,8 +16,8 @@ const ShopQR = () => {
         <div className="flex flex-col items-center justify-center p-4 border rounded-md mb-4">
           <img src="https://via.placeholder.com/150" alt="Shop QR Code" className="w-32 h-32 mb-2" />
           <p className="text-sm text-muted-foreground mb-2">Scan the QR code to visit your shop</p>
-          <a href="https://omnionlineshopbd.com" target="_blank" rel="noopener noreferrer" className="text-sm text-blue-500 hover:underline">
-            https://omnionlineshopbd.com
+          <a href="https://scalebiz.com" target="_blank" rel="noopener noreferrer" className="text-sm text-blue-500 hover:underline">
+            https://scalebiz.com
           </a>
         </div>
         <Button variant="outline" className="w-full">

@@ -21,7 +21,7 @@ const SeoMarketingIntegrationsSection = () => {
             Add sitemaps to 'Google Search Console' to Rank your website.
           </p>
           <div className="flex items-center gap-2">
-            <Input defaultValue="https://omnionlineshopbd.com/api/sitemaps.xml" readOnly className="flex-1 bg-muted" />
+            <Input defaultValue="https://scalebiz.com/api/sitemaps.xml" readOnly className="flex-1 bg-muted" />
             <Button variant="outline" size="icon">
               <Copy className="h-4 w-4" />
             </Button>
@@ -34,7 +34,7 @@ const SeoMarketingIntegrationsSection = () => {
             Add/Upload data feed to the Facebook catalog.
           </p>
           <div className="flex items-center gap-2">
-            <Input defaultValue="https://omnionlineshopbd.com/api/facebook-product-feed.xml" readOnly className="flex-1 bg-muted" />
+            <Input defaultValue="https://scalebiz.com/api/facebook-product-feed.xml" readOnly className="flex-1 bg-muted" />
             <Button variant="outline" size="icon">
               <Copy className="h-4 w-4" />
             </Button>

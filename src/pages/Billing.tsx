@@ -7,7 +7,7 @@ import BillingPagination from "@/components/billing/BillingPagination";
 const Billing = () => {
   const mockBillingRecords = [
     {
-      shopName: "Omni online shop",
+      shopName: "Scalebiz",
       amount: "510 BDT",
       status: "COMPLETED",
       paymentType: "BKASH",
@@ -16,7 +16,7 @@ const Billing = () => {
       invoiceId: "INV-28309461",
     },
     {
-      shopName: "Omni online shop",
+      shopName: "Scalebiz",
       amount: "510 BDT",
       status: "COMPLETED",
       paymentType: "n/a",

@@ -23,7 +23,7 @@ const IntegrateDeliveryServicesSection = () => {
             </Label>
           </div>
           <p className="text-sm text-muted-foreground ml-6 mb-4">
-            RX Courier | Please <a href="#" className="text-blue-500 hover:underline">sign up</a> to get started. To get special service & discount use "ZATIQ%RX" coupon code.
+            RX Courier | Please <a href="#" className="text-blue-500 hover:underline">sign up</a> to get started. To get special service & discount use "SCALEBIZ%RX" coupon code.
           </p>
           <h3 className="text-lg font-semibold mb-2">Other Courier Services:</h3>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">

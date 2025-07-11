@@ -52,14 +52,14 @@ const Sidebar: React.FC<SidebarProps> = ({ onClose }) => {
     { name: "Subscription", href: "/subscription", icon: Gem },
   ];
 
-  const academyItem = { name: "Zatiq Academy", href: "/zatiq-academy", icon: HelpCircle };
+  const academyItem = { name: "Scalebiz Academy", href: "/zatiq-academy", icon: HelpCircle };
 
   return (
     <div className="flex h-full flex-col border-r bg-sidebar text-sidebar-foreground">
       <div className="flex h-16 items-center justify-between border-b px-4">
         <div className="flex items-center gap-2">
-          <div className="w-6 h-6 bg-purple-600 rounded-md flex items-center justify-center text-white font-bold text-sm">Z</div>
-          <h1 className="text-xl font-semibold text-sidebar-primary-foreground">Zatiqeasy</h1>
+          <div className="w-6 h-6 bg-purple-600 rounded-md flex items-center justify-center text-white font-bold text-sm">S</div>
+          <h1 className="text-xl font-semibold text-sidebar-primary-foreground">Scalebiz</h1>
         </div>
         <Button variant="ghost" size="icon" className="text-sidebar-foreground">
           <Square className="h-5 w-5" />

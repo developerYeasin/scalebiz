@@ -16,7 +16,7 @@ const Subscription = () => {
       <FAQSection />
       <CallToActionSection />
       <div className="text-center text-sm text-muted-foreground mt-8">
-        © 2023-2025 Zatiq Limited. All rights reserved.
+        © 2023-2025 Scalebiz Limited. All rights reserved.
       </div>
     </div>
   );

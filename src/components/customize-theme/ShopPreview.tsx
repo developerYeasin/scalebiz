@@ -24,7 +24,7 @@ const ShopPreview = () => {
           {/* Placeholder for the actual shop preview iframe/component */}
           <div className="w-full h-full bg-gray-100 flex flex-col items-center justify-start text-muted-foreground text-sm">
             <div className="w-full bg-black text-white p-2 flex justify-between items-center">
-              <span>Welcome to Omni Online Shop</span>
+              <span>Welcome to Scalebiz</span>
               <div className="flex items-center gap-2">
                 <img src="https://via.placeholder.com/20" alt="Logo" className="h-5 w-5" />
                 <span>EN</span>
@@ -32,7 +32,7 @@ const ShopPreview = () => {
               </div>
             </div>
             <div className="p-4 w-full">
-              <h2 className="text-2xl font-bold mb-4 text-foreground">Omni online shop</h2>
+              <h2 className="text-2xl font-bold mb-4 text-foreground">Scalebiz</h2>
               <div className="relative mb-4">
                 <input
                   type="text"
@@ -57,13 +57,6 @@ const ShopPreview = () => {
                 <div className="flex-shrink-0 w-24 h-24 bg-gray-200 rounded-md flex items-center justify-center">
                   <span className="text-xs text-center">Gown</span>
                 </div>
-              </div>
-              <div className="flex justify-between items-center mt-4">
-                <span>All Products</span>
-                <span>Sort by: Default</span>
-                <Button variant="outline" size="icon" className="rounded-full">
-                  <img src="https://via.placeholder.com/20" alt="WhatsApp" />
-                </Button>
               </div>
               {/* More placeholder content for products */}
             </div>

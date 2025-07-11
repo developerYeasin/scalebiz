@@ -7,7 +7,7 @@ import { Globe, Copy } from "lucide-react";
 const DashboardHeader = () => {
   return (
     <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-6">
-      <h1 className="text-2xl font-bold">Hello, Omni online shop ! 👋</h1>
+      <h1 className="text-2xl font-bold">Hello, Scalebiz ! 👋</h1>
       <div className="flex gap-2">
         <Button className="bg-purple-600 hover:bg-purple-700 text-white">
           Apply for Investment

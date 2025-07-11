@@ -6,9 +6,9 @@ import PolicySection from "@/components/shop-settings/PolicySection";
 import { Button } from "@/components/ui/button";
 
 const ShopPolicyPage = () => {
-  const aboutUsContent = `Heading 1 Privacy Policy for Omni online shop
+  const aboutUsContent = `Heading 1 Privacy Policy for Scalebiz
 
-Welcome to Omni online shop! We are committed to protecting your privacy and ensuring the security of your personal information. This Privacy Policy outlines how we collect, use, and disclose your information regarding the collection, use, and disclosure of Personal Information we receive from users of the Site.
+Welcome to Scalebiz! We are committed to protecting your privacy and ensuring the security of your personal information. This Privacy Policy outlines how we collect, use, and disclose your information regarding the collection, use, and disclosure of Personal Information we receive from users of the Site.
 
 Information Collection and Use
 While using our Site, we may ask you to provide us with certain personally identifiable information that can be used to contact or identify you. Personally identifiable information may include, but is not limited to, your name, email address, postal address, and phone number ("Personal Information").
@@ -29,13 +29,13 @@ We reserve the right to update or change our Privacy Policy at any time and you 
 If we make any material changes to this Privacy Policy, we will notify you either through the email address you have provided us, or by placing a prominent notice on our website.
 
 Contact Us
-If you have any questions about this Privacy Policy, please contact us at info.omnionlineshopbd@gmail.com.`;
+If you have any questions about this Privacy Policy, please contact us at info.scalebiz@gmail.com.`;
 
-  const termsAndConditionsContent = `Heading 1 Terms and Conditions for Omni online shop
+  const termsAndConditionsContent = `Heading 1 Terms and Conditions for Scalebiz
 
 Last updated: 2025-07-10
 
-These Terms and Conditions ("Terms") form a legally binding agreement between you ("Service") operated by Omni online shop ("we", "us", or "our").
+These Terms and Conditions ("Terms") form a legally binding agreement between you ("Service") operated by Scalebiz ("we", "us", or "our").
 
 1. Acceptance of Terms. By accessing or using the Service, you agree to be bound by these Terms. If you disagree with any part of the Terms, then you may not access the Service.
 
@@ -49,22 +49,22 @@ These Terms and Conditions ("Terms") form a legally binding agreement between yo
 
 6. Returns and Refunds. For information on returns and refunds, please refer to our Return and Cancellation Policy.
 
-7. Intellectual Property. The Service and its original content, features, and functionality are and will remain the exclusive property of Omni online shop and its licensors.
+7. Intellectual Property. The Service and its original content, features, and functionality are and will remain the exclusive property of Scalebiz and its licensors.
 
-8. Links to Other Websites. Our Service may contain links to third-party websites or services that are not owned or controlled by Omni online shop. Omni online shop has no control over, and assumes no responsibility for, the content, privacy policies, or practices of any third-party websites or services.
+8. Links to Other Websites. Our Service may contain links to third-party websites or services that are not owned or controlled by Scalebiz. Scalebiz has no control over, and assumes no responsibility for, the content, privacy policies, or practices of any third-party websites or services.
 
 9. Governing Law. These Terms shall be governed and construed in accordance with the laws of Bangladesh, without regard to its conflict of law provisions.
 
 10. Changes. We reserve the right, at our sole discretion, to modify or replace these Terms at any time. If a revision is material, we will try to provide at least 30 days' notice prior to any new terms taking effect. What constitutes a material change will be determined at our sole discretion.
 
 Contact Us
-If you have any questions about these Terms, please contact us at info.omnionlineshopbd@gmail.com.`;
+If you have any questions about these Terms, please contact us at info.scalebiz@gmail.com.`;
 
-  const returnCancellationContent = `Heading 1 Return and Cancellation Policy for Omni online shop
+  const returnCancellationContent = `Heading 1 Return and Cancellation Policy for Scalebiz
 
 Last updated: 2025-07-10
 
-This Return and Cancellation Policy governs the refund process for Omni online shop. Please read the policy carefully. Your satisfaction is our priority, and we want to ensure a transparent and hassle-free experience.
+This Return and Cancellation Policy governs the refund process for Scalebiz. Please read the policy carefully. Your satisfaction is our priority, and we want to ensure a transparent and hassle-free experience.
 
 1. Refund policy
 We only refund products and services that meet or exceed your expectations. If, for any reason, you are not completely satisfied with your purchase, you may be entitled to a refund.
@@ -82,7 +82,7 @@ We do not accept returns for products that are not damaged or defective. If you 
 You may cancel your order as soon as possible, provided that the order has not already been processed or shipped. To cancel an order, please contact customer service immediately. If the order has already been processed, you may no longer be able to cancel. You may return the items.
 
 Contact Us
-If you have any questions about our Refund, Return, and Cancellation Policy, please contact us at info.omnionlineshopbd@gmail.com.`;
+If you have any questions about our Refund, Return, and Cancellation Policy, please contact us at info.scalebiz@gmail.com.`;
 
   return (
     <SettingsPageLayout title="Shop Policy">

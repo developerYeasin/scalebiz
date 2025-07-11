@@ -24,7 +24,7 @@ const ShopBasicInfo = () => {
           </div>
           <div>
             <Label htmlFor="businessName">Business Name</Label>
-            <Input id="businessName" defaultValue="Omni online shop" className="mt-1" />
+            <Input id="businessName" defaultValue="Scalebiz" className="mt-1" />
           </div>
           <div>
             <Label htmlFor="businessType">Business Type</Label>
@@ -41,7 +41,7 @@ const ShopBasicInfo = () => {
           </div>
           <div>
             <Label htmlFor="shopEmail">Shop Email</Label>
-            <Input id="shopEmail" defaultValue="info.omnionlineshopbd@gmail.com" className="mt-1" />
+            <Input id="shopEmail" defaultValue="info.scalebiz@gmail.com" className="mt-1" />
           </div>
           <div>
             <Label htmlFor="shopPhoneNumber">Shop Phone Number</Label>
@@ -67,11 +67,11 @@ const ShopBasicInfo = () => {
         </div>
         <div className="mb-4">
           <Label htmlFor="shopDetails">Shop Details (SEO & Data Feed)</Label>
-          <Textarea id="shopDetails" defaultValue="🛍️ আমাদের অফার গুলো-Omni online shop 🎁" rows={2} className="mt-1" />
+          <Textarea id="shopDetails" defaultValue="🛍️ আমাদের অফার গুলো-Scalebiz 🎁" rows={2} className="mt-1" />
         </div>
         <div>
           <Label htmlFor="topbarAnnouncement">Topbar Announcement Message</Label>
-          <Input id="topbarAnnouncement" defaultValue="Welcome to Omni Online Shop" className="mt-1" />
+          <Input id="topbarAnnouncement" defaultValue="Welcome to Scalebiz" className="mt-1" />
         </div>
         <div className="flex justify-end mt-4">
           <Button>Update Shop Info</Button>

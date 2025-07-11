@@ -22,27 +22,27 @@ const SocialLinksSection = () => {
           </div>
           <div>
             <Label htmlFor="instagramLink">Instagram</Label>
-            <Input id="instagramLink" defaultValue="https://www.instagram.com/myshop" className="mt-1" />
+            <Input id="instagramLink" defaultValue="https://www.instagram.com/scalebiz" className="mt-1" />
           </div>
           <div>
             <Label htmlFor="linkedinLink">LinkedIn</Label>
-            <Input id="linkedinLink" defaultValue="https://www.linkedin.com/myshop" className="mt-1" />
+            <Input id="linkedinLink" defaultValue="https://www.linkedin.com/scalebiz" className="mt-1" />
           </div>
           <div>
             <Label htmlFor="youtubeLink">Youtube</Label>
-            <Input id="youtubeLink" defaultValue="https://www.youtube.com/@OmniOnlineShopBD" className="mt-1" />
+            <Input id="youtubeLink" defaultValue="https://www.youtube.com/@Scalebiz" className="mt-1" />
           </div>
           <div>
             <Label htmlFor="tiktokLink">Tiktok</Label>
-            <Input id="tiktokLink" defaultValue="https://www.tiktok.com/myshop" className="mt-1" />
+            <Input id="tiktokLink" defaultValue="https://www.tiktok.com/scalebiz" className="mt-1" />
           </div>
           <div>
             <Label htmlFor="discordLink">Discord</Label>
-            <Input id="discordLink" defaultValue="https://www.discord.com/myshop" className="mt-1" />
+            <Input id="discordLink" defaultValue="https://www.discord.com/scalebiz" className="mt-1" />
           </div>
           <div>
             <Label htmlFor="telegramLink">Telegram</Label>
-            <Input id="telegramLink" defaultValue="https://www.telegram.com/myshop" className="mt-1" />
+            <Input id="telegramLink" defaultValue="https://www.telegram.com/scalebiz" className="mt-1" />
           </div>
           <div>
             <Label htmlFor="darazLink">Daraz</Label>
@@ -50,11 +50,11 @@ const SocialLinksSection = () => {
           </div>
           <div>
             <Label htmlFor="amazonLink">Amazon</Label>
-            <Input id="amazonLink" defaultValue="https://www.amazon.com/myshop" className="mt-1" />
+            <Input id="amazonLink" defaultValue="https://www.amazon.com/scalebiz" className="mt-1" />
           </div>
           <div>
             <Label htmlFor="walmartLink">Walmart</Label>
-            <Input id="walmartLink" defaultValue="https://www.walmart.com/myshop" className="mt-1" />
+            <Input id="walmartLink" defaultValue="https://www.walmart.com/scalebiz" className="mt-1" />
           </div>
         </div>
         <div className="flex justify-end">
