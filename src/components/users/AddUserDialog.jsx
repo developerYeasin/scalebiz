@@ -42,7 +42,7 @@ const AddUserDialog = ({ isOpen, onClose }) => {
           <Button variant="outline" onClick={onClose}>Close</Button>
           <Button>Add User</Button>
         </div>
-      </CardContent>
+      </DialogContent>
     </Dialog>
   );
 };
