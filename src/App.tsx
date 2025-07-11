@@ -21,7 +21,7 @@ import UsersAndPermissions from "./pages/UsersAndPermissions";
 import Settings from "./pages/Settings";
 import Analytics from "./pages/Analytics";
 
-// Import new shop settings pages
+// Import shop settings pages
 import ShopSettingsPage from "./pages/shop-settings/ShopSettingsPage";
 import ShopDomainPage from "./pages/shop-settings/ShopDomainPage";
 import ShopPolicyPage from "./pages/shop-settings/ShopPolicyPage";
@@ -31,6 +31,11 @@ import SeoMarketingPage from "./pages/shop-settings/SeoMarketingPage";
 import SmsSupportPage from "./pages/shop-settings/SmsSupportPage";
 import ChatSupportPage from "./pages/shop-settings/ChatSupportPage";
 import SocialLinksPage from "./pages/shop-settings/SocialLinksPage";
+
+// Import new pages
+import Billing from "./pages/Billing";
+import Subscription from "./pages/Subscription";
+import ZatiqAcademy from "./pages/ZatiqAcademy";
 
 
 const queryClient = new QueryClient();
@@ -68,6 +73,10 @@ const App = () => (
           <Route path="/users-and-permissions" element={<Layout><UsersAndPermissions /></Layout>} />
           <Route path="/settings" element={<Layout><Settings /></Layout>} />
           <Route path="/analytics" element={<Layout><Analytics /></Layout>} />
+          {/* New Routes */}
+          <Route path="/billing" element={<Layout><Billing /></Layout>} />
+          <Route path="/subscription" element={<Layout><Subscription /></Layout>} />
+          <Route path="/zatiq-academy" element={<Layout><ZatiqAcademy /></Layout>} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

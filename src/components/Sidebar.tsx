@@ -4,7 +4,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge"; // Import Badge component
+import { Badge } from "@/components/ui/badge";
 import {
   LayoutDashboard,
   Tag,
@@ -16,11 +16,14 @@ import {
   FileText,
   Gift,
   LineChart,
-  Square, // For the top-right icon
+  Square,
+  ReceiptText, // New icon for Billing
+  Gem, // New icon for Subscription
+  HelpCircle, // New icon for Zatiq Academy
 } from "lucide-react";
 
 interface SidebarProps {
-  onClose?: () => void; // Optional prop for closing the sheet on mobile
+  onClose?: () => void;
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ onClose }) => {
@@ -44,11 +47,17 @@ const Sidebar: React.FC<SidebarProps> = ({ onClose }) => {
     { name: "Analytics", href: "/analytics", icon: LineChart },
   ];
 
+  const paymentItems = [
+    { name: "Billing", href: "/billing", icon: ReceiptText },
+    { name: "Subscription", href: "/subscription", icon: Gem },
+  ];
+
+  const academyItem = { name: "Zatiq Academy", href: "/zatiq-academy", icon: HelpCircle };
+
   return (
     <div className="flex h-full flex-col border-r bg-sidebar text-sidebar-foreground">
       <div className="flex h-16 items-center justify-between border-b px-4">
         <div className="flex items-center gap-2">
-          {/* Placeholder for Zatiqeasy logo */}
           <div className="w-6 h-6 bg-purple-600 rounded-md flex items-center justify-center text-white font-bold text-sm">Z</div>
           <h1 className="text-xl font-semibold text-sidebar-primary-foreground">Zatiqeasy</h1>
         </div>
@@ -67,7 +76,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onClose }) => {
                   "w-full justify-start text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
                   // Add active state styling if needed
                 )}
-                onClick={onClose} // Close sheet on click for mobile
+                onClick={onClose}
               >
                 <Link to={item.href} className="flex items-center gap-3">
                   <item.icon className="h-5 w-5" />
@@ -123,6 +132,46 @@ const Sidebar: React.FC<SidebarProps> = ({ onClose }) => {
               </Button>
             </li>
           ))}
+        </ul>
+
+        <h2 className="px-4 pt-6 pb-2 text-xs font-semibold uppercase text-muted-foreground">Payment</h2>
+        <ul className="space-y-1 px-4">
+          {paymentItems.map((item) => (
+            <li key={item.name}>
+              <Button
+                asChild
+                variant="ghost"
+                className={cn(
+                  "w-full justify-start text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
+                )}
+                onClick={onClose}
+              >
+                <Link to={item.href} className="flex items-center gap-3">
+                  <item.icon className="h-5 w-5" />
+                  {item.name}
+                </Link>
+              </Button>
+            </li>
+          ))}
+        </ul>
+
+        <h2 className="px-4 pt-6 pb-2 text-xs font-semibold uppercase text-muted-foreground">Academy</h2>
+        <ul className="space-y-1 px-4">
+          <li>
+            <Button
+              asChild
+              variant="ghost"
+              className={cn(
+                "w-full justify-start text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
+              )}
+              onClick={onClose}
+            >
+              <Link to={academyItem.href} className="flex items-center gap-3">
+                <academyItem.icon className="h-5 w-5" />
+                {academyItem.name}
+              </Link>
+            </Button>
+          </li>
         </ul>
       </nav>
       <div className="mt-auto p-4 border-t">
