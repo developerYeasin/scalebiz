@@ -17,10 +17,11 @@ import {
   Gift,
   LineChart,
   Square,
-  ReceiptText, // New icon for Billing
-  Gem, // New icon for Subscription
-  HelpCircle, // New icon for Zatiq Academy
+  ReceiptText,
+  Gem,
+  HelpCircle,
 } from "lucide-react";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface SidebarProps {
   onClose?: () => void;
@@ -65,37 +66,100 @@ const Sidebar: React.FC<SidebarProps> = ({ onClose }) => {
           <Square className="h-5 w-5" />
         </Button>
       </div>
-      <nav className="flex-1 overflow-auto py-4">
-        <ul className="space-y-1 px-4">
-          {mainNavItems.map((item) => (
-            <li key={item.name}>
-              <Button
-                asChild
-                variant="ghost"
-                className={cn(
-                  "w-full justify-start text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
-                  // Add active state styling if needed
-                )}
-                onClick={onClose}
-              >
-                <Link to={item.href} className="flex items-center gap-3">
-                  <item.icon className="h-5 w-5" />
-                  {item.name}
-                  {item.badge && (
-                    <Badge className="ml-auto bg-sidebar-accent text-sidebar-accent-foreground">
-                      {item.badge}
-                    </Badge>
+      <ScrollArea className="flex-1">
+        <nav className="py-4">
+          <ul className="space-y-1 px-4">
+            {mainNavItems.map((item) => (
+              <li key={item.name}>
+                <Button
+                  asChild
+                  variant="ghost"
+                  className={cn(
+                    "w-full justify-start text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
+                    // Add active state styling if needed
                   )}
-                </Link>
-              </Button>
-            </li>
-          ))}
-        </ul>
+                  onClick={onClose}
+                >
+                  <Link to={item.href} className="flex items-center gap-3">
+                    <item.icon className="h-5 w-5" />
+                    {item.name}
+                    {item.badge && (
+                      <Badge className="ml-auto bg-sidebar-accent text-sidebar-accent-foreground">
+                        {item.badge}
+                      </Badge>
+                    )}
+                  </Link>
+                </Button>
+              </li>
+            ))}
+          </ul>
 
-        <h2 className="px-4 pt-6 pb-2 text-xs font-semibold uppercase text-muted-foreground">Configuration</h2>
-        <ul className="space-y-1 px-4">
-          {configurationItems.map((item) => (
-            <li key={item.name}>
+          <h2 className="px-4 pt-6 pb-2 text-xs font-semibold uppercase text-muted-foreground">Configuration</h2>
+          <ul className="space-y-1 px-4">
+            {configurationItems.map((item) => (
+              <li key={item.name}>
+                <Button
+                  asChild
+                  variant="ghost"
+                  className={cn(
+                    "w-full justify-start text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
+                  )}
+                  onClick={onClose}
+                >
+                  <Link to={item.href} className="flex items-center gap-3">
+                    <item.icon className="h-5 w-5" />
+                    {item.name}
+                  </Link>
+                </Button>
+              </li>
+            ))}
+          </ul>
+
+          <h2 className="px-4 pt-6 pb-2 text-xs font-semibold uppercase text-muted-foreground">Reports</h2>
+          <ul className="space-y-1 px-4">
+            {reportItems.map((item) => (
+              <li key={item.name}>
+                <Button
+                  asChild
+                  variant="ghost"
+                  className={cn(
+                    "w-full justify-start text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
+                  )}
+                  onClick={onClose}
+                >
+                  <Link to={item.href} className="flex items-center gap-3">
+                    <item.icon className="h-5 w-5" />
+                    {item.name}
+                  </Link>
+                </Button>
+              </li>
+            ))}
+          </ul>
+
+          <h2 className="px-4 pt-6 pb-2 text-xs font-semibold uppercase text-muted-foreground">Payment</h2>
+          <ul className="space-y-1 px-4">
+            {paymentItems.map((item) => (
+              <li key={item.name}>
+                <Button
+                  asChild
+                  variant="ghost"
+                  className={cn(
+                    "w-full justify-start text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
+                  )}
+                  onClick={onClose}
+                >
+                  <Link to={item.href} className="flex items-center gap-3">
+                    <item.icon className="h-5 w-5" />
+                    {item.name}
+                  </Link>
+                </Button>
+              </li>
+            ))}
+          </ul>
+
+          <h2 className="px-4 pt-6 pb-2 text-xs font-semibold uppercase text-muted-foreground">Academy</h2>
+          <ul className="space-y-1 px-4">
+            <li>
               <Button
                 asChild
                 variant="ghost"
@@ -104,76 +168,15 @@ const Sidebar: React.FC<SidebarProps> = ({ onClose }) => {
                 )}
                 onClick={onClose}
               >
-                <Link to={item.href} className="flex items-center gap-3">
-                  <item.icon className="h-5 w-5" />
-                  {item.name}
+                <Link to={academyItem.href} className="flex items-center gap-3">
+                  <academyItem.icon className="h-5 w-5" />
+                  {academyItem.name}
                 </Link>
               </Button>
             </li>
-          ))}
-        </ul>
-
-        <h2 className="px-4 pt-6 pb-2 text-xs font-semibold uppercase text-muted-foreground">Reports</h2>
-        <ul className="space-y-1 px-4">
-          {reportItems.map((item) => (
-            <li key={item.name}>
-              <Button
-                asChild
-                variant="ghost"
-                className={cn(
-                  "w-full justify-start text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
-                )}
-                onClick={onClose}
-              >
-                <Link to={item.href} className="flex items-center gap-3">
-                  <item.icon className="h-5 w-5" />
-                  {item.name}
-                </Link>
-              </Button>
-            </li>
-          ))}
-        </ul>
-
-        <h2 className="px-4 pt-6 pb-2 text-xs font-semibold uppercase text-muted-foreground">Payment</h2>
-        <ul className="space-y-1 px-4">
-          {paymentItems.map((item) => (
-            <li key={item.name}>
-              <Button
-                asChild
-                variant="ghost"
-                className={cn(
-                  "w-full justify-start text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
-                )}
-                onClick={onClose}
-              >
-                <Link to={item.href} className="flex items-center gap-3">
-                  <item.icon className="h-5 w-5" />
-                  {item.name}
-                </Link>
-              </Button>
-            </li>
-          ))}
-        </ul>
-
-        <h2 className="px-4 pt-6 pb-2 text-xs font-semibold uppercase text-muted-foreground">Academy</h2>
-        <ul className="space-y-1 px-4">
-          <li>
-            <Button
-              asChild
-              variant="ghost"
-              className={cn(
-                "w-full justify-start text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
-              )}
-              onClick={onClose}
-            >
-              <Link to={academyItem.href} className="flex items-center gap-3">
-                <academyItem.icon className="h-5 w-5" />
-                {academyItem.name}
-              </Link>
-            </Button>
-          </li>
-        </ul>
-      </nav>
+          </ul>
+        </nav>
+      </ScrollArea>
       <div className="mt-auto p-4 border-t">
         <p className="text-xs text-muted-foreground">Version 1.0</p>
       </div>
