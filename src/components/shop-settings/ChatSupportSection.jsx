@@ -1,6 +1,6 @@
 "use client";
 
-import React from "2025-07-11";
+import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card.jsx";
 import { Checkbox } from "@/components/ui/checkbox.jsx";
 import { Label } from "@/components/ui/label.jsx";
