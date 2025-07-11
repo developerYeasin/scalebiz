@@ -1,12 +1,31 @@
 "use client";
 
 import React from "react";
+import CategoryListHeader from "@/components/categories/CategoryListHeader";
+import CategoryListTable from "@/components/categories/CategoryListTable";
+import CategoryListPagination from "@/components/categories/CategoryListPagination";
+import CreateCategoryDialog from "@/components/categories/CreateCategoryDialog";
 
 const Categories = () => {
+  const [isCreateCategoryDialogOpen, setIsCreateCategoryDialogOpen] = React.useState(false);
+
+  const handleAddCategoryClick = () => {
+    setIsCreateCategoryDialogOpen(true);
+  };
+
+  const handleCloseCreateCategoryDialog = () => {
+    setIsCreateCategoryDialogOpen(false);
+  };
+
   return (
-    <div className="flex flex-col items-center justify-center h-full p-4">
-      <h1 className="text-4xl font-bold mb-4">Categories Page</h1>
-      <p className="text-lg text-gray-600">Organize your products into categories here.</p>
+    <div className="p-4 md:p-6">
+      <CategoryListHeader onAddCategoryClick={handleAddCategoryClick} />
+      <CategoryListTable />
+      <CategoryListPagination />
+      <CreateCategoryDialog
+        isOpen={isCreateCategoryDialogOpen}
+        onClose={handleCloseCreateCategoryDialog}
+      />
     </div>
   );
 };
