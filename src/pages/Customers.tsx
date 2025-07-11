@@ -1,12 +1,16 @@
 "use client";
 
 import React from "react";
+import CustomerListHeader from "@/components/customers/CustomerListHeader";
+import CustomerListTable from "@/components/customers/CustomerListTable";
+import CustomerListPagination from "@/components/customers/CustomerListPagination";
 
 const Customers = () => {
   return (
-    <div className="flex flex-col items-center justify-center h-full p-4">
-      <h1 className="text-4xl font-bold mb-4">Customers Page</h1>
-      <p className="text-lg text-gray-600">Manage your customer information here.</p>
+    <div className="p-4 md:p-6">
+      <CustomerListHeader />
+      <CustomerListTable />
+      <CustomerListPagination />
     </div>
   );
 };
