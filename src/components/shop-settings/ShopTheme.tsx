@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { ChevronUp } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input"; // Added missing import
 
 const ShopTheme = () => {
   return (
