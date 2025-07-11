@@ -1,14 +1,39 @@
 "use client";
 
 import React from "react";
+import UsersHeader from "@/components/users/UsersHeader";
+import UserCard from "@/components/users/UserCard";
+import AddUserDialog from "@/components/users/AddUserDialog";
 
-const Users = () => {
+const UsersAndPermissions = () => {
+  const [isAddUserDialogOpen, setIsAddUserDialogOpen] = React.useState(false);
+
+  const handleAddUserClick = () => {
+    setIsAddUserDialogOpen(true);
+  };
+
+  const handleCloseAddUserDialog = () => {
+    setIsAddUserDialogOpen(false);
+  };
+
   return (
-    <div className="flex flex-col items-center justify-center h-full p-4">
-      <h1 className="text-4xl font-bold mb-4">Users Page</h1>
-      <p className="text-lg text-gray-600">Content for managing users will go here.</p>
+    <div className="p-4 md:p-6">
+      <UsersHeader onAddUserClick={handleAddUserClick} />
+      <div className="space-y-4">
+        <UserCard
+          name="Omor Faruk"
+          email="info.omnionlineshopbd@gmail.com"
+          role="Shop Owner"
+          isYou={true}
+        />
+        {/* Additional user cards would go here */}
+      </div>
+      <AddUserDialog
+        isOpen={isAddUserDialogOpen}
+        onClose={handleCloseAddUserDialog}
+      />
     </div>
   );
 };
 
-export default Users;
+export default UsersAndPermissions;
