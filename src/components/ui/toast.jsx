@@ -91,7 +91,6 @@ export {
   Toast,
   ToastProvider,
   ToastViewport,
-  ToastIcon,
   ToastTitle,
   ToastDescription,
   ToastClose,
