@@ -8,8 +8,9 @@ import NotFound from "./pages/NotFound";
 import Layout from "./components/Layout";
 import Dashboard from "./pages/Dashboard";
 import Orders from "./pages/Orders";
-import Products from "./pages/Products"; // This is now the Product List page
-import AddProduct from "./pages/AddProduct"; // New import for the Add Product form
+import CreateOrder from "./pages/CreateOrder"; // New import for the Create Order page
+import Products from "./pages/Products";
+import AddProduct from "./pages/AddProduct";
 import Categories from "./pages/Categories";
 import Customers from "./pages/Customers";
 import ManageShop from "./pages/ManageShop";
@@ -32,8 +33,9 @@ const App = () => (
           <Route path="/" element={<Layout><Index /></Layout>} />
           <Route path="/dashboard" element={<Layout><Dashboard /></Layout>} />
           <Route path="/orders" element={<Layout><Orders /></Layout>} />
-          <Route path="/products" element={<Layout><Products /></Layout>} /> {/* Product List Page */}
-          <Route path="/products/add" element={<Layout><AddProduct /></Layout>} /> {/* Add Product Form Page */}
+          <Route path="/orders/create" element={<Layout><CreateOrder /></Layout>} /> {/* New Create Order Page */}
+          <Route path="/products" element={<Layout><Products /></Layout>} />
+          <Route path="/products/add" element={<Layout><AddProduct /></Layout>} />
           <Route path="/categories" element={<Layout><Categories /></Layout>} />
           <Route path="/customers" element={<Layout><Customers /></Layout>} />
           <Route path="/manage-shop" element={<Layout><ManageShop /></Layout>} />

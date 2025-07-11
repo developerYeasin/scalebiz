@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Search, Download, Plus, ShoppingCart, User } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { Link } from "react-router-dom";
 
 const OrdersHeader = () => {
   return (
@@ -39,9 +40,11 @@ const OrdersHeader = () => {
           <Download className="h-4 w-4 mr-2" />
           Export
         </Button>
-        <Button>
-          <Plus className="h-4 w-4 mr-2" />
-          Create Order
+        <Button asChild>
+          <Link to="/orders/create">
+            <Plus className="h-4 w-4 mr-2" />
+            Create Order
+          </Link>
         </Button>
         <Button variant="ghost" size="icon" className="relative">
           <ShoppingCart className="h-5 w-5" />
