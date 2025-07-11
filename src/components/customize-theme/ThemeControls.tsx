@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
-import { Check } from "lucide-react";
+import { Check, Sparkles } from "lucide-react"; // Added Sparkles
 import { cn } from "@/lib/utils";
 
 const ThemeControls = () => {
