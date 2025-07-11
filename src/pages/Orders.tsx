@@ -1,12 +1,20 @@
 "use client";
 
 import React from "react";
+import OrdersHeader from "@/components/orders/OrdersHeader";
+import OrdersSummaryCards from "@/components/orders/OrdersSummaryCards";
+import OrdersTabs from "@/components/orders/OrdersTabs";
+import OrdersTable from "@/components/orders/OrdersTable";
+import OrdersPagination from "@/components/orders/OrdersPagination";
 
 const Orders = () => {
   return (
-    <div className="flex flex-col items-center justify-center h-full p-4">
-      <h1 className="text-4xl font-bold mb-4">Orders Page</h1>
-      <p className="text-lg text-gray-600">Manage your customer orders here.</p>
+    <div className="p-4 md:p-6">
+      <OrdersHeader />
+      <OrdersSummaryCards />
+      <OrdersTabs />
+      <OrdersTable />
+      <OrdersPagination />
     </div>
   );
 };
