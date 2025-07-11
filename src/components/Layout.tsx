@@ -30,11 +30,11 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           </SheetContent>
         </Sheet>
       ) : (
-        <aside className="hidden md:flex w-64 flex-col fixed inset-y-0">
+        <aside className="hidden md:flex w-64 flex-col fixed inset-y-0 z-10">
           <Sidebar />
         </aside>
       )}
-      <main className={isMobile ? "flex-1 pt-16" : "flex-1 ml-64"}>
+      <main className={isMobile ? "flex-1 pt-16" : "flex-1 ml-64 overflow-x-auto"}>
         <div className="p-4 md:p-6 h-full">
           {children}
         </div>
