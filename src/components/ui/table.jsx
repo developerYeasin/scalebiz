@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+
 import { cn } from "@/lib/utils";
 
 const Table = React.forwardRef(({ className, ...props }, ref) => (
@@ -19,7 +20,10 @@ const TableHeader = React.forwardRef(({ className, ...props }, ref) => (
 TableHeader.displayName = "TableHeader";
 
 const TableBody = React.forwardRef(({ className, ...props }, ref) => (
-  <tbody ref={ref} className={cn("[&_tr:last-child]:border-0", className)} {...props} />
+  <tbody
+    ref={ref}
+    className={cn("[&_tr:last-child]:border-0", className)}
+    {...props} />
 ));
 TableBody.displayName = "TableBody";
 
