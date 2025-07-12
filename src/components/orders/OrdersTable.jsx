@@ -13,19 +13,19 @@ import { Checkbox } from "@/components/ui/checkbox.jsx";
 import { Badge } from "@/components/ui/badge.jsx";
 import { Button } from "@/components/ui/button.jsx";
 import { Eye, Pencil, Trash2 } from "lucide-react";
-import { toast } from "@/utils/toast.js";
+import { showInfo, showError } from "@/utils/toast.js"; // Corrected import
 
 const OrdersTable = ({ orders }) => {
   const handleViewOrder = (orderId) => {
-    toast.info(`Viewing order ${orderId}`);
+    showInfo(`Viewing order ${orderId}`);
   };
 
   const handleEditOrder = (orderId) => {
-    toast.info(`Editing order ${orderId}`);
+    showInfo(`Editing order ${orderId}`);
   };
 
   const handleDeleteOrder = (orderId) => {
-    toast.error(`Deleting order ${orderId}`);
+    showError(`Deleting order ${orderId}`);
   };
 
   return (
