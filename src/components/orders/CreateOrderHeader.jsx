@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button.jsx";
 import { ArrowLeft, X, Check } from "lucide-react";
 import { Link } from "react-router-dom";
 
-const CreateOrderHeader = () => {
+const CreateOrderHeader = ({ onCreateOrder }) => {
   return (
     <div className="flex items-center justify-between mb-6">
       <div className="flex items-center gap-4">
@@ -23,7 +23,7 @@ const CreateOrderHeader = () => {
             Cancel
           </Link>
         </Button>
-        <Button>
+        <Button onClick={onCreateOrder}>
           <Check className="h-4 w-4 mr-2" />
           Create
         </Button>

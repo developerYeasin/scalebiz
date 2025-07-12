@@ -6,8 +6,13 @@ import { Button } from "@/components/ui/button.jsx";
 import { Input } from "@/components/ui/input.jsx";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select.jsx";
 import { ChevronUp } from "lucide-react";
+import { toast } from "@/utils/toast.js";
 
 const ProductSidebar = () => {
+  const handleAssignCategory = () => {
+    toast.info("Assigning category (dummy action).");
+  };
+
   return (
     <div className="space-y-6">
       <Card>
@@ -17,7 +22,7 @@ const ProductSidebar = () => {
         </CardHeader>
         <CardContent>
           <p className="text-sm text-muted-foreground mb-4">No assigned category found</p>
-          <Button className="w-full bg-purple-600 hover:bg-purple-700 text-white">
+          <Button className="w-full bg-purple-600 hover:bg-purple-700 text-white" onClick={handleAssignCategory}>
             Assign category
           </Button>
         </CardContent>

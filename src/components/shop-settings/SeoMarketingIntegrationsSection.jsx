@@ -6,8 +6,18 @@ import { Input } from "@/components/ui/input.jsx";
 import { Label } from "@/components/ui/label.jsx";
 import { Button } from "@/components/ui/button.jsx";
 import { Copy, ChevronUp } from "lucide-react";
+import { toast } from "@/utils/toast.js";
 
 const SeoMarketingIntegrationsSection = () => {
+  const handleCopy = (text) => {
+    navigator.clipboard.writeText(text);
+    toast.success("Link copied to clipboard!");
+  };
+
+  const handleUpdate = () => {
+    toast.success("SEO & Marketing settings updated!");
+  };
+
   return (
     <Card className="mb-6">
       <CardHeader className="flex flex-row items-center justify-between">
@@ -22,7 +32,7 @@ const SeoMarketingIntegrationsSection = () => {
           </p>
           <div className="flex items-center gap-2">
             <Input defaultValue="https://scalebiz.com/api/sitemaps.xml" readOnly className="flex-1 bg-muted" />
-            <Button variant="outline" size="icon">
+            <Button variant="outline" size="icon" onClick={() => handleCopy("https://scalebiz.com/api/sitemaps.xml")}>
               <Copy className="h-4 w-4" />
             </Button>
           </div>
@@ -35,7 +45,7 @@ const SeoMarketingIntegrationsSection = () => {
           </p>
           <div className="flex items-center gap-2">
             <Input defaultValue="https://scalebiz.com/api/facebook-product-feed.xml" readOnly className="flex-1 bg-muted" />
-            <Button variant="outline" size="icon">
+            <Button variant="outline" size="icon" onClick={() => handleCopy("https://scalebiz.com/api/facebook-product-feed.xml")}>
               <Copy className="h-4 w-4" />
             </Button>
           </div>
@@ -66,7 +76,7 @@ const SeoMarketingIntegrationsSection = () => {
         </div>
 
         <div className="flex justify-end">
-          <Button>Update</Button>
+          <Button onClick={handleUpdate}>Update</Button>
         </div>
       </CardContent>
     </Card>

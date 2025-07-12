@@ -9,7 +9,7 @@ const DeliverySupportPage = () => {
   return (
     <SettingsPageLayout title="Delivery Support">
       <div className="mb-6">
-        <img src="https://via.placeholder.com/1300x300" alt="Delivery Banner" className="w-full rounded-md object-cover" />
+        <img src="https://picsum.photos/seed/delivery-banner/1300/300" alt="Delivery Banner" className="w-full rounded-md object-cover" />
       </div>
       <DeliveryServiceSection />
       <IntegrateDeliveryServicesSection />

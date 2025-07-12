@@ -35,8 +35,9 @@ const FeaturedVideoSection = () => {
           </p>
         </div>
         <div className="border-2 border-dashed border-gray-300 rounded-md p-6 text-center flex flex-col items-center justify-center h-48">
-          <PlayCircle className="h-12 w-12 text-muted-foreground mb-2" />
-          <p className="text-sm text-muted-foreground">Product Video Link</p>
+          <img src="https://picsum.photos/seed/featured-video/300/150" alt="Video Placeholder" className="h-full w-full object-cover rounded-md absolute inset-0 opacity-50" />
+          <PlayCircle className="h-12 w-12 text-muted-foreground mb-2 relative z-10" />
+          <p className="text-sm text-muted-foreground relative z-10">Product Video Link</p>
         </div>
       </CardContent>
     </Card>

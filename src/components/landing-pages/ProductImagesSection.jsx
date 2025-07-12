@@ -6,14 +6,31 @@ import { Button } from "@/components/ui/button.jsx";
 import { Input } from "@/components/ui/input.jsx";
 import { Label } from "@/components/ui/label.jsx";
 import { ChevronUp, X } from "lucide-react";
+import { toast } from "@/utils/toast.js";
 
 const ProductImagesSection = () => {
   const [sectionTitle, setSectionTitle] = React.useState("");
+  const [uploadedImages, setUploadedImages] = React.useState([
+    "https://picsum.photos/seed/landing-prod-img1/100/100",
+    "https://picsum.photos/seed/landing-prod-img2/100/100",
+  ]);
   const maxLength = 100;
-  const uploadedImages = [
-    "https://via.placeholder.com/100x100?text=Image1",
-    "https://via.placeholder.com/100x100?text=Image2",
-  ];
+
+  const handleUploadImage = () => {
+    // Dummy logic for adding an image
+    if (uploadedImages.length < 6) {
+      const newImage = `https://picsum.photos/seed/new-landing-prod-img${uploadedImages.length + 1}/100/100`;
+      setUploadedImages([...uploadedImages, newImage]);
+      toast.success("Image uploaded (dummy action).");
+    } else {
+      toast.error("Maximum 6 images allowed.");
+    }
+  };
+
+  const handleRemoveImage = (indexToRemove) => {
+    setUploadedImages(uploadedImages.filter((_, index) => index !== indexToRemove));
+    toast.error("Image removed.");
+  };
 
   return (
     <Card className="mb-6">
@@ -25,7 +42,7 @@ const ProductImagesSection = () => {
         <p className="text-sm text-muted-foreground mb-4">
           Upload upto 6 items to get a better visual impact on your website
         </p>
-        <Button className="mb-4">Upload ({uploadedImages.length}/6)</Button>
+        <Button className="mb-4" onClick={handleUploadImage} disabled={uploadedImages.length >= 6}>Upload ({uploadedImages.length}/6)</Button>
         <div className="mb-4">
           <Label htmlFor="sectionTitle">Section title</Label>
           <Input
@@ -48,6 +65,7 @@ const ProductImagesSection = () => {
                 variant="destructive"
                 size="icon"
                 className="absolute top-1 right-1 h-6 w-6 rounded-full"
+                onClick={() => handleRemoveImage(index)}
               >
                 <X className="h-4 w-4" />
               </Button>

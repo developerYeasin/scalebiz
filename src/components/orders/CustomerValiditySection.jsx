@@ -6,8 +6,13 @@ import { Button } from "@/components/ui/button.jsx";
 import { Switch } from "@/components/ui/switch.jsx";
 import { Label } from "@/components/ui/label.jsx";
 import { ShieldQuestion, ChevronUp } from "lucide-react";
+import { toast } from "@/utils/toast.js";
 
 const CustomerValiditySection = () => {
+  const handleCheckValidity = () => {
+    toast.info("Checking customer validity...");
+  };
+
   return (
     <Card className="mb-6">
       <CardHeader className="flex flex-row items-center justify-between">
@@ -18,7 +23,7 @@ const CustomerValiditySection = () => {
         <ChevronUp className="h-5 w-5 text-muted-foreground" />
       </CardHeader>
       <CardContent>
-        <Button className="w-full mb-4">Let's check</Button>
+        <Button className="w-full mb-4" onClick={handleCheckValidity}>Let's check</Button>
         <div className="flex items-center justify-between">
           <Label htmlFor="fraud-toggle" className="text-sm">
             Mark this customer as a fraud?

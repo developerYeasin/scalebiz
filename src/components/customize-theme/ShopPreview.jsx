@@ -26,7 +26,7 @@ const ShopPreview = () => {
             <div className="w-full bg-black text-white p-2 flex justify-between items-center">
               <span>Welcome to Scalebiz</span>
               <div className="flex items-center gap-2">
-                <img src="https://via.placeholder.com/20" alt="Logo" className="h-5 w-5" />
+                <img src="https://picsum.photos/seed/shop-logo-preview/20/20" alt="Logo" className="h-5 w-5 rounded-full" />
                 <span>EN</span>
                 <span>🛒</span>
               </div>
@@ -46,19 +46,35 @@ const ShopPreview = () => {
               </div>
               <div className="flex space-x-2 overflow-x-auto pb-2">
                 <div className="flex-shrink-0 w-24 h-24 bg-gray-200 rounded-md flex items-center justify-center">
-                  <span className="text-xs text-center">All products</span>
+                  <img src="https://picsum.photos/seed/preview-cat1/96/96" alt="Category" className="w-full h-full object-cover rounded-md" />
+                  <span className="absolute text-xs text-center text-white bg-black/50 p-1 rounded-md">All products</span>
                 </div>
                 <div className="flex-shrink-0 w-24 h-24 bg-gray-200 rounded-md flex items-center justify-center">
-                  <span className="text-xs text-center">Inner item</span>
+                  <img src="https://picsum.photos/seed/preview-cat2/96/96" alt="Category" className="w-full h-full object-cover rounded-md" />
+                  <span className="absolute text-xs text-center text-white bg-black/50 p-1 rounded-md">Inner item</span>
                 </div>
                 <div className="flex-shrink-0 w-24 h-24 bg-gray-200 rounded-md flex items-center justify-center">
-                  <span className="text-xs text-center">Borka</span>
+                  <img src="https://picsum.photos/seed/preview-cat3/96/96" alt="Category" className="w-full h-full object-cover rounded-md" />
+                  <span className="absolute text-xs text-center text-white bg-black/50 p-1 rounded-md">Borka</span>
                 </div>
                 <div className="flex-shrink-0 w-24 h-24 bg-gray-200 rounded-md flex items-center justify-center">
-                  <span className="text-xs text-center">Gown</span>
+                  <img src="https://picsum.photos/seed/preview-cat4/96/96" alt="Category" className="w-full h-full object-cover rounded-md" />
+                  <span className="absolute text-xs text-center text-white bg-black/50 p-1 rounded-md">Gown</span>
                 </div>
               </div>
               {/* More placeholder content for products */}
+              <div className="grid grid-cols-2 gap-4 mt-4">
+                <div className="bg-white p-2 rounded-md shadow">
+                  <img src="https://picsum.photos/seed/preview-prod1/150/150" alt="Product" className="w-full h-24 object-cover rounded-md mb-2" />
+                  <p className="font-semibold text-foreground">Sample Product 1</p>
+                  <p className="text-sm text-muted-foreground">৳ 1200</p>
+                </div>
+                <div className="bg-white p-2 rounded-md shadow">
+                  <img src="https://picsum.photos/seed/preview-prod2/150/150" alt="Product" className="w-full h-24 object-cover rounded-md mb-2" />
+                  <p className="font-semibold text-foreground">Sample Product 2</p>
+                  <p className="text-sm text-muted-foreground">৳ 850</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>

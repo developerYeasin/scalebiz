@@ -11,8 +11,14 @@ import { Button } from "@/components/ui/button.jsx";
 import { Input } from "@/components/ui/input.jsx";
 import { Label } from "@/components/ui/label.jsx";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select.jsx";
+import { toast } from "@/utils/toast.js";
 
 const AddUserDialog = ({ isOpen, onClose }) => {
+  const handleAddUser = () => {
+    toast.success("User added successfully!");
+    onClose(); // Close dialog after adding user
+  };
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[425px]">
@@ -40,7 +46,7 @@ const AddUserDialog = ({ isOpen, onClose }) => {
         </div>
         <div className="flex justify-end gap-2">
           <Button variant="outline" onClick={onClose}>Close</Button>
-          <Button>Add User</Button>
+          <Button onClick={handleAddUser}>Add User</Button>
         </div>
       </DialogContent>
     </Dialog>

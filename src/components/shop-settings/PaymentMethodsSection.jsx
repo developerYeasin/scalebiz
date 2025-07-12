@@ -7,8 +7,13 @@ import { Label } from "@/components/ui/label.jsx";
 import { Textarea } from "@/components/ui/textarea.jsx";
 import { Button } from "@/components/ui/button.jsx";
 import { ChevronUp } from "lucide-react";
+import { toast } from "@/utils/toast.js";
 
 const PaymentMethodsSection = () => {
+  const handleUpdatePaymentInfo = () => {
+    toast.success("Payment information updated successfully!");
+  };
+
   return (
     <Card className="mb-6">
       <CardHeader className="flex flex-row items-center justify-between">
@@ -37,7 +42,7 @@ const PaymentMethodsSection = () => {
 
         <div className="mb-6">
           <Label htmlFor="paymentProcessMessage">Payment process message note</Label>
-          <Textarea id="paymentProcessMessage" rows={3} className="mt-1" />
+          <Textarea id="paymentProcessMessage" rows={3} />
         </div>
 
         <div className="flex items-center space-x-2 mb-6">
@@ -48,7 +53,7 @@ const PaymentMethodsSection = () => {
         </div>
 
         <div className="flex justify-end">
-          <Button>Update Payment Info</Button>
+          <Button onClick={handleUpdatePaymentInfo}>Update Payment Info</Button>
         </div>
       </CardContent>
     </Card>

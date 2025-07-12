@@ -5,8 +5,13 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card.j
 import { Textarea } from "@/components/ui/textarea.jsx";
 import { Button } from "@/components/ui/button.jsx";
 import { ChevronUp } from "lucide-react";
+import { toast } from "@/utils/toast.js";
 
 const PolicySection = ({ title, lastUpdated, content }) => {
+  const handleUpdatePolicy = () => {
+    toast.success(`${title} policy updated successfully!`);
+  };
+
   return (
     <Card className="mb-6">
       <CardHeader className="flex flex-row items-center justify-between">
@@ -32,6 +37,9 @@ const PolicySection = ({ title, lastUpdated, content }) => {
             <span className="text-sm font-medium">Tx</span>
           </div>
           <Textarea defaultValue={content} rows={15} className="border-none focus-visible:ring-0" />
+        </div>
+        <div className="flex justify-end mt-4">
+          <Button onClick={handleUpdatePolicy}>Update Policy</Button>
         </div>
       </CardContent>
     </Card>

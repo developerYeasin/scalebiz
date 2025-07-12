@@ -7,7 +7,21 @@ import { Label } from "@/components/ui/label.jsx";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select.jsx";
 import { ChevronUp } from "lucide-react";
 
-const OrderSummarySection = () => {
+const OrderSummarySection = ({
+  discountPercentage,
+  setDiscountPercentage,
+  vatTaxPercentage,
+  setVatTaxPercentage,
+  deliveryCharge,
+  setDeliveryCharge,
+  paidAmount,
+  setPaidAmount,
+  subtotal,
+  discountAmount,
+  vatTaxAmount,
+  grandTotal,
+  dueAmount,
+}) => {
   return (
     <Card className="mb-6">
       <CardHeader className="flex flex-row items-center justify-between">
@@ -19,24 +33,36 @@ const OrderSummarySection = () => {
           <div>
             <Label htmlFor="discountPercentage">Discount</Label>
             <p className="text-sm text-muted-foreground mb-1">Percentage (%)</p>
-            <Input id="discountPercentage" defaultValue="0" />
+            <Input
+              id="discountPercentage"
+              type="number"
+              value={discountPercentage}
+              onChange={(e) => setDiscountPercentage(Number(e.target.value))}
+              className="mt-1"
+            />
           </div>
           <div>
             <Label htmlFor="vatTaxPercentage">VAT/TAX</Label>
             <p className="text-sm text-muted-foreground mb-1">Percentage (%)</p>
-            <Input id="vatTaxPercentage" defaultValue="0" />
+            <Input
+              id="vatTaxPercentage"
+              type="number"
+              value={vatTaxPercentage}
+              onChange={(e) => setVatTaxPercentage(Number(e.target.value))}
+              className="mt-1"
+            />
           </div>
           <div>
             <Label htmlFor="deliveryZone">Delivery</Label>
             <p className="text-sm text-muted-foreground mb-1">Delivery Zone</p>
-            <Select defaultValue="Not Selected">
+            <Select value={String(deliveryCharge)} onValueChange={(value) => setDeliveryCharge(Number(value))}>
               <SelectTrigger>
                 <SelectValue placeholder="Not Selected" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="Not Selected">Not Selected</SelectItem>
-                <SelectItem value="Zone A">Zone A</SelectItem>
-                <SelectItem value="Zone B">Zone B</SelectItem>
+                <SelectItem value="0">Not Selected (৳ 0)</SelectItem>
+                <SelectItem value="80">Zone A (৳ 80)</SelectItem>
+                <SelectItem value="120">Zone B (৳ 120)</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -58,26 +84,31 @@ const OrderSummarySection = () => {
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <div>
-            <p className="text-sm text-muted-foreground">Amount</p>
-            <Input defaultValue="0" readOnly className="bg-muted" />
+            <p className="text-sm text-muted-foreground">Subtotal</p>
+            <Input value={`৳ ${subtotal.toFixed(2)}`} readOnly className="bg-muted" />
           </div>
           <div>
-            <p className="text-sm text-muted-foreground">Amount</p>
-            <Input defaultValue="0" readOnly className="bg-muted" />
+            <p className="text-sm text-muted-foreground">Discount Amount</p>
+            <Input value={`৳ ${discountAmount.toFixed(2)}`} readOnly className="bg-muted" />
           </div>
           <div>
             <p className="text-sm text-muted-foreground">Delivery Charge</p>
-            <Input defaultValue="0" readOnly className="bg-muted" />
+            <Input value={`৳ ${deliveryCharge.toFixed(2)}`} readOnly className="bg-muted" />
           </div>
           <div>
             <p className="text-sm text-muted-foreground">Paid Amount</p>
-            <Input defaultValue="0" readOnly className="bg-muted" />
+            <Input
+              type="number"
+              value={paidAmount}
+              onChange={(e) => setPaidAmount(Number(e.target.value))}
+              className="mt-1"
+            />
           </div>
         </div>
 
         <div className="flex justify-between items-center mt-4">
-          <p className="text-destructive font-semibold">Due Amount: BDT 0</p>
-          <p className="text-primary font-semibold">Grand Total: BDT 0</p>
+          <p className="text-destructive font-semibold">Due Amount: ৳ {dueAmount.toFixed(2)}</p>
+          <p className="text-primary font-semibold">Grand Total: ৳ {grandTotal.toFixed(2)}</p>
         </div>
       </CardContent>
     </Card>

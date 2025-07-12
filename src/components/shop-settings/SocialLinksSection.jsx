@@ -6,8 +6,13 @@ import { Input } from "@/components/ui/input.jsx";
 import { Label } from "@/components/ui/label.jsx";
 import { Button } from "@/components/ui/button.jsx";
 import { ChevronUp } from "lucide-react";
+import { toast } from "@/utils/toast.js";
 
 const SocialLinksSection = () => {
+  const handleUpdateSocialLinks = () => {
+    toast.success("Social links updated successfully!");
+  };
+
   return (
     <Card className="mb-6">
       <CardHeader className="flex flex-row items-center justify-between">
@@ -58,7 +63,7 @@ const SocialLinksSection = () => {
           </div>
         </div>
         <div className="flex justify-end">
-          <Button>Update Social Links</Button>
+          <Button onClick={handleUpdateSocialLinks}>Update Social Links</Button>
         </div>
       </CardContent>
     </Card>

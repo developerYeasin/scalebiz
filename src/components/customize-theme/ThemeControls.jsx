@@ -8,11 +8,17 @@ import { Button } from "@/components/ui/button.jsx";
 import { Switch } from "@/components/ui/switch.jsx";
 import { Check, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils.js";
+import { toast } from "@/utils/toast.js";
 
 const ThemeControls = () => {
-  const [themeColor, setThemeColor] = React.useState("#000000");
+  const [themeColor, setThemeColor] = React.useState("#000000"); // Example black
   const [themeMode, setThemeMode] = React.useState("Light"); // "Light" or "Dark"
   const [buyNowEnabled, setBuyNowEnabled] = React.useState(true); // true for "Yes", false for "No"
+
+  const handleApplyTheme = () => {
+    toast.success("Theme applied successfully!");
+    console.log("Applying theme with:", { themeColor, themeMode, buyNowEnabled });
+  };
 
   return (
     <Card className="mb-6">
@@ -105,7 +111,7 @@ const ThemeControls = () => {
         <p className="text-sm text-muted-foreground mb-4">
           Basic is a default theme. No need to setup anything.
         </p>
-        <Button className="w-full md:w-auto">
+        <Button className="w-full md:w-auto" onClick={handleApplyTheme}>
           <Sparkles className="h-4 w-4 mr-2" />
           Apply Theme
         </Button>

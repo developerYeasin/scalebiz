@@ -8,8 +8,13 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Button } from "@/components/ui/button.jsx";
 import { Switch } from "@/components/ui/switch.jsx";
 import { ChevronUp } from "lucide-react";
+import { toast } from "@/utils/toast.js";
 
 const ShopSettingsSection = () => {
+  const handleUpdateShopSettings = () => {
+    toast.success("Shop settings updated successfully!");
+  };
+
   return (
     <Card className="mb-6">
       <CardHeader className="flex flex-row items-center justify-between">
@@ -51,7 +56,7 @@ const ShopSettingsSection = () => {
           </div>
         </div>
         <div className="flex justify-end mt-4">
-          <Button>Update Shop Settings</Button>
+          <Button onClick={handleUpdateShopSettings}>Update Shop Settings</Button>
         </div>
       </CardContent>
     </Card>

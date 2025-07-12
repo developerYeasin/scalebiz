@@ -8,8 +8,13 @@ import { Textarea } from "@/components/ui/textarea.jsx";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select.jsx";
 import { Button } from "@/components/ui/button.jsx";
 import { ChevronUp } from "lucide-react";
+import { toast } from "@/utils/toast.js";
 
 const ShopBasicInfo = () => {
+  const handleUpdateShopInfo = () => {
+    toast.success("Shop basic information updated successfully!");
+  };
+
   return (
     <Card className="mb-6">
       <CardHeader className="flex flex-row items-center justify-between">
@@ -74,7 +79,7 @@ const ShopBasicInfo = () => {
           <Input id="topbarAnnouncement" defaultValue="Welcome to Scalebiz" className="mt-1" />
         </div>
         <div className="flex justify-end mt-4">
-          <Button>Update Shop Info</Button>
+          <Button onClick={handleUpdateShopInfo}>Update Shop Info</Button>
         </div>
       </CardContent>
     </Card>

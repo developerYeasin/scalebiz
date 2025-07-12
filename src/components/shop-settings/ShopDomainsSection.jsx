@@ -6,8 +6,22 @@ import { Input } from "@/components/ui/input.jsx";
 import { Button } from "@/components/ui/button.jsx";
 import { Copy, Trash2 } from "lucide-react";
 import { ChevronUp } from "lucide-react";
+import { toast } from "@/utils/toast.js";
 
 const ShopDomainsSection = () => {
+  const handleSaveDomain = () => {
+    toast.success("Domain saved successfully!");
+  };
+
+  const handleCopy = (text) => {
+    navigator.clipboard.writeText(text);
+    toast.success("Copied to clipboard!");
+  };
+
+  const handleDeleteDomain = () => {
+    toast.error("Domain deleted (dummy action).");
+  };
+
   return (
     <Card className="mb-6">
       <CardHeader className="flex flex-row items-center justify-between">
@@ -17,15 +31,15 @@ const ShopDomainsSection = () => {
       <CardContent>
         <h3 className="text-lg font-semibold mb-2">Your Free Domain</h3>
         <div className="flex flex-wrap gap-2 mb-4">
-          <Button variant="outline" className="px-4 py-2 rounded-md">scalebiz.com</Button>
-          <Button variant="outline" className="px-4 py-2 rounded-md">sellbd.shop</Button>
-          <Button variant="outline" className="px-4 py-2 rounded-md">myecom.site</Button>
-          <Button variant="outline" className="px-4 py-2 rounded-md">bdcsite.net</Button>
+          <Button variant="outline" className="px-4 py-2 rounded-md" onClick={() => handleCopy("scalebiz.com")}>scalebiz.com</Button>
+          <Button variant="outline" className="px-4 py-2 rounded-md" onClick={() => handleCopy("sellbd.shop")}>sellbd.shop</Button>
+          <Button variant="outline" className="px-4 py-2 rounded-md" onClick={() => handleCopy("myecom.site")}>myecom.site</Button>
+          <Button variant="outline" className="px-4 py-2 rounded-md" onClick={() => handleCopy("bdcsite.net")}>bdcsite.net</Button>
         </div>
         <div className="flex items-center gap-2 mb-6">
           <Input placeholder="myshop" className="flex-1" />
           <span className="text-muted-foreground">.scalebiz.com</span>
-          <Button>Save Domain</Button>
+          <Button onClick={handleSaveDomain}>Save Domain</Button>
         </div>
 
         <h3 className="text-lg font-semibold mb-2">Your Custom Domain</h3>
@@ -50,7 +64,7 @@ const ShopDomainsSection = () => {
                 <td className="p-2">CNAME</td>
                 <td className="p-2 flex items-center justify-between">
                   <span>procname.scalebiz.com</span>
-                  <Button variant="ghost" size="icon">
+                  <Button variant="ghost" size="icon" onClick={() => handleCopy("procname.scalebiz.com")}>
                     <Copy className="h-4 w-4" />
                   </Button>
                 </td>
@@ -61,10 +75,10 @@ const ShopDomainsSection = () => {
 
         <div className="flex items-center gap-2 mb-4">
           <Input defaultValue="scalebiz.com" readOnly className="flex-1 bg-muted" />
-          <Button variant="outline" size="icon">
+          <Button variant="outline" size="icon" onClick={() => handleCopy("scalebiz.com")}>
             <Copy className="h-4 w-4" />
           </Button>
-          <Button variant="outline" size="icon" className="text-destructive hover:text-destructive">
+          <Button variant="outline" size="icon" className="text-destructive hover:text-destructive" onClick={handleDeleteDomain}>
             <Trash2 className="h-4 w-4" />
           </Button>
         </div>
@@ -73,13 +87,13 @@ const ShopDomainsSection = () => {
           <span>Your domain IPs:</span>
           <span className="flex items-center gap-1">
             172.67.142.89
-            <Button variant="ghost" size="icon" className="h-auto w-auto p-1">
+            <Button variant="ghost" size="icon" className="h-auto w-auto p-1" onClick={() => handleCopy("172.67.142.89")}>
               <Copy className="h-3 w-3" />
             </Button>
           </span>
           <span className="flex items-center gap-1">
             104.21.87.74
-            <Button variant="ghost" size="icon" className="h-auto w-auto p-1">
+            <Button variant="ghost" size="icon" className="h-auto w-auto p-1" onClick={() => handleCopy("104.21.87.74")}>
               <Copy className="h-3 w-3" />
             </Button>
           </span>

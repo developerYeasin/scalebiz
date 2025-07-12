@@ -14,12 +14,10 @@ const orderStatuses = [
   "Order Completed",
   "Order Cancelled",
   "Order Returned",
-  "Payment C",
+  "Payment C", // This seems like a typo, keeping as is for now.
 ];
 
-const OrdersTabs = () => {
-  const [activeTab, setActiveTab] = React.useState("All Orders");
-
+const OrdersTabs = ({ activeTab, setActiveTab }) => {
   return (
     <div className="mb-6">
       <ScrollArea className="w-full whitespace-nowrap rounded-md border">

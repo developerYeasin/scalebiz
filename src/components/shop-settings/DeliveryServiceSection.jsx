@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button.jsx";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select.jsx";
 import { Plus, Trash2, ChevronUp } from "lucide-react";
 import { cn } from "@/lib/utils.js";
+import { toast } from "@/utils/toast.js";
 
 const DeliveryServiceSection = () => {
   const [activeTab, setActiveTab] = React.useState("Zones");
@@ -16,10 +17,16 @@ const DeliveryServiceSection = () => {
 
   const addSpecificCharge = () => {
     setSpecificCharges([...specificCharges, { id: specificCharges.length + 1, zone: "Not Selected", charge: "0" }]);
+    toast.info("New specific charge row added.");
   };
 
   const removeSpecificCharge = (id) => {
     setSpecificCharges(specificCharges.filter(charge => charge.id !== id));
+    toast.error("Specific charge removed.");
+  };
+
+  const handleUpdateDeliveryCharges = () => {
+    toast.success("Delivery charges updated successfully!");
   };
 
   return (
@@ -102,7 +109,7 @@ const DeliveryServiceSection = () => {
           </div>
         ))}
         <div className="flex justify-end mt-4">
-          <Button>Update Delivery Charges</Button>
+          <Button onClick={handleUpdateDeliveryCharges}>Update Delivery Charges</Button>
         </div>
       </CardContent>
     </Card>

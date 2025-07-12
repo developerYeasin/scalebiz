@@ -7,8 +7,13 @@ import { Label } from "@/components/ui/label.jsx";
 import { Input } from "@/components/ui/input.jsx";
 import { Button } from "@/components/ui/button.jsx";
 import { ChevronUp, Plus } from "lucide-react";
+import { toast } from "@/utils/toast.js";
 
 const SmsServiceSection = () => {
+  const handleAddApiCredentials = () => {
+    toast.success("API credentials added (dummy action).");
+  };
+
   return (
     <Card className="mb-6">
       <CardHeader className="flex flex-row items-center justify-between">
@@ -34,7 +39,7 @@ const SmsServiceSection = () => {
             <Label htmlFor="senderId">Sender ID <span className="text-destructive">*</span></Label>
             <Input id="senderId" placeholder="Sender ID" className="mt-1" />
           </div>
-          <Button>
+          <Button onClick={handleAddApiCredentials}>
             <Plus className="h-4 w-4 mr-2" />
             Add
           </Button>

@@ -16,10 +16,16 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Calendar } from "@/components/ui/calendar.jsx";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils.js";
+import { toast } from "@/utils/toast.js";
 
 const CreatePromoCodeDialog = ({ isOpen, onClose }) => {
   const [expiryDate, setExpiryDate] = React.useState();
   const [discountType, setDiscountType] = React.useState("amount");
+
+  const handleCreatePromoCode = () => {
+    toast.success("Promo code created successfully!");
+    onClose(); // Close dialog after creation
+  };
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -123,7 +129,7 @@ const CreatePromoCodeDialog = ({ isOpen, onClose }) => {
         </div>
         <div className="flex justify-end gap-2">
           <Button variant="outline" onClick={onClose}>Cancel</Button>
-          <Button className="bg-purple-600 hover:bg-purple-700 text-white">Create</Button>
+          <Button className="bg-purple-600 hover:bg-purple-700 text-white" onClick={handleCreatePromoCode}>Create</Button>
         </div>
       </DialogContent>
     </Dialog>

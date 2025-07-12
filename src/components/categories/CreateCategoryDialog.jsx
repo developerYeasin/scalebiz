@@ -13,8 +13,22 @@ import { Input } from "@/components/ui/input.jsx";
 import { Label } from "@/components/ui/label.jsx";
 import { Textarea } from "@/components/ui/textarea.jsx";
 import { Image } from "lucide-react";
+import { toast } from "@/utils/toast.js";
 
 const CreateCategoryDialog = ({ isOpen, onClose }) => {
+  const handleAddBannerImage = () => {
+    toast.info("Banner image upload initiated (dummy action).");
+  };
+
+  const handleAddSquareImage = () => {
+    toast.info("Square image upload initiated (dummy action).");
+  };
+
+  const handleCreateCategory = () => {
+    toast.success("Category created successfully!");
+    onClose(); // Close dialog after creation
+  };
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[600px]">
@@ -26,20 +40,20 @@ const CreateCategoryDialog = ({ isOpen, onClose }) => {
         </DialogHeader>
         <div className="grid gap-4 py-4">
           <div className="border-2 border-dashed border-gray-300 rounded-md p-6 text-center flex flex-col items-center justify-center">
-            <Image className="h-12 w-12 text-muted-foreground mb-2" />
+            <img src="https://picsum.photos/seed/category-banner/1300/380" alt="Banner Placeholder" className="h-12 w-auto object-contain mb-2" />
             <p className="text-sm text-muted-foreground mb-2">
               Upload a banner image for the category. Recommended size is 1300×380 pixels. Maximum file size is 4MB.
             </p>
-            <Button variant="outline">Add Image</Button>
+            <Button variant="outline" onClick={handleAddBannerImage}>Add Image</Button>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="border-2 border-dashed border-gray-300 rounded-md p-6 text-center flex flex-col items-center justify-center">
-              <Image className="h-12 w-12 text-muted-foreground mb-2" />
+              <img src="https://picsum.photos/seed/category-square/500/500" alt="Square Image Placeholder" className="h-12 w-12 object-cover mb-2" />
               <p className="text-sm text-muted-foreground mb-2">
                 Upload a square image for the category (1:1) aspect ratio. Recommended size is 500×500 pixels. Maximum file size is 4MB.
               </p>
-              <Button variant="outline">Add Image</Button>
+              <Button variant="outline" onClick={handleAddSquareImage}>Add Image</Button>
             </div>
             <div className="grid gap-4">
               <div>
@@ -56,7 +70,7 @@ const CreateCategoryDialog = ({ isOpen, onClose }) => {
         </div>
         <div className="flex justify-end gap-2">
           <Button variant="outline" onClick={onClose}>Cancel</Button>
-          <Button>Create Category</Button>
+          <Button onClick={handleCreateCategory}>Create Category</Button>
         </div>
       </DialogContent>
     </Dialog>

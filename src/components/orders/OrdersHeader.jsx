@@ -7,13 +7,18 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Search, Download, Plus, ShoppingCart, User } from "lucide-react";
 import { Badge } from "@/components/ui/badge.jsx";
 import { Link } from "react-router-dom";
+import { toast } from "@/utils/toast.js";
 
-const OrdersHeader = () => {
+const OrdersHeader = ({ searchTerm, onSearchChange, totalOrders }) => {
+  const handleExport = () => {
+    toast.success("Exporting orders...");
+  };
+
   return (
     <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-6">
       <div className="flex items-center gap-2">
         <h1 className="text-2xl font-bold">Orders</h1>
-        <Badge variant="secondary" className="text-sm">474</Badge>
+        <Badge variant="secondary" className="text-sm">{totalOrders}</Badge>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-4">
@@ -21,22 +26,29 @@ const OrdersHeader = () => {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
-            <DropdownMenuItem>All</DropdownMenuItem>
-            <DropdownMenuItem>Placed</DropdownMenuItem>
-            <DropdownMenuItem>Confirmed</DropdownMenuItem>
-            <DropdownMenuItem>Shipped</DropdownMenuItem>
-            <DropdownMenuItem>Delivered</DropdownMenuItem>
-            <DropdownMenuItem>Completed</DropdownMenuItem>
-            <DropdownMenuItem>Cancelled</DropdownMenuItem>
-            <DropdownMenuItem>Returned</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => toast.info("Filtering by All")}>All</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => toast.info("Filtering by Placed")}>Placed</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => toast.info("Filtering by Confirmed")}>Confirmed</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => toast.info("Filtering by Shipped")}>Shipped</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => toast.info("Filtering by Delivered")}>Delivered</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => toast.info("Filtering by Completed")}>Completed</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => toast.info("Filtering by Cancelled")}>Cancelled</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => toast.info("Filtering by Returned")}>Returned</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
       <div className="flex items-center gap-2">
-        <Button variant="outline" size="icon">
-          <Search className="h-4 w-4" />
-        </Button>
-        <Button variant="outline">
+        <div className="relative w-full max-w-sm">
+          <Input
+            type="text"
+            placeholder="Search orders..."
+            className="pl-8"
+            value={searchTerm}
+            onChange={(e) => onSearchChange(e.target.value)}
+          />
+          <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+        </div>
+        <Button variant="outline" onClick={handleExport}>
           <Download className="h-4 w-4 mr-2" />
           Export
         </Button>

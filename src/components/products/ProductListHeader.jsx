@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge.jsx";
 import { Link } from "react-router-dom";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area.jsx";
 import { cn } from "@/lib/utils.js";
+import { toast } from "@/utils/toast.js";
 
 const productCategories = [
   "All products",
@@ -21,33 +22,39 @@ const productCategories = [
   "Saree",
   "One Piece",
   "Two Piece",
+  "Three Piece", // Added based on mock data
 ];
 
-const ProductListHeader = () => {
-  const [activeCategory, setActiveCategory] = React.useState("All products");
-
+const ProductListHeader = ({ activeCategory, setActiveCategory, searchTerm, onSearchChange, totalProducts }) => {
   return (
     <div className="flex flex-col gap-4 mb-6">
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div className="flex items-center gap-2">
           <h1 className="text-2xl font-bold">All Products</h1>
-          <Badge variant="secondary" className="text-sm">16</Badge>
+          <Badge variant="secondary" className="text-sm">{totalProducts}</Badge>
         </div>
         <div className="flex items-center gap-2 w-full md:w-auto">
-          <Button variant="outline" size="icon">
-            <Search className="h-4 w-4" />
-          </Button>
+          <div className="relative w-full max-w-sm">
+            <Input
+              type="text"
+              placeholder="Search products..."
+              className="pl-8"
+              value={searchTerm}
+              onChange={(e) => onSearchChange(e.target.value)}
+            />
+            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+          </div>
           <Button asChild>
             <Link to="/products/add">
               <Plus className="h-4 w-4 mr-2" />
               Add Product
             </Link>
           </Button>
-          <Button variant="ghost" size="icon" className="relative">
+          <Button variant="ghost" size="icon" className="relative" onClick={() => toast.info("Shopping cart clicked")}>
             <ShoppingCart className="h-5 w-5" />
             <Badge className="absolute -top-1 -right-1 h-4 w-4 flex items-center justify-center p-0 text-xs">0</Badge>
           </Button>
-          <Button variant="ghost" size="icon" className="relative">
+          <Button variant="ghost" size="icon" className="relative" onClick={() => toast.info("User profile clicked")}>
             <User className="h-5 w-5" />
             <Badge className="absolute -top-1 -right-1 h-4 w-4 flex items-center justify-center p-0 text-xs">0</Badge>
           </Button>

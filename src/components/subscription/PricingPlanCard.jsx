@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button.jsx";
 import { Badge } from "@/components/ui/badge.jsx";
 import { Check } from "lucide-react";
 import { cn } from "@/lib/utils.js";
+import { toast } from "@/utils/toast.js";
 
 const PricingPlanCard = ({
   planName,
@@ -17,6 +18,10 @@ const PricingPlanCard = ({
   isRecommended = false,
   isMostPopular = false,
 }) => {
+  const handleUpgrade = () => {
+    toast.success(`Upgrading to ${planName}!`);
+  };
+
   return (
     <Card className={cn(
       "relative flex flex-col items-center text-center p-6 border-2",
@@ -61,7 +66,7 @@ const PricingPlanCard = ({
         <Button className={cn(
           "w-full",
           isMostPopular ? "bg-purple-600 hover:bg-purple-700" : "bg-purple-600 hover:bg-purple-700"
-        )}>
+        )} onClick={handleUpgrade}>
           Upgrade Now
         </Button>
       </CardContent>

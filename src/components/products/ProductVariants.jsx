@@ -4,8 +4,13 @@ import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card.jsx";
 import { Button } from "@/components/ui/button.jsx";
 import { Plus, ChevronUp } from "lucide-react";
+import { toast } from "@/utils/toast.js";
 
 const ProductVariants = () => {
+  const handleAddVariant = () => {
+    toast.info("Adding a new product variant (dummy action).");
+  };
+
   return (
     <Card className="mb-6">
       <CardHeader className="flex flex-row items-center justify-between">
@@ -16,7 +21,7 @@ const ProductVariants = () => {
         <p className="text-sm text-muted-foreground mb-4">
           You can add multiple variant for a single product here. Like Size, Color, and Weight etc.
         </p>
-        <Button variant="outline" className="text-primary">
+        <Button variant="outline" className="text-primary" onClick={handleAddVariant}>
           <Plus className="h-4 w-4 mr-2" />
           Add a new variant
         </Button>

@@ -7,8 +7,13 @@ import { Label } from "@/components/ui/label.jsx";
 import { Input } from "@/components/ui/input.jsx";
 import { Button } from "@/components/ui/button.jsx";
 import { ChevronUp } from "lucide-react";
+import { toast } from "@/utils/toast.js";
 
 const ChatSupportSection = () => {
+  const handleUpdateChatSupport = () => {
+    toast.success("Chat support information updated successfully!");
+  };
+
   return (
     <Card className="mb-6">
       <CardHeader className="flex flex-row items-center justify-between">
@@ -23,7 +28,7 @@ const ChatSupportSection = () => {
           </div>
           <div className="flex items-center space-x-2">
             <Checkbox id="whatsappChat" defaultChecked />
-            <Label htmlFor="whatsappChat">Whatsapp</Label>
+            <Label htmlFor="whatsappChat">Whatsapp</p>
           </div>
         </div>
 
@@ -33,7 +38,7 @@ const ChatSupportSection = () => {
         </div>
 
         <div className="flex justify-end">
-          <Button>Update Chat Support Info</Button>
+          <Button onClick={handleUpdateChatSupport}>Update Chat Support Info</Button>
         </div>
       </CardContent>
     </Card>
