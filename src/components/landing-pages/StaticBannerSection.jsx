@@ -22,7 +22,7 @@ const StaticBannerSection = () => {
           Select upto 1 items to get a better visual impact on your website
         </p>
         <Button className="mb-4" onClick={handleUpload}>Upload (0/1)</Button>
-        <div className="border-2 border-dashed border-gray-300 rounded-md p-6 text-center flex flex-col items-center justify-center h-48">
+        <div className="relative border-2 border-dashed border-gray-300 rounded-md p-6 text-center flex flex-col items-center justify-center h-48">
           <img src="https://picsum.photos/seed/static-banner/400/200" alt="Static Banner Placeholder" className="h-full w-full object-cover rounded-md absolute inset-0 opacity-50" />
           <Image className="h-12 w-12 text-muted-foreground mb-2 relative z-10" />
           <p className="text-sm text-muted-foreground relative z-10">
