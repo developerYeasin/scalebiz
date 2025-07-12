@@ -17,7 +17,7 @@ import ApplyThemeButton from "@/components/landing-pages/ApplyThemeButton.jsx";
 
 const LandingPages = () => {
   return (
-    <div className="p-4 md:p-6">
+    <div className="p-4 md:p-6 bg-background">
       <LandingPageHeader />
       <AvailableThemesSection />
       <ThemeSetupControls />
