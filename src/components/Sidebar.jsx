@@ -20,6 +20,7 @@ import {
   ReceiptText,
   Gem,
   HelpCircle,
+  Building, // New icon for Vendor Dashboard
 } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area.jsx";
 
@@ -50,6 +51,10 @@ const Sidebar = ({ onClose }) => {
   ];
 
   const academyItem = { name: "Scalebiz Academy", href: "/zatiq-academy", icon: HelpCircle };
+
+  const vendorItems = [ // New section for vendor
+    { name: "Vendor Dashboard", href: "/vendor-dashboard", icon: Building },
+  ];
 
   return (
     <div className="flex h-full flex-col border-r bg-sidebar text-sidebar-foreground">
@@ -170,6 +175,27 @@ const Sidebar = ({ onClose }) => {
                 </Link>
               </Button>
             </li>
+          </ul>
+
+          <h2 className="px-4 pt-6 pb-2 text-xs font-semibold uppercase text-muted-foreground">Vendor</h2> {/* New section header */}
+          <ul className="space-y-1 px-4">
+            {vendorItems.map((item) => (
+              <li key={item.name}>
+                <Button
+                  asChild
+                  variant="ghost"
+                  className={cn(
+                    "w-full justify-start text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
+                  )}
+                  onClick={onClose}
+                >
+                  <Link to={item.href} className="flex items-center gap-3">
+                    <item.icon className="h-5 w-5" />
+                    {item.name}
+                  </Link>
+                </Button>
+              </li>
+            ))}
           </ul>
         </nav>
       </ScrollArea>

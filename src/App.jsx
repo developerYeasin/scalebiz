@@ -36,6 +36,7 @@ import SocialLinksPage from "./pages/shop-settings/SocialLinksPage.jsx";
 import Billing from "./pages/Billing.jsx";
 import Subscription from "./pages/Subscription.jsx";
 import ZatiqAcademy from "./pages/ZatiqAcademy.jsx";
+import VendorDashboard from "./pages/vendor/VendorDashboard.jsx"; // New import
 
 
 const queryClient = new QueryClient();
@@ -77,6 +78,7 @@ const App = () => (
           <Route path="/billing" element={<Layout><Billing /></Layout>} />
           <Route path="/subscription" element={<Layout><Subscription /></Layout>} />
           <Route path="/zatiq-academy" element={<Layout><ZatiqAcademy /></Layout>} />
+          <Route path="/vendor-dashboard" element={<Layout><VendorDashboard /></Layout>} /> {/* New Route */}
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
