@@ -34,7 +34,7 @@ const FeaturedVideoSection = () => {
             Character limit: {maxLength - videoTitle.length}/{maxLength}
           </p>
         </div>
-        <div className="border-2 border-dashed border-gray-300 rounded-md p-6 text-center flex flex-col items-center justify-center h-48">
+        <div className="relative border-2 border-dashed border-gray-300 rounded-md p-6 text-center flex flex-col items-center justify-center h-48">
           <img src="https://picsum.photos/seed/featured-video/300/150" alt="Video Placeholder" className="h-full w-full object-cover rounded-md absolute inset-0 opacity-50" />
           <PlayCircle className="h-12 w-12 text-muted-foreground mb-2 relative z-10" />
           <p className="text-sm text-muted-foreground relative z-10">Product Video Link</p>
