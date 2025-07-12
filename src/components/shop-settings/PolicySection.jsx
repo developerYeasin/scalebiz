@@ -5,11 +5,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card.j
 import { Textarea } from "@/components/ui/textarea.jsx";
 import { Button } from "@/components/ui/button.jsx";
 import { ChevronUp } from "lucide-react";
-import { toast } from "@/utils/toast.js";
+import { showSuccess } from "@/utils/toast.js";
 
 const PolicySection = ({ title, lastUpdated, content }) => {
   const handleUpdatePolicy = () => {
-    toast.success(`${title} policy updated successfully!`);
+    showSuccess(`${title} policy updated successfully!`);
   };
 
   return (

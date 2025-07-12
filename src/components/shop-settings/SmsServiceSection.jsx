@@ -7,11 +7,11 @@ import { Label } from "@/components/ui/label.jsx";
 import { Input } from "@/components/ui/input.jsx";
 import { Button } from "@/components/ui/button.jsx";
 import { ChevronUp, Plus } from "lucide-react";
-import { toast } from "@/utils/toast.js";
+import { showSuccess } from "@/utils/toast.js";
 
 const SmsServiceSection = () => {
   const handleAddApiCredentials = () => {
-    toast.success("API credentials added (dummy action).");
+    showSuccess("API credentials added (dummy action).");
   };
 
   return (

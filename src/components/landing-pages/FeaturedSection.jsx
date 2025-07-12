@@ -4,11 +4,11 @@ import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card.jsx";
 import { Button } from "@/components/ui/button.jsx";
 import { ChevronUp, Image } from "lucide-react";
-import { toast } from "@/utils/toast.js";
+import { showInfo } from "@/utils/toast.js";
 
 const FeaturedSection = () => {
   const handleUpload = () => {
-    toast.info("Featured items upload initiated (dummy action).");
+    showInfo("Featured items upload initiated (dummy action).");
   };
 
   return (

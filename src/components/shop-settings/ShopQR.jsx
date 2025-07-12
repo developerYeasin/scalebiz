@@ -4,11 +4,11 @@ import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card.jsx";
 import { Button } from "@/components/ui/button.jsx";
 import { ChevronUp, Download } from "lucide-react";
-import { toast } from "@/utils/toast.js";
+import { showSuccess } from "@/utils/toast.js";
 
 const ShopQR = () => {
   const handleSaveQR = () => {
-    toast.success("QR Code saved (dummy action).");
+    showSuccess("QR Code saved (dummy action).");
   };
 
   return (

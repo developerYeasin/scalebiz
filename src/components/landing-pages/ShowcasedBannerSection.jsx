@@ -4,11 +4,11 @@ import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card.jsx";
 import { Button } from "@/components/ui/button.jsx";
 import { Image, ChevronUp } from "lucide-react";
-import { toast } from "@/utils/toast.js";
+import { showInfo } from "@/utils/toast.js";
 
 const ShowcasedBannerSection = () => {
   const handleUpload = () => {
-    toast.info("Showcased banner upload initiated (dummy action).");
+    showInfo("Showcased banner upload initiated (dummy action).");
   };
 
   return (

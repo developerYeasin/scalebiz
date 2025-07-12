@@ -7,11 +7,11 @@ import { Label } from "@/components/ui/label.jsx";
 import { Textarea } from "@/components/ui/textarea.jsx";
 import { Button } from "@/components/ui/button.jsx";
 import { ChevronUp } from "lucide-react";
-import { toast } from "@/utils/toast.js";
+import { showSuccess } from "@/utils/toast.js";
 
 const PaymentMethodsSection = () => {
   const handleUpdatePaymentInfo = () => {
-    toast.success("Payment information updated successfully!");
+    showSuccess("Payment information updated successfully!");
   };
 
   return (

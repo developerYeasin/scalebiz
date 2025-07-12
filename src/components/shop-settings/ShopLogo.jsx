@@ -4,11 +4,11 @@ import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card.jsx";
 import { Button } from "@/components/ui/button.jsx";
 import { ChevronUp, Upload } from "lucide-react";
-import { toast } from "@/utils/toast.js";
+import { showInfo } from "@/utils/toast.js";
 
 const ShopLogo = () => {
   const handleUploadLogo = () => {
-    toast.info("Shop logo upload initiated (dummy action).");
+    showInfo("Shop logo upload initiated (dummy action).");
   };
 
   return (

@@ -8,11 +8,11 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Button } from "@/components/ui/button.jsx";
 import { Switch } from "@/components/ui/switch.jsx";
 import { ChevronUp } from "lucide-react";
-import { toast } from "@/utils/toast.js";
+import { showSuccess } from "@/utils/toast.js";
 
 const ShopSettingsSection = () => {
   const handleUpdateShopSettings = () => {
-    toast.success("Shop settings updated successfully!");
+    showSuccess("Shop settings updated successfully!");
   };
 
   return (

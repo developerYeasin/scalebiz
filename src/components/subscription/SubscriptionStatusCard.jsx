@@ -4,15 +4,15 @@ import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card.jsx";
 import { Button } from "@/components/ui/button.jsx";
 import { CalendarCheck } from "lucide-react";
-import { toast } from "@/utils/toast.js";
+import { showInfo, showError } from "@/utils/toast.js";
 
 const SubscriptionStatusCard = () => {
   const handleAutoRenewal = () => {
-    toast.info("Auto-renewal status updated (dummy action).");
+    showInfo("Auto-renewal status updated (dummy action).");
   };
 
   const handleCancelSubscription = () => {
-    toast.error("Subscription cancellation initiated (dummy action).");
+    showError("Subscription cancellation initiated (dummy action).");
   };
 
   return (

@@ -11,11 +11,11 @@ import { Button } from "@/components/ui/button.jsx";
 import { Input } from "@/components/ui/input.jsx";
 import { Label } from "@/components/ui/label.jsx";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select.jsx";
-import { toast } from "@/utils/toast.js";
+import { showSuccess } from "@/utils/toast.js";
 
 const AddUserDialog = ({ isOpen, onClose }) => {
   const handleAddUser = () => {
-    toast.success("User added successfully!");
+    showSuccess("User added successfully!");
     onClose(); // Close dialog after adding user
   };
 

@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button.jsx";
 import { Input } from "@/components/ui/input.jsx";
 import { Label } from "@/components/ui/label.jsx";
 import { ChevronUp, X } from "lucide-react";
-import { toast } from "@/utils/toast.js";
+import { showSuccess, showError } from "@/utils/toast.js";
 
 const ProductImagesSection = () => {
   const [sectionTitle, setSectionTitle] = React.useState("");
@@ -21,15 +21,15 @@ const ProductImagesSection = () => {
     if (uploadedImages.length < 6) {
       const newImage = `https://picsum.photos/seed/new-landing-prod-img${uploadedImages.length + 1}/100/100`;
       setUploadedImages([...uploadedImages, newImage]);
-      toast.success("Image uploaded (dummy action).");
+      showSuccess("Image uploaded (dummy action).");
     } else {
-      toast.error("Maximum 6 images allowed.");
+      showError("Maximum 6 images allowed.");
     }
   };
 
   const handleRemoveImage = (indexToRemove) => {
     setUploadedImages(uploadedImages.filter((_, index) => index !== indexToRemove));
-    toast.error("Image removed.");
+    showError("Image removed.");
   };
 
   return (

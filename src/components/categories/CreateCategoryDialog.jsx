@@ -13,19 +13,19 @@ import { Input } from "@/components/ui/input.jsx";
 import { Label } from "@/components/ui/label.jsx";
 import { Textarea } from "@/components/ui/textarea.jsx";
 import { Image } from "lucide-react";
-import { toast } from "@/utils/toast.js";
+import { showInfo, showSuccess } from "@/utils/toast.js";
 
 const CreateCategoryDialog = ({ isOpen, onClose }) => {
   const handleAddBannerImage = () => {
-    toast.info("Banner image upload initiated (dummy action).");
+    showInfo("Banner image upload initiated (dummy action).");
   };
 
   const handleAddSquareImage = () => {
-    toast.info("Square image upload initiated (dummy action).");
+    showInfo("Square image upload initiated (dummy action).");
   };
 
   const handleCreateCategory = () => {
-    toast.success("Category created successfully!");
+    showSuccess("Category created successfully!");
     onClose(); // Close dialog after creation
   };
 

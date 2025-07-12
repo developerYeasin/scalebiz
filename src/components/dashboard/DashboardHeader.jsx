@@ -3,21 +3,21 @@
 import React from "react";
 import { Button } from "@/components/ui/button.jsx";
 import { Globe, Copy } from "lucide-react";
-import { toast } from "@/utils/toast.js";
+import { showSuccess, showInfo } from "@/utils/toast.js";
 
 const DashboardHeader = () => {
   const handleApplyInvestment = () => {
-    toast.success("Investment application initiated!");
+    showSuccess("Investment application initiated!");
   };
 
   const handleWebsiteClick = () => {
     window.open("https://scalebiz.com", "_blank"); // Open actual website link
-    toast.success("Opening Scalebiz website!");
+    showSuccess("Opening Scalebiz website!");
   };
 
   const handleCopyClick = () => {
     navigator.clipboard.writeText("https://scalebiz.com");
-    toast.success("Website link copied to clipboard!");
+    showSuccess("Website link copied to clipboard!");
   };
 
   return (

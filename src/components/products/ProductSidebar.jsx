@@ -6,11 +6,11 @@ import { Button } from "@/components/ui/button.jsx";
 import { Input } from "@/components/ui/input.jsx";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select.jsx";
 import { ChevronUp } from "lucide-react";
-import { toast } from "@/utils/toast.js";
+import { showInfo } from "@/utils/toast.js";
 
 const ProductSidebar = () => {
   const handleAssignCategory = () => {
-    toast.info("Assigning category (dummy action).");
+    showInfo("Assigning category (dummy action).");
   };
 
   return (

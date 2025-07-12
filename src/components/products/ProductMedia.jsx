@@ -4,15 +4,15 @@ import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card.jsx";
 import { Button } from "@/components/ui/button.jsx";
 import { Image, Video, ChevronUp } from "lucide-react";
-import { toast } from "@/utils/toast.js";
+import { showInfo } from "@/utils/toast.js";
 
 const ProductMedia = () => {
   const handleAddImage = () => {
-    toast.info("Image upload initiated (dummy action).");
+    showInfo("Image upload initiated (dummy action).");
   };
 
   const handleAddVideoLink = () => {
-    toast.info("Video link added (dummy action).");
+    showInfo("Video link added (dummy action).");
   };
 
   return (

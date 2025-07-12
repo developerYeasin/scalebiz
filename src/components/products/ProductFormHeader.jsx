@@ -3,15 +3,15 @@
 import React from "react";
 import { Button } from "@/components/ui/button.jsx";
 import { X, Save } from "lucide-react";
-import { toast } from "@/utils/toast.js";
+import { showInfo, showSuccess } from "@/utils/toast.js";
 
 const ProductFormHeader = () => {
   const handleDiscard = () => {
-    toast.info("Product changes discarded.");
+    showInfo("Product changes discarded.");
   };
 
   const handleSave = () => {
-    toast.success("Product saved successfully!");
+    showSuccess("Product saved successfully!");
   };
 
   return (

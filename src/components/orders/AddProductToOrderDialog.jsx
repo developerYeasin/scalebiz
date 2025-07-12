@@ -12,6 +12,7 @@ import { Input } from "@/components/ui/input.jsx";
 import { Label } from "@/components/ui/label.jsx";
 import { Search } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area.jsx";
+import { showSuccess, showError } from "@/utils/toast.js";
 
 const mockProducts = [
   { id: "P001", name: "Torrey Three Piece", price: 999, availableQuantity: 10 },

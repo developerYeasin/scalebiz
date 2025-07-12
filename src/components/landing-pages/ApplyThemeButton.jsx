@@ -3,11 +3,11 @@
 import React from "react";
 import { Button } from "@/components/ui/button.jsx";
 import { Sparkles } from "lucide-react";
-import { toast } from "@/utils/toast.js";
+import { showSuccess } from "@/utils/toast.js";
 
 const ApplyThemeButton = () => {
   const handleApplyTheme = () => {
-    toast.success("Landing page theme applied successfully!");
+    showSuccess("Landing page theme applied successfully!");
   };
 
   return (

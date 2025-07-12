@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button.jsx";
 import { Badge } from "@/components/ui/badge.jsx";
 import { Check } from "lucide-react";
 import { cn } from "@/lib/utils.js";
-import { toast } from "@/utils/toast.js";
+import { showSuccess } from "@/utils/toast.js";
 
 const PricingPlanCard = ({
   planName,
@@ -19,7 +19,7 @@ const PricingPlanCard = ({
   isMostPopular = false,
 }) => {
   const handleUpgrade = () => {
-    toast.success(`Upgrading to ${planName}!`);
+    showSuccess(`Upgrading to ${planName}!`);
   };
 
   return (

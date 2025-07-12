@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/table.jsx";
 import { Image, Eye, Pencil, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button.jsx";
-import { toast } from "@/utils/toast.js";
+import { showInfo, showError } from "@/utils/toast.js";
 
 const mockCategories = [
   { id: "C001", name: "Inner Item", totalSubcategory: 0, image: "https://picsum.photos/seed/category1/40/40" },
@@ -29,15 +29,15 @@ const mockCategories = [
 
 const CategoryListTable = () => {
   const handleViewCategory = (categoryId) => {
-    toast.info(`Viewing category ${categoryId}`);
+    showInfo(`Viewing category ${categoryId}`);
   };
 
   const handleEditCategory = (categoryId) => {
-    toast.info(`Editing category ${categoryId}`);
+    showInfo(`Editing category ${categoryId}`);
   };
 
   const handleDeleteCategory = (categoryId) => {
-    toast.error(`Deleting category ${categoryId}`);
+    showError(`Deleting category ${categoryId}`);
   };
 
   return (

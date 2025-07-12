@@ -3,11 +3,11 @@
 import React from "react";
 import { Button } from "@/components/ui/button.jsx";
 import { Calendar } from "lucide-react";
-import { toast } from "@/utils/toast.js";
+import { showInfo } from "@/utils/toast.js";
 
 const OrderReportHeader = () => {
   const handleDateRangeClick = () => {
-    toast.info("Filtering report for this month (dummy action).");
+    showInfo("Filtering report for this month (dummy action).");
   };
 
   return (

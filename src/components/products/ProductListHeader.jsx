@@ -8,7 +8,7 @@ import { Badge } from "@/components/ui/badge.jsx";
 import { Link } from "react-router-dom";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area.jsx";
 import { cn } from "@/lib/utils.js";
-import { toast } from "@/utils/toast.js";
+import { showInfo } from "@/utils/toast.js";
 
 const productCategories = [
   "All products",
@@ -50,11 +50,11 @@ const ProductListHeader = ({ activeCategory, setActiveCategory, searchTerm, onSe
               Add Product
             </Link>
           </Button>
-          <Button variant="ghost" size="icon" className="relative" onClick={() => toast.info("Shopping cart clicked")}>
+          <Button variant="ghost" size="icon" className="relative" onClick={() => showInfo("Shopping cart clicked")}>
             <ShoppingCart className="h-5 w-5" />
             <Badge className="absolute -top-1 -right-1 h-4 w-4 flex items-center justify-center p-0 text-xs">0</Badge>
           </Button>
-          <Button variant="ghost" size="icon" className="relative" onClick={() => toast.info("User profile clicked")}>
+          <Button variant="ghost" size="icon" className="relative" onClick={() => showInfo("User profile clicked")}>
             <User className="h-5 w-5" />
             <Badge className="absolute -top-1 -right-1 h-4 w-4 flex items-center justify-center p-0 text-xs">0</Badge>
           </Button>

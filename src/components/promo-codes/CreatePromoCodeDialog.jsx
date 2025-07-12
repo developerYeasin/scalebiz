@@ -16,14 +16,14 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Calendar } from "@/components/ui/calendar.jsx";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils.js";
-import { toast } from "@/utils/toast.js";
+import { showSuccess } from "@/utils/toast.js";
 
 const CreatePromoCodeDialog = ({ isOpen, onClose }) => {
   const [expiryDate, setExpiryDate] = React.useState();
   const [discountType, setDiscountType] = React.useState("amount");
 
   const handleCreatePromoCode = () => {
-    toast.success("Promo code created successfully!");
+    showSuccess("Promo code created successfully!");
     onClose(); // Close dialog after creation
   };
 

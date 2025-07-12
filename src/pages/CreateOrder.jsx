@@ -9,7 +9,7 @@ import OrderInformationSection from "@/components/orders/OrderInformationSection
 import CustomerInformationSection from "@/components/orders/CustomerInformationSection.jsx";
 import CustomerValiditySection from "@/components/orders/CustomerValiditySection.jsx";
 import AddProductToOrderDialog from "@/components/orders/AddProductToOrderDialog.jsx";
-import { toast } from "@/utils/toast.js";
+import { showSuccess, showError } from "@/utils/toast.js";
 
 const CreateOrder = () => {
   const [isAddProductDialogOpen, setIsAddProductDialogOpen] = React.useState(false);
@@ -29,13 +29,13 @@ const CreateOrder = () => {
       }
       return [...prevProducts, product];
     });
-    toast.success(`${product.name} added to order!`);
+    showSuccess(`${product.name} added to order!`);
     setIsAddProductDialogOpen(false);
   };
 
   const handleRemoveProduct = (productId) => {
     setOrderProducts(prevProducts => prevProducts.filter(p => p.id !== productId));
-    toast.error("Product removed from order.");
+    showError("Product removed from order.");
   };
 
   const subtotal = orderProducts.reduce((sum, product) => sum + (product.price * product.quantity), 0);
@@ -45,7 +45,7 @@ const CreateOrder = () => {
   const dueAmount = grandTotal - paidAmount;
 
   const handleCreateOrder = () => {
-    toast.success("Order created successfully!");
+    showSuccess("Order created successfully!");
     // In a real app, you'd send this data to a backend
     console.log("Order Data:", {
       products: orderProducts,

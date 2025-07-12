@@ -6,16 +6,16 @@ import { Input } from "@/components/ui/input.jsx";
 import { Label } from "@/components/ui/label.jsx";
 import { Button } from "@/components/ui/button.jsx";
 import { Copy, ChevronUp } from "lucide-react";
-import { toast } from "@/utils/toast.js";
+import { showSuccess } from "@/utils/toast.js";
 
 const SeoMarketingIntegrationsSection = () => {
   const handleCopy = (text) => {
     navigator.clipboard.writeText(text);
-    toast.success("Link copied to clipboard!");
+    showSuccess("Link copied to clipboard!");
   };
 
   const handleUpdate = () => {
-    toast.success("SEO & Marketing settings updated!");
+    showSuccess("SEO & Marketing settings updated!");
   };
 
   return (

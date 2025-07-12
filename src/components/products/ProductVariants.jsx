@@ -4,11 +4,11 @@ import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card.jsx";
 import { Button } from "@/components/ui/button.jsx";
 import { Plus, ChevronUp } from "lucide-react";
-import { toast } from "@/utils/toast.js";
+import { showInfo } from "@/utils/toast.js";
 
 const ProductVariants = () => {
   const handleAddVariant = () => {
-    toast.info("Adding a new product variant (dummy action).");
+    showInfo("Adding a new product variant (dummy action).");
   };
 
   return (

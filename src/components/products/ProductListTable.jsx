@@ -11,23 +11,23 @@ import {
 } from "@/components/ui/table.jsx";
 import { Eye, Pencil, Trash2, ShoppingCart, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button.jsx";
-import { toast } from "@/utils/toast.js";
+import { showInfo, showError, showSuccess } from "@/utils/toast.js";
 
 const ProductListTable = ({ products }) => {
   const handleViewProduct = (productId) => {
-    toast.info(`Viewing product ${productId}`);
+    showInfo(`Viewing product ${productId}`);
   };
 
   const handleEditProduct = (productId) => {
-    toast.info(`Editing product ${productId}`);
+    showInfo(`Editing product ${productId}`);
   };
 
   const handleDeleteProduct = (productId) => {
-    toast.error(`Deleting product ${productId}`);
+    showError(`Deleting product ${productId}`);
   };
 
   const handleAddToOrder = (productName) => {
-    toast.success(`Added ${productName} to order!`);
+    showSuccess(`Added ${productName} to order!`);
   };
 
   return (

@@ -4,11 +4,11 @@ import React from "react";
 import { Card, CardContent } from "@/components/ui/card.jsx";
 import { Button } from "@/components/ui/button.jsx";
 import { Crown } from "lucide-react";
-import { toast } from "@/utils/toast.js";
+import { showSuccess } from "@/utils/toast.js";
 
 const CallToActionSection = () => {
   const handleStartJourney = () => {
-    toast.success("Welcome to your journey with Scalebiz!");
+    showSuccess("Welcome to your journey with Scalebiz!");
   };
 
   return (

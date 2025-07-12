@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button.jsx";
 import { Switch } from "@/components/ui/switch.jsx";
 import { Check, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils.js";
-import { toast } from "@/utils/toast.js";
+import { showSuccess } from "@/utils/toast.js";
 
 const ThemeControls = () => {
   const [themeColor, setThemeColor] = React.useState("#000000"); // Example black
@@ -16,7 +16,7 @@ const ThemeControls = () => {
   const [buyNowEnabled, setBuyNowEnabled] = React.useState(true); // true for "Yes", false for "No"
 
   const handleApplyTheme = () => {
-    toast.success("Theme applied successfully!");
+    showSuccess("Theme applied successfully!");
     console.log("Applying theme with:", { themeColor, themeMode, buyNowEnabled });
   };
 

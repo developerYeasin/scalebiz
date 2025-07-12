@@ -7,11 +7,11 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Search, Download, Plus, ShoppingCart, User } from "lucide-react";
 import { Badge } from "@/components/ui/badge.jsx";
 import { Link } from "react-router-dom";
-import { toast } from "@/utils/toast.js";
+import { showSuccess, showInfo } from "@/utils/toast.js";
 
 const OrdersHeader = ({ searchTerm, onSearchChange, totalOrders }) => {
   const handleExport = () => {
-    toast.success("Exporting orders...");
+    showSuccess("Exporting orders...");
   };
 
   return (
@@ -26,14 +26,14 @@ const OrdersHeader = ({ searchTerm, onSearchChange, totalOrders }) => {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
-            <DropdownMenuItem onClick={() => toast.info("Filtering by All")}>All</DropdownMenuItem>
-            <DropdownMenuItem onClick={() => toast.info("Filtering by Placed")}>Placed</DropdownMenuItem>
-            <DropdownMenuItem onClick={() => toast.info("Filtering by Confirmed")}>Confirmed</DropdownMenuItem>
-            <DropdownMenuItem onClick={() => toast.info("Filtering by Shipped")}>Shipped</DropdownMenuItem>
-            <DropdownMenuItem onClick={() => toast.info("Filtering by Delivered")}>Delivered</DropdownMenuItem>
-            <DropdownMenuItem onClick={() => toast.info("Filtering by Completed")}>Completed</DropdownMenuItem>
-            <DropdownMenuItem onClick={() => toast.info("Filtering by Cancelled")}>Cancelled</DropdownMenuItem>
-            <DropdownMenuItem onClick={() => toast.info("Filtering by Returned")}>Returned</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => showInfo("Filtering by All")}>All</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => showInfo("Filtering by Placed")}>Placed</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => showInfo("Filtering by Confirmed")}>Confirmed</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => showInfo("Filtering by Shipped")}>Shipped</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => showInfo("Filtering by Delivered")}>Delivered</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => showInfo("Filtering by Completed")}>Completed</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => showInfo("Filtering by Cancelled")}>Cancelled</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => showInfo("Filtering by Returned")}>Returned</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>

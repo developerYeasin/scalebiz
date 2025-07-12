@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button.jsx";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select.jsx";
 import { Plus, Trash2, ChevronUp } from "lucide-react";
 import { cn } from "@/lib/utils.js";
-import { toast } from "@/utils/toast.js";
+import { showInfo, showError, showSuccess } from "@/utils/toast.js";
 
 const DeliveryServiceSection = () => {
   const [activeTab, setActiveTab] = React.useState("Zones");
@@ -17,16 +17,16 @@ const DeliveryServiceSection = () => {
 
   const addSpecificCharge = () => {
     setSpecificCharges([...specificCharges, { id: specificCharges.length + 1, zone: "Not Selected", charge: "0" }]);
-    toast.info("New specific charge row added.");
+    showInfo("New specific charge row added.");
   };
 
   const removeSpecificCharge = (id) => {
     setSpecificCharges(specificCharges.filter(charge => charge.id !== id));
-    toast.error("Specific charge removed.");
+    showError("Specific charge removed.");
   };
 
   const handleUpdateDeliveryCharges = () => {
-    toast.success("Delivery charges updated successfully!");
+    showSuccess("Delivery charges updated successfully!");
   };
 
   return (

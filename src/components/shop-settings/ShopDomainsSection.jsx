@@ -6,20 +6,20 @@ import { Input } from "@/components/ui/input.jsx";
 import { Button } from "@/components/ui/button.jsx";
 import { Copy, Trash2 } from "lucide-react";
 import { ChevronUp } from "lucide-react";
-import { toast } from "@/utils/toast.js";
+import { showSuccess, showError } from "@/utils/toast.js";
 
 const ShopDomainsSection = () => {
   const handleSaveDomain = () => {
-    toast.success("Domain saved successfully!");
+    showSuccess("Domain saved successfully!");
   };
 
   const handleCopy = (text) => {
     navigator.clipboard.writeText(text);
-    toast.success("Copied to clipboard!");
+    showSuccess("Copied to clipboard!");
   };
 
   const handleDeleteDomain = () => {
-    toast.error("Domain deleted (dummy action).");
+    showError("Domain deleted (dummy action).");
   };
 
   return (
@@ -78,7 +78,7 @@ const ShopDomainsSection = () => {
           <Button variant="outline" size="icon" onClick={() => handleCopy("scalebiz.com")}>
             <Copy className="h-4 w-4" />
           </Button>
-          <Button variant="outline" size="icon" className="text-destructive hover:text-destructive" onClick={handleDeleteDomain}>
+          <Button variant="outline" size="icon" className="text-destructive hover:text-destructive" onClick={() => handleDeleteDomain()}>
             <Trash2 className="h-4 w-4" />
           </Button>
         </div>

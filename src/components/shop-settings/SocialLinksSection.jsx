@@ -6,11 +6,11 @@ import { Input } from "@/components/ui/input.jsx";
 import { Label } from "@/components/ui/label.jsx";
 import { Button } from "@/components/ui/button.jsx";
 import { ChevronUp } from "lucide-react";
-import { toast } from "@/utils/toast.js";
+import { showSuccess } from "@/utils/toast.js";
 
 const SocialLinksSection = () => {
   const handleUpdateSocialLinks = () => {
-    toast.success("Social links updated successfully!");
+    showSuccess("Social links updated successfully!");
   };
 
   return (

@@ -8,11 +8,11 @@ import { Textarea } from "@/components/ui/textarea.jsx";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select.jsx";
 import { Button } from "@/components/ui/button.jsx";
 import { ChevronUp } from "lucide-react";
-import { toast } from "@/utils/toast.js";
+import { showSuccess } from "@/utils/toast.js";
 
 const ShopBasicInfo = () => {
   const handleUpdateShopInfo = () => {
-    toast.success("Shop basic information updated successfully!");
+    showSuccess("Shop basic information updated successfully!");
   };
 
   return (

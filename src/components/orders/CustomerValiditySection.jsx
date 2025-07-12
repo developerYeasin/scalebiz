@@ -6,11 +6,11 @@ import { Button } from "@/components/ui/button.jsx";
 import { Switch } from "@/components/ui/switch.jsx";
 import { Label } from "@/components/ui/label.jsx";
 import { ShieldQuestion, ChevronUp } from "lucide-react";
-import { toast } from "@/utils/toast.js";
+import { showInfo } from "@/utils/toast.js";
 
 const CustomerValiditySection = () => {
   const handleCheckValidity = () => {
-    toast.info("Checking customer validity...");
+    showInfo("Checking customer validity...");
   };
 
   return (
