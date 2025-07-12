@@ -28,7 +28,7 @@ const ChatSupportSection = () => {
           </div>
           <div className="flex items-center space-x-2">
             <Checkbox id="whatsappChat" defaultChecked />
-            <Label htmlFor="whatsappChat">Whatsapp</p>
+            <Label htmlFor="whatsappChat">Whatsapp</Label>
           </div>
         </div>
 
