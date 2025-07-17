@@ -2,7 +2,7 @@
 
 import React from "react";
 import GettingStartedCard from "./GettingStartedCard.jsx";
-import { Package, Settings } from "lucide-react"; // Importing icons for the cards
+import { Package, Settings, CheckCircle2 } from "lucide-react"; // Importing icons for the cards
 
 const GettingStartedSection = () => {
   // For now, isCompleted is hardcoded to false. In a real app, this would come from API.
