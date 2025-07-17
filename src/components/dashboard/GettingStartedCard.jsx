@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button.jsx";
 import { Link } from "react-router-dom";
 import { CheckCircle2 } from "lucide-react"; // Using CheckCircle2 for the green checkmark
 
-const GettingStartedCard = ({ icon: Icon, title, description, buttonText, buttonLink, isCompleted = false }) => {
+const GettingStartedCard = ({ icon: Icon, title, description, buttonText, buttonLink, isCompleted = false, onActionClick }) => {
   return (
     <Card className="flex items-center justify-between p-4">
       <div className="flex items-center gap-4">
@@ -22,11 +22,17 @@ const GettingStartedCard = ({ icon: Icon, title, description, buttonText, button
           <p className="text-sm text-muted-foreground">{description}</p>
         </div>
       </div>
-      <Button asChild variant={isCompleted ? "outline" : "default"} className={isCompleted ? "" : "bg-purple-600 hover:bg-purple-700 text-white"}>
-        <Link to={buttonLink}>
+      {buttonLink ? (
+        <Button asChild variant={isCompleted ? "outline" : "default"} className={isCompleted ? "" : "bg-purple-600 hover:bg-purple-700 text-white"}>
+          <Link to={buttonLink}>
+            {buttonText}
+          </Link>
+        </Button>
+      ) : (
+        <Button variant={isCompleted ? "outline" : "default"} className={isCompleted ? "" : "bg-purple-600 hover:bg-purple-700 text-white"} onClick={onActionClick}>
           {buttonText}
-        </Link>
-      </Button>
+        </Button>
+      )}
     </Card>
   );
 };

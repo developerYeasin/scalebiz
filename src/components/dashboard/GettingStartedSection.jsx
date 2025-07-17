@@ -3,21 +3,33 @@
 import React from "react";
 import GettingStartedCard from "./GettingStartedCard.jsx";
 import { Package, Settings, CheckCircle2 } from "lucide-react"; // Importing icons for the cards
+import { showSuccess } from "@/utils/toast.js"; // Import toast utility
 
 const GettingStartedSection = () => {
-  // For now, isCompleted is hardcoded to false. In a real app, this would come from API.
-  const isStoreCreated = false; // Example: Check if shop basic info is filled
-  const isProductAdded = false; // Example: Check if at least one product exists
-  const isDeliverySetup = false; // Example: Check if delivery charges are configured
+  // State to track the completion status of "Create your store"
+  const [isStoreCreated, setIsStoreCreated] = React.useState(false);
+  // For other cards, hardcoded for now. In a real app, these would come from API.
+  const isProductAdded = false;
+  const isDeliverySetup = false;
+
+  const handleCreateStore = () => {
+    // Simulate API call
+    showSuccess("Creating your store...");
+    setTimeout(() => {
+      setIsStoreCreated(true);
+      showSuccess("Your store has been created successfully!");
+    }, 2000); // Simulate 2-second API call
+  };
 
   return (
     <div className="mb-6 space-y-4">
       <GettingStartedCard
-        icon={CheckCircle2} // Using CheckCircle2 as a placeholder for the initial icon
+        icon={CheckCircle2}
         title="Create your store"
         description="Enter key details about your business to get started."
-        buttonText="View"
-        buttonLink="/manage-shop/shop-settings"
+        buttonText={isStoreCreated ? "View" : "Create"}
+        buttonLink={isStoreCreated ? "/manage-shop/shop-settings" : null}
+        onActionClick={isStoreCreated ? null : handleCreateStore}
         isCompleted={isStoreCreated}
       />
       <GettingStartedCard
