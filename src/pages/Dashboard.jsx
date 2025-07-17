@@ -7,11 +7,13 @@ import DashboardSummaryCards from "@/components/dashboard/DashboardSummaryCards.
 import DashboardSalesChart from "@/components/dashboard/DashboardSalesChart.jsx";
 import DashboardLowStockProducts from "@/components/dashboard/DashboardLowStockProducts.jsx";
 import DashboardMostSoldItems from "@/components/dashboard/DashboardMostSoldItems.jsx";
+import GettingStartedSection from "@/components/dashboard/GettingStartedSection.jsx"; // New import
 
 const Dashboard = () => {
   return (
     <div className="p-4 md:p-6">
       <DashboardHeader />
+      <GettingStartedSection /> {/* Added the new section here */}
       <DashboardBanner />
       <DashboardSummaryCards />
       <DashboardSalesChart />
