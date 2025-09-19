@@ -15,7 +15,7 @@ import { Textarea } from "@/components/ui/textarea.jsx";
 import { Image } from "lucide-react";
 import { showInfo } from "@/utils/toast.js";
 import { Category, CreateCategoryPayload, useCategories } from "@/hooks/use-categories.ts";
-import Select from "react-select"; // Import react-select
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select.jsx"; // Import shadcn/ui Select
 
 interface CreateCategoryDialogProps {
   isOpen: boolean;
@@ -83,8 +83,6 @@ const CreateCategoryDialog = ({ isOpen, onClose, onSave, initialData }: CreateCa
     return filtered.map(cat => ({ value: String(cat.id), label: cat.name }));
   }, [allCategories, initialData]);
 
-  const selectedParentOption = parentCategoryOptions.find(option => option.value === parentId);
-
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[600px] h-[90vh] flex flex-col">
@@ -150,68 +148,22 @@ const CreateCategoryDialog = ({ isOpen, onClose, onSave, initialData }: CreateCa
               <div>
                 <Label htmlFor="parentId">Parent Category</Label>
                 <Select
-                  id="parentId"
-                  options={[{ value: null, label: "No Parent (Main Category)" }, ...parentCategoryOptions]}
-                  value={selectedParentOption || { value: null, label: "No Parent (Main Category)" }}
-                  onChange={(option) => setParentId(option?.value || null)}
-                  isLoading={categoriesLoading}
-                  isClearable={true}
-                  placeholder="Select Parent Category"
-                  className="mt-1"
-                  menuPortalTarget={document.body} // Explicitly portal to body
-                  styles={{
-                    control: (baseStyles) => ({
-                      ...baseStyles,
-                      borderColor: 'hsl(var(--border))',
-                      backgroundColor: 'hsl(var(--input))',
-                      color: 'hsl(var(--foreground))',
-                      "&:hover": {
-                        borderColor: 'hsl(var(--input))',
-                      },
-                    }),
-                    singleValue: (baseStyles) => ({
-                      ...baseStyles,
-                      color: 'hsl(var(--foreground))',
-                    }),
-                    input: (baseStyles) => ({
-                      ...baseStyles,
-                      color: 'hsl(var(--foreground))',
-                    }),
-                    placeholder: (baseStyles) => ({
-                      ...baseStyles,
-                      color: 'hsl(var(--muted-foreground))',
-                    }),
-                    menu: (baseStyles) => ({
-                      ...baseStyles,
-                      backgroundColor: 'hsl(var(--popover))',
-                      borderColor: 'hsl(var(--border))',
-                      zIndex: 9999, // Ensure high z-index for the menu
-                    }),
-                    menuList: (baseStyles) => ({ // Targeting menuList for scrolling
-                      ...baseStyles,
-                      maxHeight: '200px', // Set max height for scroll
-                      overflowY: 'auto',  // Enable vertical scrolling
-                    }),
-                    option: (baseStyles, { isFocused, isSelected }) => ({
-                      ...baseStyles,
-                      backgroundColor: isSelected
-                        ? 'hsl(var(--primary))'
-                        : isFocused
-                        ? 'hsl(var(--accent))'
-                        : 'hsl(var(--popover))',
-                      color: isSelected
-                        ? 'hsl(var(--primary-foreground))'
-                        : isFocused
-                        ? 'hsl(var(--accent-foreground))'
-                        : 'hsl(var(--foreground))',
-                      "&:active": {
-                        backgroundColor: 'hsl(var(--primary))',
-                        color: 'hsl(var(--primary-foreground))',
-                      },
-                    }),
-                    menuPortal: (base) => ({ ...base, zIndex: 9999 }), // Ensure high z-index for the portal
-                  }}
-                />
+                  value={parentId || ""} // Use empty string for no selection to match shadcn/ui Select
+                  onValueChange={(value) => setParentId(value === "" ? null : value)}
+                  disabled={categoriesLoading}
+                >
+                  <SelectTrigger id="parentId" className="mt-1">
+                    <SelectValue placeholder="Select Parent Category" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="">No Parent (Main Category)</SelectItem> {/* Option for no parent */}
+                    {parentCategoryOptions.map((option) => (
+                      <SelectItem key={option.value} value={option.value}>
+                        {option.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
                 {categoriesLoading && <p className="text-xs text-muted-foreground mt-1">Loading parent categories...</p>}
               </div>
             </div>
