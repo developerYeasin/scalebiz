@@ -39,7 +39,7 @@ const LoginPage = () => {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900">
-      <Card className="w-[50px] max-w-[90%]">
+      <Card className="w-[500px] max-w-[90%]">
         <CardHeader className="text-center">
           <CardTitle className="text-2xl font-bold">Login</CardTitle>
           <CardDescription>Enter your email below to login to your account</CardDescription>
