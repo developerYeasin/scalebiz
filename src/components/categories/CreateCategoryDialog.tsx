@@ -15,7 +15,7 @@ import { Textarea } from "@/components/ui/textarea.jsx";
 import { Image } from "lucide-react";
 import { showInfo } from "@/utils/toast.js";
 import { Category, CreateCategoryPayload, useCategories } from "@/hooks/use-categories.ts";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select.jsx"; // Import shadcn/ui Select
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select.jsx";
 
 interface CreateCategoryDialogProps {
   isOpen: boolean;
@@ -38,13 +38,13 @@ const CreateCategoryDialog = ({ isOpen, onClose, onSave, initialData }: CreateCa
       setShortDescription(initialData.description || "");
       setBannerImageUrl(initialData.image_url || "");
       setSquareImageUrl(initialData.image_url || "");
-      setParentId(initialData.parent_id ? String(initialData.parent_id) : null);
+      setParentId(initialData.parent_id ? String(initialData.parent_id) : "none"); // Set to "none" if parent_id is null
     } else {
       setCategoryName("");
       setShortDescription("");
       setBannerImageUrl("");
       setSquareImageUrl("");
-      setParentId(null); // Reset to no parent
+      setParentId("none"); // Default to "none" for no parent
     }
   }, [initialData]);
 
@@ -71,7 +71,7 @@ const CreateCategoryDialog = ({ isOpen, onClose, onSave, initialData }: CreateCa
       is_active: 1,
       is_featured: 0,
       sort_order: 0,
-      parent_id: parentId ? Number(parentId) : null,
+      parent_id: parentId === "none" ? null : Number(parentId), // Convert "none" back to null
     };
     onSave(payload);
   };
@@ -148,15 +148,15 @@ const CreateCategoryDialog = ({ isOpen, onClose, onSave, initialData }: CreateCa
               <div>
                 <Label htmlFor="parentId">Parent Category</Label>
                 <Select
-                  value={parentId || ""} // Use empty string for no selection to match shadcn/ui Select
-                  onValueChange={(value) => setParentId(value === "" ? null : value)}
+                  value={parentId || "none"} // Ensure value is never an empty string
+                  onValueChange={(value) => setParentId(value)}
                   disabled={categoriesLoading}
                 >
                   <SelectTrigger id="parentId" className="mt-1">
                     <SelectValue placeholder="Select Parent Category" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">No Parent (Main Category)</SelectItem> {/* Option for no parent */}
+                    <SelectItem value="none">No Parent (Main Category)</SelectItem> {/* Changed value to "none" */}
                     {parentCategoryOptions.map((option) => (
                       <SelectItem key={option.value} value={option.value}>
                         {option.label}
