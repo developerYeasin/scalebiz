@@ -13,6 +13,7 @@ import { Label } from "@/components/ui/label.jsx";
 import { Search } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area.jsx";
 import { showSuccess, showError } from "@/utils/toast.js";
+import { ScrollBar } from "@/components/ui/scroll-area.jsx"; // Added ScrollBar import
 
 const mockProducts = [
   { id: "P001", name: "Torrey Three Piece", price: 999, availableQuantity: 10 },
@@ -56,11 +57,11 @@ const AddProductToOrderDialog = ({ isOpen, onClose, onAddProduct }) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[700px] h-[80vh] flex flex-col">
-        <DialogHeader>
+      <DialogContent className="sm:max-w-[700px] h-[90vh] max-h-[90vh] flex flex-col overflow-hidden"> {/* Changed height to 90vh and added overflow-hidden */}
+        <DialogHeader className="p-4 pb-0"> {/* Added padding to header */}
           <DialogTitle>Add Products to Order</DialogTitle>
         </DialogHeader>
-        <div className="relative mb-4">
+        <div className="relative mb-4 px-4"> {/* Added horizontal padding */}
           <Input
             type="text"
             placeholder="Search products by name or ID..."
@@ -68,9 +69,9 @@ const AddProductToOrderDialog = ({ isOpen, onClose, onAddProduct }) => {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
-          <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+          <Search className="absolute left-6 top-2.5 h-4 w-4 text-muted-foreground" /> {/* Adjusted left position */}
         </div>
-        <ScrollArea className="flex-1 pr-4">
+        <ScrollArea className="flex-1 h-0 px-4"> {/* Added h-0 and horizontal padding */}
           <div className="grid gap-4">
             {filteredProducts.length === 0 ? (
               <p className="text-center text-muted-foreground">No products found.</p>
@@ -104,8 +105,9 @@ const AddProductToOrderDialog = ({ isOpen, onClose, onAddProduct }) => {
               ))
             )}
           </div>
+          <ScrollBar orientation="vertical" />
         </ScrollArea>
-        <div className="flex justify-end gap-2 mt-4">
+        <div className="flex justify-end gap-2 mt-4 p-4 border-t"> {/* Added padding and border-t for consistency */}
           <Button variant="outline" onClick={onClose}>Cancel</Button>
           <Button onClick={handleAddSelectedProducts}>Add Selected Products</Button>
         </div>

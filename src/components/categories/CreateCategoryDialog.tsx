@@ -96,14 +96,14 @@ const CreateCategoryDialog = ({ isOpen, onClose, onSave, initialData }: CreateCa
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[600px] h-[90vh] max-h-[90vh] flex flex-col">
+      <DialogContent className="sm:max-w-[600px] h-[90vh] max-h-[90vh] flex flex-col overflow-hidden"> {/* Added overflow-hidden */}
         <DialogHeader>
           <DialogTitle>{initialData ? "Edit Category" : "Create Category"}</DialogTitle>
           <DialogDescription>
             {initialData ? "Edit the details of your category." : "Fill in the details to create a new category."}
           </DialogDescription>
         </DialogHeader>
-        <ScrollArea className="flex-1 h-0"> {/* Added h-0 here */}
+        <ScrollArea className="flex-1 h-0"> {/* Added h-0 */}
           <div className="grid gap-4 p-4">
             <div className="border-2 border-dashed border-gray-300 rounded-md p-6 text-center flex flex-col items-center justify-center">
               {bannerImageUrl ? (
@@ -185,7 +185,7 @@ const CreateCategoryDialog = ({ isOpen, onClose, onSave, initialData }: CreateCa
           </div>
           <ScrollBar orientation="vertical" />
         </ScrollArea>
-        <div className="flex justify-end gap-2 mt-4">
+        <div className="flex justify-end gap-2 mt-4 p-4 border-t"> {/* Added p-4 and border-t for consistency */}
           <Button variant="outline" onClick={onClose}>Cancel</Button>
           <Button onClick={handleSaveClick}>
             {initialData ? "Save Changes" : "Create Category"}
