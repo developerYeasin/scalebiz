@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card.jsx";
 import { Button } from "@/components/ui/button.jsx";
 import { Label } from "@/components/ui/label.jsx";
-import { Input } from "@/components/ui/input.jsx";
+import { Input } => "@/components/ui/input.jsx";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar.jsx";
 import { User, LogOut } from "lucide-react";
 import { showSuccess, showError } from "@/utils/toast.js";
@@ -66,7 +66,6 @@ const Profile = () => {
         <p>No user data found. Please log in.</p>
       </div>
     );
-  );
   }
 
   return (
