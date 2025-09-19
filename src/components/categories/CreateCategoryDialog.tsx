@@ -96,15 +96,15 @@ const CreateCategoryDialog = ({ isOpen, onClose, onSave, initialData }: CreateCa
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[600px] h-[90vh] max-h-[90vh] flex flex-col"> {/* Added max-h-[90vh] */}
+      <DialogContent className="sm:max-w-[600px] h-[90vh] max-h-[90vh] flex flex-col">
         <DialogHeader>
           <DialogTitle>{initialData ? "Edit Category" : "Create Category"}</DialogTitle>
           <DialogDescription>
             {initialData ? "Edit the details of your category." : "Fill in the details to create a new category."}
           </DialogDescription>
         </DialogHeader>
-        <ScrollArea className="flex-1"> {/* Removed py-4 pr-4 from here */}
-          <div className="grid gap-4 p-4"> {/* Added p-4 here */}
+        <ScrollArea className="flex-1 h-0"> {/* Added h-0 here */}
+          <div className="grid gap-4 p-4">
             <div className="border-2 border-dashed border-gray-300 rounded-md p-6 text-center flex flex-col items-center justify-center">
               {bannerImageUrl ? (
                 <img src={bannerImageUrl} alt="Banner" className="h-24 w-auto object-contain mb-2" />
