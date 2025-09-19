@@ -29,11 +29,13 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response && error.response.status === 401) {
-      console.error("API Interceptor: 401 Unauthorized error caught. Logging out user."); // Added console log
+      console.error("API Interceptor: 401 Unauthorized error caught. Logging out user.");
       // If 401 Unauthorized, log out the user
       logout();
-      // Redirect to login page (you might want to use a toast here too)
+      // Redirect to login page
       window.location.href = "/login";
+      // Prevent further propagation of the error to the component's catch block
+      return new Promise(() => {}); 
     }
     return Promise.reject(error);
   }
