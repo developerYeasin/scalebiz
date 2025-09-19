@@ -11,7 +11,7 @@ import Dashboard from "./pages/Dashboard.jsx";
 import Orders from "./pages/Orders.jsx";
 import CreateOrder from "./pages/CreateOrder.jsx";
 import Products from "./pages/Products.tsx"; // Updated import
-import AddProduct from "./pages/AddProduct.jsx";
+import AddProduct from "./pages/AddProduct.tsx"; // Updated import
 import Categories from "./pages/Categories.tsx";
 import Customers from "./pages/Customers.jsx";
 import ManageShop from "./pages/ManageShop.jsx";

@@ -7,7 +7,23 @@ import { Label } from "@/components/ui/label.jsx";
 import { Textarea } from "@/components/ui/textarea.jsx";
 import { ChevronUp } from "lucide-react";
 
-const ProductGeneralInformation = () => {
+interface ProductGeneralInformationProps {
+  itemName: string;
+  setItemName: (name: string) => void;
+  shortDescription: string;
+  setShortDescription: (description: string) => void;
+  productDescription: string;
+  setProductDescription: (description: string) => void;
+}
+
+const ProductGeneralInformation = ({
+  itemName,
+  setItemName,
+  shortDescription,
+  setShortDescription,
+  productDescription,
+  setProductDescription,
+}: ProductGeneralInformationProps) => {
   return (
     <Card className="mb-6">
       <CardHeader className="flex flex-row items-center justify-between">
@@ -18,11 +34,24 @@ const ProductGeneralInformation = () => {
         <div className="grid gap-4">
           <div>
             <Label htmlFor="itemName">Item Name <span className="text-destructive">*</span></Label>
-            <Input id="itemName" placeholder="Item Name" className="mt-1" />
+            <Input
+              id="itemName"
+              placeholder="Item Name"
+              className="mt-1"
+              value={itemName}
+              onChange={(e) => setItemName(e.target.value)}
+              required
+            />
           </div>
           <div>
             <Label htmlFor="shortDescription">Short Description (SEO & Data Feed)</Label>
-            <Textarea id="shortDescription" placeholder="Short Description" className="mt-1" />
+            <Textarea
+              id="shortDescription"
+              placeholder="Short Description"
+              className="mt-1"
+              value={shortDescription}
+              onChange={(e) => setShortDescription(e.target.value)}
+            />
           </div>
           <div>
             <Label htmlFor="productDescription">Product Description</Label>
@@ -42,7 +71,13 @@ const ProductGeneralInformation = () => {
                 <span className="text-sm font-medium">@</span>
                 <span className="text-sm font-medium">Tx</span>
               </div>
-              <Textarea id="productDescription" placeholder="Write something..." className="border-none focus-visible:ring-0" />
+              <Textarea
+                id="productDescription"
+                placeholder="Write something..."
+                className="border-none focus-visible:ring-0"
+                value={productDescription}
+                onChange={(e) => setProductDescription(e.target.value)}
+              />
             </div>
           </div>
         </div>

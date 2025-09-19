@@ -6,7 +6,15 @@ import { Switch } from "@/components/ui/switch.jsx";
 import { Label } from "@/components/ui/label.jsx";
 import { ChevronUp } from "lucide-react";
 
-const ProductShipping = () => {
+interface ProductShippingProps {
+  applyDefaultDeliveryCharges: boolean;
+  setApplyDefaultDeliveryCharges: (checked: boolean) => void;
+}
+
+const ProductShipping = ({
+  applyDefaultDeliveryCharges,
+  setApplyDefaultDeliveryCharges,
+}: ProductShippingProps) => {
   return (
     <Card className="mb-6">
       <CardHeader className="flex flex-row items-center justify-between">
@@ -23,8 +31,14 @@ const ProductShipping = () => {
             Apply default delivery charges
           </Label>
           <div className="flex items-center gap-2">
-            <span className="text-sm text-muted-foreground">[Applied]</span>
-            <Switch id="delivery-charge-toggle" defaultChecked />
+            <span className="text-sm text-muted-foreground">
+              [{applyDefaultDeliveryCharges ? "Applied" : "Not Applied"}]
+            </span>
+            <Switch
+              id="delivery-charge-toggle"
+              checked={applyDefaultDeliveryCharges}
+              onCheckedChange={setApplyDefaultDeliveryCharges}
+            />
           </div>
         </div>
       </CardContent>
