@@ -14,7 +14,13 @@ import { Button } from "@/components/ui/button.jsx";
 import { showInfo } from "@/utils/toast.js";
 import { Category } from "@/hooks/use-categories.ts"; // Import Category type
 
-const CategoryListTable = ({ categories, onEditCategoryClick, onDeleteCategory }) => {
+interface CategoryListTableProps {
+  categories: Category[];
+  onEditCategoryClick: (category: Category) => void;
+  onDeleteCategory: (categoryId: number) => void;
+}
+
+const CategoryListTable = ({ categories, onEditCategoryClick, onDeleteCategory }: CategoryListTableProps) => {
   const handleViewCategory = (categoryId: number) => {
     showInfo(`Viewing category ${categoryId}`);
     // In a real app, you might navigate to a category detail page

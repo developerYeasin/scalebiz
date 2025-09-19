@@ -12,7 +12,7 @@ import Orders from "./pages/Orders.jsx";
 import CreateOrder from "./pages/CreateOrder.jsx";
 import Products from "./pages/Products.jsx";
 import AddProduct from "./pages/AddProduct.jsx";
-import Categories from "./pages/Categories.jsx";
+import Categories from "./pages/Categories.tsx"; // Updated import
 import Customers from "./pages/Customers.jsx";
 import ManageShop from "./pages/ManageShop.jsx";
 import CustomizeTheme from "./pages/CustomizeTheme.jsx";
@@ -38,9 +38,9 @@ import Billing from "./pages/Billing.jsx";
 import Subscription from "./pages/Subscription.jsx";
 import ZatiqAcademy from "./pages/ZatiqAcademy.jsx";
 import VendorDashboard from "./pages/vendor/VendorDashboard.jsx";
-import LoginPage from "./pages/auth/LoginPage.jsx";
-import RegisterPage from "./pages/auth/RegisterPage.jsx";
-import Profile from "./pages/Profile.jsx"; // New import for Profile page
+import LoginPage from "./pages/auth/LoginPage.tsx";
+import RegisterPage from "./pages/auth/RegisterPage.tsx";
+import Profile from "./pages/Profile.tsx"; // New import for Profile page
 
 import { isAuthenticated } from "./utils/auth.js"; // Import isAuthenticated utility
 

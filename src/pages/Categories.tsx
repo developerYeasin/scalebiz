@@ -1,10 +1,10 @@
 "use client";
 
 import React from "react";
-import CategoryListHeader from "@/components/categories/CategoryListHeader.jsx";
-import CategoryListTable from "@/components/categories/CategoryListTable.jsx";
-import CategoryListPagination from "@/components/categories/CategoryListPagination.jsx";
-import CreateCategoryDialog from "@/components/categories/CreateCategoryDialog.jsx";
+import CategoryListHeader from "@/components/categories/CategoryListHeader.tsx";
+import CategoryListTable from "@/components/categories/CategoryListTable.tsx";
+import CategoryListPagination from "@/components/categories/CategoryListPagination.tsx";
+import CreateCategoryDialog from "@/components/categories/CreateCategoryDialog.tsx";
 import { useCategories, Category } from "@/hooks/use-categories.ts"; // Import the new hook and types
 import { showInfo, showError } from "@/utils/toast.js";
 
