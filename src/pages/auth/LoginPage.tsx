@@ -9,12 +9,14 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { showSuccess, showError } from "@/utils/toast.js";
 import api from "@/utils/api.js"; // Use the configured API instance
 import { login } from "@/utils/auth.js"; // Import login utility
+import { Eye, EyeOff } from "lucide-react"; // Import Eye and EyeOff icons
 
 const LoginPage = () => {
   const navigate = useNavigate();
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [loading, setLoading] = React.useState(false);
+  const [showPassword, setShowPassword] = React.useState(false); // New state for password visibility
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -57,15 +59,24 @@ const LoginPage = () => {
                 required
               />
             </div>
-            <div className="grid gap-2">
+            <div className="grid gap-2 relative"> {/* Added relative positioning */}
               <Label htmlFor="password">Password</Label>
               <Input
                 id="password"
-                type="password"
+                type={showPassword ? "text" : "password"} // Toggle input type
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
+                className="absolute right-0 top-0 mt-7 mr-1 h-8 w-8 text-muted-foreground" // Position the button
+                onClick={() => setShowPassword((prev) => !prev)} // Toggle password visibility
+              >
+                {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+              </Button>
             </div>
             <Button type="submit" className="w-full bg-purple-600 hover:bg-purple-700 text-white" disabled={loading}>
               {loading ? "Logging in..." : "Login"}
