@@ -12,10 +12,10 @@ import { Button } from "@/components/ui/button.jsx";
 import { Input } from "@/components/ui/input.jsx";
 import { Label } from "@/components/ui/label.jsx";
 import { Textarea } from "@/components/ui/textarea.jsx";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select.jsx"; // Import Select components
 import { Image } from "lucide-react";
 import { showInfo } from "@/utils/toast.js";
-import { Category, CreateCategoryPayload, useCategories } from "@/hooks/use-categories.ts"; // Import useCategories hook
+import { Category, CreateCategoryPayload, useCategories } from "@/hooks/use-categories.ts";
+import Select from "react-select"; // Import react-select
 
 interface CreateCategoryDialogProps {
   isOpen: boolean;
@@ -30,7 +30,7 @@ const CreateCategoryDialog = ({ isOpen, onClose, onSave, initialData }: CreateCa
   const [shortDescription, setShortDescription] = React.useState(initialData?.description || "");
   const [bannerImageUrl, setBannerImageUrl] = React.useState(initialData?.image_url || "");
   const [squareImageUrl, setSquareImageUrl] = React.useState(initialData?.image_url || "");
-  const [parentId, setParentId] = React.useState<string>(initialData?.parent_id ? String(initialData.parent_id) : "null");
+  const [parentId, setParentId] = React.useState<string | null>(initialData?.parent_id ? String(initialData.parent_id) : null);
 
   React.useEffect(() => {
     if (initialData) {
@@ -38,13 +38,13 @@ const CreateCategoryDialog = ({ isOpen, onClose, onSave, initialData }: CreateCa
       setShortDescription(initialData.description || "");
       setBannerImageUrl(initialData.image_url || "");
       setSquareImageUrl(initialData.image_url || "");
-      setParentId(initialData.parent_id ? String(initialData.parent_id) : "null");
+      setParentId(initialData.parent_id ? String(initialData.parent_id) : null);
     } else {
       setCategoryName("");
       setShortDescription("");
       setBannerImageUrl("");
       setSquareImageUrl("");
-      setParentId("null"); // Reset to no parent
+      setParentId(null); // Reset to no parent
     }
   }, [initialData]);
 
@@ -71,16 +71,19 @@ const CreateCategoryDialog = ({ isOpen, onClose, onSave, initialData }: CreateCa
       is_active: 1,
       is_featured: 0,
       sort_order: 0,
-      parent_id: parentId === "null" ? null : Number(parentId),
+      parent_id: parentId ? Number(parentId) : null,
     };
     onSave(payload);
   };
 
   // Filter out the current category from the parent options when editing
-  const parentCategories = React.useMemo(() => {
+  const parentCategoryOptions = React.useMemo(() => {
     if (!allCategories) return [];
-    return allCategories.filter(cat => cat.id !== initialData?.id);
+    const filtered = allCategories.filter(cat => cat.id !== initialData?.id);
+    return filtered.map(cat => ({ value: String(cat.id), label: cat.name }));
   }, [allCategories, initialData]);
+
+  const selectedParentOption = parentCategoryOptions.find(option => option.value === parentId);
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -146,19 +149,61 @@ const CreateCategoryDialog = ({ isOpen, onClose, onSave, initialData }: CreateCa
               </div>
               <div>
                 <Label htmlFor="parentId">Parent Category</Label>
-                <Select value={parentId} onValueChange={setParentId} disabled={categoriesLoading}>
-                  <SelectTrigger id="parentId" className="mt-1">
-                    <SelectValue placeholder="No Parent (Main Category)" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="null">No Parent (Main Category)</SelectItem>
-                    {parentCategories.map((cat) => (
-                      <SelectItem key={cat.id} value={String(cat.id)}>
-                        {cat.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <Select
+                  id="parentId"
+                  options={[{ value: null, label: "No Parent (Main Category)" }, ...parentCategoryOptions]}
+                  value={selectedParentOption || { value: null, label: "No Parent (Main Category)" }}
+                  onChange={(option) => setParentId(option?.value || null)}
+                  isLoading={categoriesLoading}
+                  isClearable={true}
+                  placeholder="Select Parent Category"
+                  className="mt-1"
+                  styles={{
+                    control: (baseStyles) => ({
+                      ...baseStyles,
+                      borderColor: 'hsl(var(--border))',
+                      backgroundColor: 'hsl(var(--input))',
+                      color: 'hsl(var(--foreground))',
+                      "&:hover": {
+                        borderColor: 'hsl(var(--input))',
+                      },
+                    }),
+                    singleValue: (baseStyles) => ({
+                      ...baseStyles,
+                      color: 'hsl(var(--foreground))',
+                    }),
+                    input: (baseStyles) => ({
+                      ...baseStyles,
+                      color: 'hsl(var(--foreground))',
+                    }),
+                    placeholder: (baseStyles) => ({
+                      ...baseStyles,
+                      color: 'hsl(var(--muted-foreground))',
+                    }),
+                    menu: (baseStyles) => ({
+                      ...baseStyles,
+                      backgroundColor: 'hsl(var(--popover))',
+                      borderColor: 'hsl(var(--border))',
+                    }),
+                    option: (baseStyles, { isFocused, isSelected }) => ({
+                      ...baseStyles,
+                      backgroundColor: isSelected
+                        ? 'hsl(var(--primary))'
+                        : isFocused
+                        ? 'hsl(var(--accent))'
+                        : 'hsl(var(--popover))',
+                      color: isSelected
+                        ? 'hsl(var(--primary-foreground))'
+                        : isFocused
+                        ? 'hsl(var(--accent-foreground))'
+                        : 'hsl(var(--foreground))',
+                      "&:active": {
+                        backgroundColor: 'hsl(var(--primary))',
+                        color: 'hsl(var(--primary-foreground))',
+                      },
+                    }),
+                  }}
+                />
                 {categoriesLoading && <p className="text-xs text-muted-foreground mt-1">Loading parent categories...</p>}
               </div>
             </div>
