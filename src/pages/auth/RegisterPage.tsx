@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input.jsx";
 import { Label } from "@/components/ui/label.jsx";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card.jsx";
 import { showSuccess, showError } from "@/utils/toast.js";
-import axios from "axios";
+import api from "@/utils/api.js"; // Use the configured API instance
 
 const RegisterPage = () => {
   const navigate = useNavigate();
@@ -24,7 +24,7 @@ const RegisterPage = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      const response = await axios.post("http://localhost:3001/api/v1/auth/register", {
+      const response = await api.post("/auth/register", { // Use api instance
         name,
         email,
         password,

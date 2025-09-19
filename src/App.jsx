@@ -2,7 +2,8 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import React from "react"; // Import React
 import Index from "./pages/Index.jsx";
 import NotFound from "./pages/NotFound.jsx";
 import Layout from "./components/Layout.jsx";
@@ -37,11 +38,21 @@ import Billing from "./pages/Billing.jsx";
 import Subscription from "./pages/Subscription.jsx";
 import ZatiqAcademy from "./pages/ZatiqAcademy.jsx";
 import VendorDashboard from "./pages/vendor/VendorDashboard.jsx";
-import LoginPage from "./pages/auth/LoginPage.jsx"; // New import
-import RegisterPage from "./pages/auth/RegisterPage.jsx"; // New import
+import LoginPage from "./pages/auth/LoginPage.jsx";
+import RegisterPage from "./pages/auth/RegisterPage.jsx";
+import Profile from "./pages/Profile.jsx"; // New import for Profile page
 
+import { isAuthenticated } from "./utils/auth.js"; // Import isAuthenticated utility
 
 const queryClient = new QueryClient();
+
+// ProtectedRoute component to guard authenticated routes
+const ProtectedRoute = ({ children }) => {
+  if (!isAuthenticated()) {
+    return <Navigate to="/login" replace />;
+  }
+  return children;
+};
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -50,42 +61,49 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
-          {/* Auth Routes - No Layout */}
+          {/* Public Routes */}
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
+          <Route path="/index" element={<Index />} /> {/* Keep Index as a public entry point */}
 
-          {/* Application Routes - With Layout */}
-          <Route path="/" element={<Layout><Dashboard /></Layout>} />
-          <Route path="/dashboard" element={<Layout><Dashboard /></Layout>} />
-          <Route path="/orders" element={<Layout><Orders /></Layout>} />
-          <Route path="/orders/create" element={<Layout><CreateOrder /></Layout>} />
-          <Route path="/products" element={<Layout><Products /></Layout>} />
-          <Route path="/products/add" element={<Layout><AddProduct /></Layout>} />
-          <Route path="/categories" element={<Layout><Categories /></Layout>} />
-          <Route path="/customers" element={<Layout><Customers /></Layout>} />
-          <Route path="/manage-shop" element={<Layout><ManageShop /></Layout>} />
+          {/* Redirect root to dashboard if authenticated, otherwise to login */}
+          <Route
+            path="/"
+            element={isAuthenticated() ? <Navigate to="/dashboard" replace /> : <Navigate to="/login" replace />}
+          />
+
+          {/* Application Routes - Protected with Layout */}
+          <Route path="/dashboard" element={<ProtectedRoute><Layout><Dashboard /></Layout></ProtectedRoute>} />
+          <Route path="/orders" element={<ProtectedRoute><Layout><Orders /></Layout></ProtectedRoute>} />
+          <Route path="/orders/create" element={<ProtectedRoute><Layout><CreateOrder /></Layout></ProtectedRoute>} />
+          <Route path="/products" element={<ProtectedRoute><Layout><Products /></Layout></ProtectedRoute>} />
+          <Route path="/products/add" element={<ProtectedRoute><Layout><AddProduct /></Layout></ProtectedRoute>} />
+          <Route path="/categories" element={<ProtectedRoute><Layout><Categories /></Layout></ProtectedRoute>} />
+          <Route path="/customers" element={<ProtectedRoute><Layout><Customers /></Layout></ProtectedRoute>} />
+          <Route path="/manage-shop" element={<ProtectedRoute><Layout><ManageShop /></Layout></ProtectedRoute>} />
           {/* New Manage Shop Sub-Routes */}
-          <Route path="/manage-shop/shop-settings" element={<Layout><ShopSettingsPage /></Layout>} />
-          <Route path="/manage-shop/shop-domain" element={<Layout><ShopDomainPage /></Layout>} />
-          <Route path="/manage-shop/shop-policy" element={<Layout><ShopPolicyPage /></Layout>} />
-          <Route path="/manage-shop/delivery-support" element={<Layout><DeliverySupportPage /></Layout>} />
-          <Route path="/manage-shop/payment-gateway" element={<Layout><PaymentGatewayPage /></Layout>} />
-          <Route path="/manage-shop/seo-marketing" element={<Layout><SeoMarketingPage /></Layout>} />
-          <Route path="/manage-shop/sms-support" element={<Layout><SmsSupportPage /></Layout>} />
-          <Route path="/manage-shop/chat-support" element={<Layout><ChatSupportPage /></Layout>} />
-          <Route path="/manage-shop/social-links" element={<Layout><SocialLinksPage /></Layout>} />
+          <Route path="/manage-shop/shop-settings" element={<ProtectedRoute><Layout><ShopSettingsPage /></Layout></ProtectedRoute>} />
+          <Route path="/manage-shop/shop-domain" element={<ProtectedRoute><Layout><ShopDomainPage /></Layout></ProtectedRoute>} />
+          <Route path="/manage-shop/shop-policy" element={<ProtectedRoute><Layout><ShopPolicyPage /></Layout></ProtectedRoute>} />
+          <Route path="/manage-shop/delivery-support" element={<ProtectedRoute><Layout><DeliverySupportPage /></Layout></ProtectedRoute>} />
+          <Route path="/manage-shop/payment-gateway" element={<ProtectedRoute><Layout><PaymentGatewayPage /></Layout></ProtectedRoute>} />
+          <Route path="/manage-shop/seo-marketing" element={<ProtectedRoute><Layout><SeoMarketingPage /></Layout></ProtectedRoute>} />
+          <Route path="/manage-shop/sms-support" element={<ProtectedRoute><Layout><SmsSupportPage /></Layout></ProtectedRoute>} />
+          <Route path="/manage-shop/chat-support" element={<ProtectedRoute><Layout><ChatSupportPage /></Layout></ProtectedRoute>} />
+          <Route path="/manage-shop/social-links" element={<ProtectedRoute><Layout><SocialLinksPage /></Layout></ProtectedRoute>} />
           {/* End New Manage Shop Sub-Routes */}
-          <Route path="/customize-theme" element={<Layout><CustomizeTheme /></Layout>} />
-          <Route path="/landing-pages" element={<Layout><LandingPages /></Layout>} />
-          <Route path="/promo-codes" element={<Layout><PromoCodes /></Layout>} />
-          <Route path="/users-and-permissions" element={<Layout><UsersAndPermissions /></Layout>} />
-          <Route path="/settings" element={<Layout><Settings /></Layout>} />
-          <Route path="/analytics" element={<Layout><Analytics /></Layout>} />
+          <Route path="/customize-theme" element={<ProtectedRoute><Layout><CustomizeTheme /></Layout></ProtectedRoute>} />
+          <Route path="/landing-pages" element={<ProtectedRoute><Layout><LandingPages /></Layout></ProtectedRoute>} />
+          <Route path="/promo-codes" element={<ProtectedRoute><Layout><PromoCodes /></Layout></ProtectedRoute>} />
+          <Route path="/users-and-permissions" element={<ProtectedRoute><Layout><UsersAndPermissions /></Layout></ProtectedRoute>} />
+          <Route path="/settings" element={<ProtectedRoute><Layout><Settings /></Layout></ProtectedRoute>} />
+          <Route path="/analytics" element={<ProtectedRoute><Layout><Analytics /></Layout></ProtectedRoute>} />
           {/* New Routes */}
-          <Route path="/billing" element={<Layout><Billing /></Layout>} />
-          <Route path="/subscription" element={<Layout><Subscription /></Layout>} />
-          <Route path="/zatiq-academy" element={<Layout><ZatiqAcademy /></Layout>} />
-          <Route path="/vendor-dashboard" element={<Layout><VendorDashboard /></Layout>} />
+          <Route path="/billing" element={<ProtectedRoute><Layout><Billing /></Layout></ProtectedRoute>} />
+          <Route path="/subscription" element={<ProtectedRoute><Layout><Subscription /></Layout></ProtectedRoute>} />
+          <Route path="/zatiq-academy" element={<ProtectedRoute><Layout><ZatiqAcademy /></Layout></ProtectedRoute>} />
+          <Route path="/vendor-dashboard" element={<ProtectedRoute><Layout><VendorDashboard /></Layout></ProtectedRoute>} />
+          <Route path="/profile" element={<ProtectedRoute><Layout><Profile /></Layout></ProtectedRoute>} /> {/* New Profile Route */}
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

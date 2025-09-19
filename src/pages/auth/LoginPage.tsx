@@ -7,7 +7,8 @@ import { Input } from "@/components/ui/input.jsx";
 import { Label } from "@/components/ui/label.jsx";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card.jsx";
 import { showSuccess, showError } from "@/utils/toast.js";
-import axios from "axios";
+import api from "@/utils/api.js"; // Use the configured API instance
+import { login } from "@/utils/auth.js"; // Import login utility
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -19,12 +20,12 @@ const LoginPage = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      const response = await axios.post("http://localhost:3001/api/v1/auth/login", {
+      const response = await api.post("/auth/login", { // Use api instance
         email,
         password,
       });
       const { token } = response.data;
-      localStorage.setItem("authToken", token);
+      login(token); // Store token using utility
       showSuccess("Login successful!");
       console.log("Login response:", response.data);
       navigate("/dashboard"); // Redirect to dashboard after successful login
