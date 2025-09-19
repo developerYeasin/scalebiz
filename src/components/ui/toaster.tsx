@@ -7,14 +7,14 @@ import {
   ToastProvider,
   ToastTitle,
   ToastViewport,
-} from "@/components/ui/toast";
-import { useToast } from "@/hooks/use-toast";
+} from "@/components/ui/toast.tsx"; // Ensure toast.tsx is used
+import { useToast } from "@/hooks/use-toast.ts"; // Ensure use-toast.ts is used
 
 export function Toaster() {
   const { toasts } = useToast();
 
   return (
-    (<ToastProvider>
+    <ToastProvider>
       {toasts.map(function ({ id, title, description, action, ...props }) {
         return (
           <Toast key={id} {...props}>
@@ -30,6 +30,6 @@ export function Toaster() {
         );
       })}
       <ToastViewport />
-    </ToastProvider>)
+    </ToastProvider>
   );
 }
