@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button.jsx";
 import { Label } from "@/components/ui/label.jsx";
 import { Input } from "@/components/ui/input.jsx";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar.jsx";
-import { User, LogOut, Pencil, X, Check } from "lucide-react"; // Added Pencil, X, Check icons
+import { User, LogOut, Pencil, X, Check } from "lucide-react";
 import { showSuccess, showError } from "@/utils/toast.js";
 import api from "@/utils/api.js";
 import { logout } from "@/utils/auth.js";
@@ -17,7 +17,7 @@ const Profile = () => {
   const [userData, setUserData] = React.useState(null);
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState(null);
-  const [editMode, setEditMode] = React.useState(false); // New state for edit mode
+  const [editMode, setEditMode] = React.useState(false);
 
   // States for editable fields
   const [editedName, setEditedName] = React.useState("");
@@ -29,9 +29,11 @@ const Profile = () => {
 
   const fetchProfile = React.useCallback(async () => {
     setLoading(true);
+    setError(null); // Clear previous errors
     try {
       const response = await api.get("/auth/me");
-      const user = response.data.user;
+      console.log("Profile API response:", response.data); // Log the full response
+      const user = response.data.data.user; // Access user data correctly based on your provided response structure
       setUserData(user);
       // Initialize editable states with fetched data
       setEditedName(user.name || "");
@@ -42,15 +44,16 @@ const Profile = () => {
       setEditedTimezone(user.timezone || "");
       showSuccess("Profile data loaded!");
     } catch (err) {
-      console.error("Failed to fetch profile:", err);
+      console.error("Failed to fetch profile:", err); // Log the full error object
       setError(err.response?.data?.message || "Failed to load profile data.");
       showError(err.response?.data?.message || "Failed to load profile data.");
-      logout();
-      navigate("/login");
+      // Removed logout() and navigate("/login") from here.
+      // The API interceptor in api.js will handle 401 Unauthorized errors.
+      // For other errors, we just display a message.
     } finally {
       setLoading(false);
     }
-  }, [navigate]);
+  }, []); // Removed navigate from dependencies as it's not directly used in the effect for re-fetching
 
   React.useEffect(() => {
     fetchProfile();
@@ -109,6 +112,7 @@ const Profile = () => {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <p className="text-destructive">{error}</p>
+        <Button onClick={handleLogout} className="ml-4">Go to Login</Button>
       </div>
     );
   }
@@ -117,6 +121,7 @@ const Profile = () => {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <p>No user data found. Please log in.</p>
+        <Button onClick={handleLogout} className="ml-4">Go to Login</Button>
       </div>
     );
   }
