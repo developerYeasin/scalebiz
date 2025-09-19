@@ -18,30 +18,36 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Checkbox } from "@/components/ui/checkbox.jsx";
 
 const MultiSelect = ({
-  options,
-  selected,
-  onSelect,
+  options, // Array of { value: string, label: string }
+  selected, // Array of selected values (strings)
+  onSelect, // Function to call when selection changes: (newSelectedValues: string[]) => void
   placeholder,
   className,
   disabled = false,
   ...props
 }) => {
   const [open, setOpen] = React.useState(false);
+  const inputRef = React.useRef(null);
 
-  const handleSelect = (value) => {
-    const newSelected = selected.includes(value)
-      ? selected.filter((item) => item !== value)
-      : [...selected, value];
-    onSelect(newSelected);
-  };
+  const handleToggleItem = React.useCallback((value) => {
+    onSelect((prevSelected) => {
+      if (prevSelected.includes(value)) {
+        return prevSelected.filter((item) => item !== value);
+      } else {
+        return [...prevSelected, value];
+      }
+    });
+  }, [onSelect]);
 
-  const handleRemove = (value) => {
-    onSelect(selected.filter((item) => item !== value));
-  };
+  const handleRemoveItem = React.useCallback((value) => {
+    onSelect((prevSelected) => prevSelected.filter((item) => item !== value));
+  }, [onSelect]);
 
-  const selectedLabels = selected
-    .map((value) => options.find((option) => option.value === value)?.label)
-    .filter(Boolean);
+  const selectedLabels = React.useMemo(() => {
+    return selected
+      .map((value) => options.find((option) => option.value === value)?.label)
+      .filter(Boolean);
+  }, [selected, options]);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -50,22 +56,26 @@ const MultiSelect = ({
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className={cn("w-full justify-between", className)}
+          className={cn("w-full justify-between h-auto min-h-[40px] px-3 py-2", className)}
           disabled={disabled}
+          onClick={() => setOpen(true)} // Ensure button click opens popover
           {...props}
         >
-          <div className="flex flex-wrap gap-1">
+          <div className="flex flex-wrap gap-1 items-center">
             {selected.length === 0 ? (
               <span className="text-muted-foreground">{placeholder}</span>
             ) : (
               selectedLabels.map((label, index) => (
-                <Badge key={index} variant="secondary" className="flex items-center gap-1">
+                <Badge key={index} variant="secondary" className="flex items-center gap-1 pr-1">
                   {label}
                   <X
-                    className="h-3 w-3 cursor-pointer"
+                    className="h-3 w-3 cursor-pointer text-muted-foreground hover:text-foreground"
                     onClick={(e) => {
-                      e.stopPropagation();
-                      handleRemove(options.find(opt => opt.label === label)?.value);
+                      e.stopPropagation(); // Prevent popover from closing
+                      const valueToRemove = options.find(opt => opt.label === label)?.value;
+                      if (valueToRemove) {
+                        handleRemoveItem(valueToRemove);
+                      }
                     }}
                   />
                 </Badge>
@@ -84,15 +94,15 @@ const MultiSelect = ({
               {options.map((option) => (
                 <CommandItem
                   key={option.value}
-                  value={option.label}
-                  onSelect={() => handleSelect(option.value)}
-                  // Removed disabled prop from CommandItem to ensure it's always clickable if popover is open
+                  value={option.label} // Use label for searchability
+                  onSelect={() => handleToggleItem(option.value)}
+                  className="flex items-center cursor-pointer"
                 >
                   <Checkbox
                     checked={selected.includes(option.value)}
-                    // Removed onCheckedChange from Checkbox, relying on CommandItem's onSelect
+                    onCheckedChange={() => handleToggleItem(option.value)} // Keep this for direct checkbox interaction
                     className="mr-2"
-                    // Removed disabled prop from Checkbox
+                    disabled={disabled}
                   />
                   {option.label}
                   <Check
