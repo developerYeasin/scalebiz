@@ -27,20 +27,20 @@ const MultiSelect = ({
   ...props
 }) => {
   const [open, setOpen] = React.useState(false);
+  const [inputValue, setInputValue] = React.useState("");
 
-  // Use a direct update for onSelect to ensure the latest 'selected' state is always used
-  const handleToggleItem = React.useCallback((value) => {
+  const handleToggleOption = React.useCallback((value) => {
     let newSelected;
     if (selected.includes(value)) {
       newSelected = selected.filter((item) => item !== value);
     } else {
       newSelected = [...selected, value];
     }
-    onSelect(newSelected); // Direct update
-  }, [selected, onSelect]); // Dependency on 'selected' is now explicit
+    onSelect(newSelected);
+  }, [selected, onSelect]);
 
-  const handleRemoveItem = React.useCallback((value) => {
-    onSelect(selected.filter((item) => item !== value));
+  const handleRemoveBadge = React.useCallback((valueToRemove) => {
+    onSelect(selected.filter((item) => item !== valueToRemove));
   }, [selected, onSelect]);
 
   const selectedLabels = React.useMemo(() => {
@@ -65,21 +65,23 @@ const MultiSelect = ({
             {selected.length === 0 ? (
               <span className="text-muted-foreground">{placeholder}</span>
             ) : (
-              selectedLabels.map((label, index) => (
-                <Badge key={index} variant="secondary" className="flex items-center gap-1 pr-1">
-                  {label}
-                  <X
-                    className="h-3 w-3 cursor-pointer text-muted-foreground hover:text-foreground"
-                    onClick={(e) => {
-                      e.stopPropagation(); // Prevent popover from closing
-                      const valueToRemove = options.find(opt => opt.label === label)?.value;
-                      if (valueToRemove) {
-                        handleRemoveItem(valueToRemove);
-                      }
-                    }}
-                  />
-                </Badge>
-              ))
+              selectedLabels.map((label, index) => {
+                const optionValue = options.find(opt => opt.label === label)?.value;
+                return (
+                  <Badge key={index} variant="secondary" className="flex items-center gap-1 pr-1">
+                    {label}
+                    <X
+                      className="h-3 w-3 cursor-pointer text-muted-foreground hover:text-foreground"
+                      onClick={(e) => {
+                        e.stopPropagation(); // Prevent popover from closing
+                        if (optionValue) {
+                          handleRemoveBadge(optionValue);
+                        }
+                      }}
+                    />
+                  </Badge>
+                );
+              })
             )}
           </div>
           <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
@@ -87,20 +89,27 @@ const MultiSelect = ({
       </PopoverTrigger>
       <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0">
         <Command>
-          <CommandInput placeholder="Search options..." />
+          <CommandInput
+            placeholder="Search options..."
+            value={inputValue}
+            onValueChange={setInputValue}
+          />
           <CommandList>
             <CommandEmpty>No options found.</CommandEmpty>
             <CommandGroup>
               {options.map((option) => (
                 <CommandItem
                   key={option.value}
-                  value={option.value} // Changed from option.label to option.value for consistency
-                  onSelect={() => handleToggleItem(option.value)}
+                  value={option.label} // Use label for search filtering
+                  onSelect={() => {
+                    handleToggleOption(option.value);
+                    setInputValue(""); // Clear input after selection
+                  }}
                   className="flex items-center cursor-pointer"
                 >
                   <Checkbox
                     checked={selected.includes(option.value)}
-                    onCheckedChange={() => handleToggleItem(option.value)}
+                    onCheckedChange={() => handleToggleOption(option.value)}
                     className="mr-2"
                     disabled={disabled}
                   />
