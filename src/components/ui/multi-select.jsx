@@ -5,11 +5,28 @@ import { X, Check, ChevronDown } from "lucide-react";
 
 import { cn } from "@/lib/utils.js";
 import { Badge } from "@/components/ui/badge.jsx";
-import { Command, CommandGroup, CommandItem, CommandList } from "@/components/ui/command.jsx";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover.jsx";
 import { Button } from "@/components/ui/button.jsx";
+import {
+  Command,
+  CommandGroup,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command.jsx";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover.jsx";
+import { Checkbox } from "@/components/ui/checkbox.jsx";
 
-const MultiSelect = ({ options, selected, onSelect, placeholder, disabled }) => {
+const MultiSelect = ({
+  options,
+  selected,
+  onSelect,
+  placeholder = "Select items...",
+  disabled = false,
+  className,
+}) => {
   const [open, setOpen] = React.useState(false);
 
   const handleSelect = (value) => {
@@ -19,13 +36,13 @@ const MultiSelect = ({ options, selected, onSelect, placeholder, disabled }) => 
     onSelect(newSelected);
   };
 
-  const handleClear = () => {
-    onSelect([]);
+  const handleRemove = (value) => {
+    onSelect(selected.filter((item) => item !== value));
   };
 
-  const selectedLabels = selected.map(
-    (value) => options.find((option) => option.value === value)?.label
-  );
+  const selectedLabels = selected
+    .map((value) => options.find((option) => option.value === value)?.label)
+    .filter(Boolean);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -34,7 +51,11 @@ const MultiSelect = ({ options, selected, onSelect, placeholder, disabled }) => 
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-full justify-between h-auto min-h-[40px] flex flex-wrap items-center"
+          className={cn(
+            "w-full justify-between h-auto min-h-[38px] flex-wrap",
+            selected.length > 0 ? "pr-2" : "pr-3",
+            className
+          )}
           disabled={disabled}
         >
           {selected.length > 0 ? (
@@ -46,7 +67,7 @@ const MultiSelect = ({ options, selected, onSelect, placeholder, disabled }) => 
                     className="h-3 w-3 cursor-pointer"
                     onClick={(e) => {
                       e.stopPropagation();
-                      handleSelect(selected[index]);
+                      handleRemove(options.find(opt => opt.label === label)?.value);
                     }}
                   />
                 </Badge>
@@ -66,15 +87,19 @@ const MultiSelect = ({ options, selected, onSelect, placeholder, disabled }) => 
                 <CommandItem
                   key={option.value}
                   onSelect={() => handleSelect(option.value)}
-                  className="cursor-pointer"
+                  className="flex items-center gap-2 cursor-pointer"
                 >
+                  <Checkbox
+                    checked={selected.includes(option.value)}
+                    onCheckedChange={() => handleSelect(option.value)}
+                  />
+                  {option.label}
                   <Check
                     className={cn(
-                      "mr-2 h-4 w-4",
+                      "ml-auto h-4 w-4",
                       selected.includes(option.value) ? "opacity-100" : "opacity-0"
                     )}
                   />
-                  {option.label}
                 </CommandItem>
               ))}
             </CommandGroup>
