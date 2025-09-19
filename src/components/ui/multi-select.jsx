@@ -84,15 +84,15 @@ const MultiSelect = ({
               {options.map((option) => (
                 <CommandItem
                   key={option.value}
-                  value={option.label} // Use label for searchability
+                  value={option.label}
                   onSelect={() => handleSelect(option.value)}
-                  disabled={disabled}
+                  // Removed disabled prop from CommandItem to ensure it's always clickable if popover is open
                 >
                   <Checkbox
                     checked={selected.includes(option.value)}
-                    onCheckedChange={() => handleSelect(option.value)}
+                    // Removed onCheckedChange from Checkbox, relying on CommandItem's onSelect
                     className="mr-2"
-                    disabled={disabled}
+                    // Removed disabled prop from Checkbox
                   />
                   {option.label}
                   <Check
