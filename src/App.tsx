@@ -1,55 +1,55 @@
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
+import { Toaster } from "@/components/ui/toaster.tsx"; // Updated import
+import { Sonner } from "@/components/ui/sonner.tsx"; // Updated import
+import { TooltipProvider } from "@/components/ui/tooltip.tsx"; // Updated import
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import React from "react"; // Import React
-import Index from "./pages/Index.jsx";
-import NotFound from "./pages/NotFound.jsx";
-import Layout from "./components/Layout.jsx";
-import Dashboard from "./pages/Dashboard.jsx";
-import Orders from "./pages/Orders.jsx";
-import CreateOrder from "./pages/CreateOrder.jsx";
-import Products from "./pages/Products.tsx"; // Updated import
-import AddProduct from "./pages/AddProduct.tsx"; // Updated import
+import React from "react";
+import Index from "./pages/Index.tsx"; // Updated import
+import NotFound from "./pages/NotFound.jsx"; // Keep as .jsx for now, will convert later
+import Layout from "./components/Layout.tsx"; // Updated import
+import Dashboard from "./pages/Dashboard.jsx"; // Keep as .jsx for now
+import Orders from "./pages/Orders.jsx"; // Keep as .jsx for now
+import CreateOrder from "./pages/CreateOrder.jsx"; // Keep as .jsx for now
+import Products from "./pages/Products.tsx";
+import AddProduct from "./pages/AddProduct.tsx";
 import Categories from "./pages/Categories.tsx";
-import Customers from "./pages/Customers.jsx";
-import ManageShop from "./pages/ManageShop.jsx";
-import CustomizeTheme from "./pages/CustomizeTheme.jsx";
-import LandingPages from "./pages/LandingPages.jsx";
-import PromoCodes from "./pages/PromoCodes.jsx";
-import UsersAndPermissions from "./pages/UsersAndPermissions.jsx";
-import Settings from "./pages/Settings.jsx";
-import Analytics from "./pages/Analytics.jsx";
+import Customers from "./pages/Customers.jsx"; // Keep as .jsx for now
+import ManageShop from "./pages/ManageShop.jsx"; // Keep as .jsx for now
+import CustomizeTheme from "./pages/CustomizeTheme.jsx"; // Keep as .jsx for now
+import LandingPages from "./pages/LandingPages.jsx"; // Keep as .jsx for now
+import PromoCodes from "./pages/PromoCodes.jsx"; // Keep as .jsx for now
+import UsersAndPermissions from "./pages/UsersAndPermissions.jsx"; // Keep as .jsx for now
+import Settings from "./pages/Settings.jsx"; // Keep as .jsx for now
+import Analytics from "./pages/Analytics.jsx"; // Keep as .jsx for now
 
 // Import shop settings pages
-import ShopSettingsPage from "./pages/shop-settings/ShopSettingsPage.jsx";
-import ShopDomainPage from "./pages/shop-settings/ShopDomainPage.jsx";
-import ShopPolicyPage from "./pages/shop-settings/ShopPolicyPage.jsx";
-import DeliverySupportPage from "./pages/shop-settings/DeliverySupportPage.jsx";
-import PaymentGatewayPage from "./pages/shop-settings/PaymentGatewayPage.jsx";
-import SeoMarketingPage from "./pages/shop-settings/SeoMarketingPage.jsx";
-import SmsSupportPage from "./pages/shop-settings/SmsSupportPage.jsx";
-import ChatSupportPage from "./pages/shop-settings/ChatSupportPage.jsx";
-import SocialLinksPage from "./pages/shop-settings/SocialLinksPage.jsx";
+import ShopSettingsPage from "./pages/shop-settings/ShopSettingsPage.jsx"; // Keep as .jsx for now
+import ShopDomainPage from "./pages/shop-settings/ShopDomainPage.jsx"; // Keep as .jsx for now
+import ShopPolicyPage from "./pages/shop-settings/ShopPolicyPage.jsx"; // Keep as .jsx for now
+import DeliverySupportPage from "./pages/shop-settings/DeliverySupportPage.jsx"; // Keep as .jsx for now
+import PaymentGatewayPage from "./pages/shop-settings/PaymentGatewayPage.jsx"; // Keep as .jsx for now
+import SeoMarketingPage from "./pages/shop-settings/SeoMarketingPage.jsx"; // Keep as .jsx for now
+import SmsSupportPage from "./pages/shop-settings/SmsSupportPage.jsx"; // Keep as .jsx for now
+import ChatSupportPage from "./pages/shop-settings/ChatSupportPage.jsx"; // Keep as .jsx for now
+import SocialLinksPage from "./pages/shop-settings/SocialLinksPage.jsx"; // Keep as .jsx for now
 
 // Import new pages
-import Billing from "./pages/Billing.jsx";
-import Subscription from "./pages/Subscription.jsx";
-import ZatiqAcademy from "./pages/ZatiqAcademy.jsx";
-import VendorDashboard from "./pages/vendor/VendorDashboard.jsx";
+import Billing from "./pages/Billing.jsx"; // Keep as .jsx for now
+import Subscription from "./pages/Subscription.jsx"; // Keep as .jsx for now
+import ZatiqAcademy from "./pages/ZatiqAcademy.jsx"; // Keep as .jsx for now
+import VendorDashboard from "./pages/vendor/VendorDashboard.jsx"; // Keep as .jsx for now
 import LoginPage from "./pages/auth/LoginPage.tsx";
 import RegisterPage from "./pages/auth/RegisterPage.tsx";
 import Profile from "./pages/Profile.tsx";
-import ProductViewPage from "./pages/products/ProductViewPage.tsx"; // New import
-import ProductEditPage from "./pages/products/ProductEditPage.tsx"; // New import
+import ProductViewPage from "./pages/products/ProductViewPage.tsx";
+import ProductEditPage from "./pages/products/ProductEditPage.tsx";
 
-import { isAuthenticated } from "./utils/auth.js"; // Import isAuthenticated utility
+import { isAuthenticated } from "./utils/auth.js"; // Keep as .js for now
 
 const queryClient = new QueryClient();
 
 // ProtectedRoute component to guard authenticated routes
-const ProtectedRoute = ({ children }) => {
+const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   if (!isAuthenticated()) {
     return <Navigate to="/login" replace />;
   }
@@ -80,8 +80,8 @@ const App = () => (
           <Route path="/orders/create" element={<ProtectedRoute><Layout><CreateOrder /></Layout></ProtectedRoute>} />
           <Route path="/products" element={<ProtectedRoute><Layout><Products /></Layout></ProtectedRoute>} />
           <Route path="/products/add" element={<ProtectedRoute><Layout><AddProduct /></Layout></ProtectedRoute>} />
-          <Route path="/products/:productId" element={<ProtectedRoute><Layout><ProductViewPage /></Layout></ProtectedRoute>} /> {/* New route for product view */}
-          <Route path="/products/:productId/edit" element={<ProtectedRoute><Layout><ProductEditPage /></Layout></ProtectedRoute>} /> {/* New route for product edit */}
+          <Route path="/products/:productId" element={<ProtectedRoute><Layout><ProductViewPage /></Layout></ProtectedRoute>} />
+          <Route path="/products/:productId/edit" element={<ProtectedRoute><Layout><ProductEditPage /></Layout></ProtectedRoute>} />
           <Route path="/categories" element={<ProtectedRoute><Layout><Categories /></Layout></ProtectedRoute>} />
           <Route path="/customers" element={<ProtectedRoute><Layout><Customers /></Layout></ProtectedRoute>} />
           <Route path="/manage-shop" element={<ProtectedRoute><Layout><ManageShop /></Layout></ProtectedRoute>} />

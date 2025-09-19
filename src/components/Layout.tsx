@@ -1,11 +1,11 @@
 "use client";
 
 import React from "react";
-import { MadeWithDyad } from "@/components/made-with-dyad.jsx";
-import Sidebar from "@/components/Sidebar.jsx";
-import { useIsMobile } from "@/hooks/use-mobile.jsx";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet.jsx";
-import { Button } from "@/components/ui/button.jsx";
+import { MadeWithDyad } from "@/components/made-with-dyad.jsx"; // Keep as .jsx for now
+import Sidebar from "@/components/Sidebar.jsx"; // Keep as .jsx for now
+import { useIsMobile } from "@/hooks/use-mobile.ts"; // Updated import
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet.tsx"; // Updated import
+import { Button } from "@/components/ui/button.jsx"; // Keep as .jsx for now
 import { Menu, User, LogOut, Settings } from "lucide-react";
 import {
   DropdownMenu,
@@ -14,12 +14,16 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu.jsx";
+} from "@/components/ui/dropdown-menu.tsx"; // Updated import
 import { Link, useNavigate } from "react-router-dom";
-import { logout, isAuthenticated } from "@/utils/auth.js";
-import { showSuccess } from "@/utils/toast.js";
+import { logout, isAuthenticated } from "@/utils/auth.js"; // Keep as .js for now
+import { showSuccess } from "@/utils/toast.ts"; // Updated import
 
-const Layout = ({ children }) => {
+interface LayoutProps {
+  children: React.ReactNode;
+}
+
+const Layout: React.FC<LayoutProps> = ({ children }) => {
   const isMobile = useIsMobile();
   const [isSheetOpen, setIsSheetOpen] = React.useState(false);
   const navigate = useNavigate();
@@ -30,14 +34,11 @@ const Layout = ({ children }) => {
     navigate("/login");
   };
 
-  // If not authenticated, redirect to login. This is a fallback,
-  // primary protection is in App.jsx with ProtectedRoute.
   React.useEffect(() => {
     if (!isAuthenticated()) {
       navigate("/login");
     }
   }, [navigate]);
-
 
   return (
     <div className="flex min-h-screen w-full bg-background text-foreground">

@@ -1,6 +1,6 @@
-import { MadeWithDyad } from "@/components/made-with-dyad.jsx";
+import { MadeWithDyad } from "@/components/made-with-dyad.jsx"; // Keep as .jsx for now
 import { Link } from "react-router-dom";
-import { Button } from "@/components/ui/button.jsx"; // Import Button
+import { Button } from "@/components/ui/button.jsx"; // Keep as .jsx for now
 
 const Index = () => {
   return (
