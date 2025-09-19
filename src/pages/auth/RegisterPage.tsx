@@ -48,7 +48,7 @@ const RegisterPage = () => {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900">
-      <Card className="w-[500px] max-w-[90%]"> {/* Applied consistent width */}
+      <Card className="w-[500px] max-w-[90%] my-20"> {/* Applied consistent width and vertical margin */}
         <CardHeader className="text-center">
           <CardTitle className="text-2xl font-bold">Register</CardTitle>
           <CardDescription>Create your account to get started</CardDescription>
@@ -77,7 +77,7 @@ const RegisterPage = () => {
                 required
               />
             </div>
-            <div className="grid gap-2 relative"> {/* Added relative positioning */}
+            <div className="grid gap-2 relative">
               <Label htmlFor="password">Password</Label>
               <Input
                 id="password"
