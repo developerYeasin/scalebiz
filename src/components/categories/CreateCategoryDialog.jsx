@@ -31,14 +31,14 @@ const CreateCategoryDialog = ({ isOpen, onClose }) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[600px]">
+      <DialogContent className="sm:max-w-[600px] h-[90vh] flex flex-col">
         <DialogHeader>
           <DialogTitle>Create Category</DialogTitle>
           <DialogDescription>
             Banner/Cover
           </DialogDescription>
         </DialogHeader>
-        <div className="grid gap-4 py-4">
+        <div className="grid gap-4 py-4 overflow-y-auto flex-1 pr-4">
           <div className="border-2 border-dashed border-gray-300 rounded-md p-6 text-center flex flex-col items-center justify-center">
             <img src="https://picsum.photos/seed/category-banner/1300/380" alt="Banner Placeholder" className="h-12 w-auto object-contain mb-2" />
             <p className="text-sm text-muted-foreground mb-2">
@@ -68,7 +68,7 @@ const CreateCategoryDialog = ({ isOpen, onClose }) => {
             </div>
           </div>
         </div>
-        <div className="flex justify-end gap-2">
+        <div className="flex justify-end gap-2 mt-4">
           <Button variant="outline" onClick={onClose}>Cancel</Button>
           <Button onClick={handleCreateCategory}>Create Category</Button>
         </div>
