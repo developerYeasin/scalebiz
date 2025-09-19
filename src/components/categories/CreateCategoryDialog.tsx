@@ -16,7 +16,7 @@ import { Image } from "lucide-react";
 import { showInfo } from "@/utils/toast.js";
 import { Category, CreateCategoryPayload, useCategories } from "@/hooks/use-categories.ts";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select.jsx";
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area.jsx"; // Import ScrollArea and ScrollBar
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area.jsx";
 
 interface CreateCategoryDialogProps {
   isOpen: boolean;
@@ -96,15 +96,15 @@ const CreateCategoryDialog = ({ isOpen, onClose, onSave, initialData }: CreateCa
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[600px] h-[90vh] flex flex-col">
+      <DialogContent className="sm:max-w-[600px] h-[90vh] max-h-[90vh] flex flex-col"> {/* Added max-h-[90vh] */}
         <DialogHeader>
           <DialogTitle>{initialData ? "Edit Category" : "Create Category"}</DialogTitle>
           <DialogDescription>
             {initialData ? "Edit the details of your category." : "Fill in the details to create a new category."}
           </DialogDescription>
         </DialogHeader>
-        <ScrollArea className="flex-1 py-4 pr-4"> {/* Added ScrollArea here */}
-          <div className="grid gap-4">
+        <ScrollArea className="flex-1"> {/* Removed py-4 pr-4 from here */}
+          <div className="grid gap-4 p-4"> {/* Added p-4 here */}
             <div className="border-2 border-dashed border-gray-300 rounded-md p-6 text-center flex flex-col items-center justify-center">
               {bannerImageUrl ? (
                 <img src={bannerImageUrl} alt="Banner" className="h-24 w-auto object-contain mb-2" />
@@ -183,7 +183,7 @@ const CreateCategoryDialog = ({ isOpen, onClose, onSave, initialData }: CreateCa
               </div>
             </div>
           </div>
-          <ScrollBar orientation="vertical" /> {/* Added ScrollBar */}
+          <ScrollBar orientation="vertical" />
         </ScrollArea>
         <div className="flex justify-end gap-2 mt-4">
           <Button variant="outline" onClick={onClose}>Cancel</Button>
