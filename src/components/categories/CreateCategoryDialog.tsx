@@ -83,6 +83,16 @@ const CreateCategoryDialog = ({ isOpen, onClose, onSave, initialData }: CreateCa
     return filtered.map(cat => ({ value: String(cat.id), label: cat.name }));
   }, [allCategories, initialData]);
 
+  // Find the selected parent category object to display its label
+  const selectedParentCategoryLabel = React.useMemo(() => {
+    if (parentId === "none" || !parentId) {
+      return "No Parent (Main Category)";
+    }
+    const selectedOption = parentCategoryOptions.find(option => option.value === parentId);
+    return selectedOption ? selectedOption.label : "Select Parent Category";
+  }, [parentId, parentCategoryOptions]);
+
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[600px] h-[90vh] flex flex-col">
@@ -153,10 +163,12 @@ const CreateCategoryDialog = ({ isOpen, onClose, onSave, initialData }: CreateCa
                   disabled={categoriesLoading}
                 >
                   <SelectTrigger id="parentId" className="mt-1">
-                    <SelectValue placeholder="Select Parent Category" />
+                    <SelectValue placeholder="Select Parent Category">
+                      {selectedParentCategoryLabel} {/* Display the selected label here */}
+                    </SelectValue>
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="none">No Parent (Main Category)</SelectItem> {/* Changed value to "none" */}
+                    <SelectItem value="none">No Parent (Main Category)</SelectItem>
                     {parentCategoryOptions.map((option) => (
                       <SelectItem key={option.value} value={option.value}>
                         {option.label}
