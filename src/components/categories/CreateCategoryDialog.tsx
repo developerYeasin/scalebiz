@@ -12,9 +12,10 @@ import { Button } from "@/components/ui/button.jsx";
 import { Input } from "@/components/ui/input.jsx";
 import { Label } from "@/components/ui/label.jsx";
 import { Textarea } from "@/components/ui/textarea.jsx";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select.jsx"; // Import Select components
 import { Image } from "lucide-react";
 import { showInfo } from "@/utils/toast.js";
-import { Category, CreateCategoryPayload } from "@/hooks/use-categories.ts"; // Import types
+import { Category, CreateCategoryPayload, useCategories } from "@/hooks/use-categories.ts"; // Import useCategories hook
 
 interface CreateCategoryDialogProps {
   isOpen: boolean;
@@ -24,10 +25,12 @@ interface CreateCategoryDialogProps {
 }
 
 const CreateCategoryDialog = ({ isOpen, onClose, onSave, initialData }: CreateCategoryDialogProps) => {
+  const { categories: allCategories, isLoading: categoriesLoading } = useCategories();
   const [categoryName, setCategoryName] = React.useState(initialData?.name || "");
   const [shortDescription, setShortDescription] = React.useState(initialData?.description || "");
-  const [bannerImageUrl, setBannerImageUrl] = React.useState(initialData?.image_url || ""); // Using image_url for banner
-  const [squareImageUrl, setSquareImageUrl] = React.useState(initialData?.image_url || ""); // Using image_url for square, assuming one image field for simplicity
+  const [bannerImageUrl, setBannerImageUrl] = React.useState(initialData?.image_url || "");
+  const [squareImageUrl, setSquareImageUrl] = React.useState(initialData?.image_url || "");
+  const [parentId, setParentId] = React.useState<string>(initialData?.parent_id ? String(initialData.parent_id) : "null");
 
   React.useEffect(() => {
     if (initialData) {
@@ -35,25 +38,23 @@ const CreateCategoryDialog = ({ isOpen, onClose, onSave, initialData }: CreateCa
       setShortDescription(initialData.description || "");
       setBannerImageUrl(initialData.image_url || "");
       setSquareImageUrl(initialData.image_url || "");
+      setParentId(initialData.parent_id ? String(initialData.parent_id) : "null");
     } else {
       setCategoryName("");
       setShortDescription("");
       setBannerImageUrl("");
       setSquareImageUrl("");
+      setParentId("null"); // Reset to no parent
     }
   }, [initialData]);
 
   const handleAddBannerImage = () => {
     showInfo("Banner image upload initiated (dummy action).");
-    // In a real app, this would open a file picker or media library
-    // For now, let's simulate an upload
     setBannerImageUrl("https://picsum.photos/seed/uploaded-banner/1300/380");
   };
 
   const handleAddSquareImage = () => {
     showInfo("Square image upload initiated (dummy action).");
-    // In a real app, this would open a file picker or media library
-    // For now, let's simulate an upload
     setSquareImageUrl("https://picsum.photos/seed/uploaded-square/500/500");
   };
 
@@ -66,14 +67,20 @@ const CreateCategoryDialog = ({ isOpen, onClose, onSave, initialData }: CreateCa
     const payload: CreateCategoryPayload = {
       name: categoryName,
       description: shortDescription,
-      image_url: bannerImageUrl || squareImageUrl || null, // Prioritize banner, fallback to square
-      is_active: 1, // Default to active
-      is_featured: 0, // Default to not featured
-      sort_order: 0, // Default sort order
-      parent_id: null, // For now, assuming top-level categories
+      image_url: bannerImageUrl || squareImageUrl || null,
+      is_active: 1,
+      is_featured: 0,
+      sort_order: 0,
+      parent_id: parentId === "null" ? null : Number(parentId),
     };
     onSave(payload);
   };
+
+  // Filter out the current category from the parent options when editing
+  const parentCategories = React.useMemo(() => {
+    if (!allCategories) return [];
+    return allCategories.filter(cat => cat.id !== initialData?.id);
+  }, [allCategories, initialData]);
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -81,7 +88,7 @@ const CreateCategoryDialog = ({ isOpen, onClose, onSave, initialData }: CreateCa
         <DialogHeader>
           <DialogTitle>{initialData ? "Edit Category" : "Create Category"}</DialogTitle>
           <DialogDescription>
-            {initialData ? "Edit the details of your category." : "Banner/Cover"}
+            {initialData ? "Edit the details of your category." : "Fill in the details to create a new category."}
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4 overflow-y-auto flex-1 pr-4">
@@ -136,6 +143,23 @@ const CreateCategoryDialog = ({ isOpen, onClose, onSave, initialData }: CreateCa
                   value={shortDescription}
                   onChange={(e) => setShortDescription(e.target.value)}
                 />
+              </div>
+              <div>
+                <Label htmlFor="parentId">Parent Category</Label>
+                <Select value={parentId} onValueChange={setParentId} disabled={categoriesLoading}>
+                  <SelectTrigger id="parentId" className="mt-1">
+                    <SelectValue placeholder="No Parent (Main Category)" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="null">No Parent (Main Category)</SelectItem>
+                    {parentCategories.map((cat) => (
+                      <SelectItem key={cat.id} value={String(cat.id)}>
+                        {cat.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                {categoriesLoading && <p className="text-xs text-muted-foreground mt-1">Loading parent categories...</p>}
               </div>
             </div>
           </div>
