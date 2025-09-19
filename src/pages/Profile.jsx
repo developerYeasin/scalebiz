@@ -1,0 +1,245 @@
+"use client";
+
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card.jsx";
+import { Button } from "@/components/ui/button.jsx";
+import { Label } from "@/components/ui/label.jsx";
+import { Input } from "@/components/ui/input.jsx";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar.jsx";
+import { User, LogOut, Pencil, X, Check } from "lucide-react";
+import { showSuccess, showError } from "@/utils/toast.js";
+import api from "@/utils/api.js";
+import { logout } from "@/utils/auth.js";
+
+const Profile = () => {
+  const navigate = useNavigate();
+  const [userData, setUserData] = React.useState(null);
+  const [loading, setLoading] = React.useState(true);
+  const [error, setError] = React.useState(null);
+  const [editMode, setEditMode] = React.useState(false);
+
+  // States for editable fields
+  const [editedName, setEditedName] = React.useState("");
+  const [editedEmail, setEditedEmail] = React.useState("");
+  const [editedPhoneNumber, setEditedPhoneNumber] = React.useState("");
+  const [editedAvatarUrl, setEditedAvatarUrl] = React.useState("");
+  const [editedPreferredLanguage, setEditedPreferredLanguage] = React.useState("");
+  const [editedTimezone, setEditedTimezone] = React.useState("");
+
+  const fetchProfile = React.useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const response = await api.get("/auth/me");
+      console.log("Profile API response:", response.data);
+      const user = response.data.data.user;
+      setUserData(user);
+      // Initialize editable states with fetched data
+      setEditedName(user.name || "");
+      setEditedEmail(user.email || "");
+      setEditedPhoneNumber(user.phone_number || "");
+      setEditedAvatarUrl(user.avatar_url || "");
+      setEditedPreferredLanguage(user.preferred_language || "");
+      setEditedTimezone(user.timezone || "");
+      showSuccess("Profile data loaded!");
+    } catch (err) {
+      console.error("Failed to fetch profile:", err);
+      setError(err.response?.data?.message || "Failed to load profile data.");
+      showError(err.response?.data?.message || "Failed to load profile data.");
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  React.useEffect(() => {
+    fetchProfile();
+  }, [fetchProfile]);
+
+  const handleLogout = () => {
+    logout();
+    showSuccess("Logged out successfully!");
+    navigate("/login");
+  };
+
+  const handleEditToggle = () => {
+    if (editMode) {
+      // If exiting edit mode without saving, reset edited fields to current userData
+      setEditedName(userData.name || "");
+      setEditedEmail(userData.email || "");
+      setEditedPhoneNumber(userData.phone_number || "");
+      setEditedAvatarUrl(userData.avatar_url || "");
+      setEditedPreferredLanguage(userData.preferred_language || "");
+      setEditedTimezone(userData.timezone || "");
+    }
+    setEditMode((prev) => !prev);
+  };
+
+  const handleUpdateProfile = async () => {
+    setLoading(true);
+    try {
+      const response = await api.put("/auth/me", {
+        name: editedName,
+        email: editedEmail,
+        phone_number: editedPhoneNumber,
+        avatar_url: editedAvatarUrl,
+        preferred_language: editedPreferredLanguage,
+        timezone: editedTimezone,
+      });
+      setUserData(response.data.data.user);
+      showSuccess("Profile updated successfully!");
+      setEditMode(false);
+    } catch (err) {
+      console.error("Failed to update profile:", err);
+      showError(err.response?.data?.message || "Failed to update profile.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <p>Loading profile...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <p className="text-destructive">{error}</p>
+        <Button onClick={handleLogout} className="ml-4">Go to Login</Button>
+      </div>
+    );
+  }
+
+  if (!userData) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <p>No user data found. Please log in.</p>
+        <Button onClick={handleLogout} className="ml-4">Go to Login</Button>
+      </div>
+    );
+  }
+
+  return (
+    <div className="p-4 md:p-6 max-w-2xl mx-auto">
+      <Card>
+        <CardHeader className="text-center">
+          <CardTitle className="text-3xl font-bold">User Profile</CardTitle>
+        </CardHeader>
+        <CardContent className="grid gap-6">
+          <div className="flex flex-col items-center gap-4">
+            <Avatar className="h-24 w-24">
+              <AvatarImage src={editedAvatarUrl || "https://github.com/shadcn.png"} alt={editedName} />
+              <AvatarFallback>
+                <User className="h-12 w-12 text-muted-foreground" />
+              </AvatarFallback>
+            </Avatar>
+            <h2 className="text-2xl font-semibold">{editedName}</h2>
+          </div>
+
+          <div className="grid gap-4">
+            <div>
+              <Label htmlFor="name">Name</Label>
+              <Input
+                id="name"
+                type="text"
+                value={editedName}
+                onChange={(e) => setEditedName(e.target.value)}
+                readOnly={!editMode}
+                className={`mt-1 ${!editMode ? "bg-muted" : ""}`}
+              />
+            </div>
+            <div>
+              <Label htmlFor="email">Email</Label>
+              <Input
+                id="email"
+                type="email"
+                value={editedEmail}
+                onChange={(e) => setEditedEmail(e.target.value)}
+                readOnly={!editMode}
+                className={`mt-1 ${!editMode ? "bg-muted" : ""}`}
+              />
+            </div>
+            <div>
+              <Label htmlFor="phoneNumber">Phone Number</Label>
+              <Input
+                id="phoneNumber"
+                type="tel"
+                value={editedPhoneNumber}
+                onChange={(e) => setEditedPhoneNumber(e.target.value)}
+                readOnly={!editMode}
+                className={`mt-1 ${!editMode ? "bg-muted" : ""}`}
+              />
+            </div>
+            <div>
+              <Label htmlFor="avatarUrl">Avatar URL</Label>
+              <Input
+                id="avatarUrl"
+                type="url"
+                value={editedAvatarUrl}
+                onChange={(e) => setEditedAvatarUrl(e.target.value)}
+                readOnly={!editMode}
+                className={`mt-1 ${!editMode ? "bg-muted" : ""}`}
+              />
+            </div>
+            <div>
+              <Label htmlFor="preferredLanguage">Preferred Language</Label>
+              <Input
+                id="preferredLanguage"
+                value={editedPreferredLanguage}
+                onChange={(e) => setEditedPreferredLanguage(e.target.value)}
+                readOnly={!editMode}
+                className={`mt-1 ${!editMode ? "bg-muted" : ""}`}
+              />
+            </div>
+            <div>
+              <Label htmlFor="timezone">Timezone</Label>
+              <Input
+                id="timezone"
+                value={editedTimezone}
+                onChange={(e) => setEditedTimezone(e.target.value)}
+                readOnly={!editMode}
+                className={`mt-1 ${!editMode ? "bg-muted" : ""}`}
+              />
+            </div>
+          </div>
+
+          <div className="flex justify-end gap-2 mt-4">
+            {editMode ? (
+              <>
+                <Button variant="outline" onClick={handleEditToggle} disabled={loading}>
+                  <X className="h-4 w-4 mr-2" />
+                  Cancel
+                </Button>
+                <Button onClick={handleUpdateProfile} disabled={loading}>
+                  <Check className="h-4 w-4 mr-2" />
+                  {loading ? "Saving..." : "Save Changes"}
+                </Button>
+              </>
+            ) : (
+              <Button variant="outline" onClick={handleEditToggle} disabled={loading}>
+                <Pencil className="h-4 w-4 mr-2" />
+                Edit Profile
+              </Button>
+            )}
+          </div>
+
+          <Button
+            variant="destructive"
+            className="w-full mt-4"
+            onClick={handleLogout}
+            disabled={loading}
+          >
+            <LogOut className="h-4 w-4 mr-2" />
+            Logout
+          </Button>
+        </CardContent>
+      </Card>
+    </div>
+  );
+};
+
+export default Profile;
