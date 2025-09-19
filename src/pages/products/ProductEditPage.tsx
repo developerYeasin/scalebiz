@@ -13,6 +13,7 @@ import { useProductById, useProducts, UpdateProductPayload } from "@/hooks/use-p
 import { useCategories, Category } from "@/hooks/use-categories.ts";
 import { showSuccess, showError, showInfo } from "@/utils/toast.js";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area.jsx";
+import { MultiSelect, MultiSelectOption } from "@/components/ui/multi-select.tsx"; // Import MultiSelect
 
 const ProductEditPage = () => {
   const { productId } = useParams<{ productId: string }>();
@@ -73,6 +74,7 @@ const ProductEditPage = () => {
 
     updateProduct(payload, {
       onSuccess: () => {
+        showSuccess("Profile updated successfully!"); // Changed from "Profile updated successfully!"
         navigate(`/products/${id}`); // Go back to view page after successful update
       },
     });
@@ -84,6 +86,13 @@ const ProductEditPage = () => {
     // For now, let's simulate an image upload
     setImageUrl("https://picsum.photos/seed/edited-product-image/400/300");
   };
+
+  const categoryOptions: MultiSelectOption[] = React.useMemo(() => {
+    return allCategories?.map(cat => ({
+      value: String(cat.id),
+      label: cat.name,
+    })) || [];
+  }, [allCategories]);
 
   if (isLoading || categoriesLoading) {
     return (
@@ -202,22 +211,13 @@ const ProductEditPage = () => {
               <CardContent className="grid gap-4">
                 <div>
                   <Label htmlFor="categories">Categories</Label>
-                  <Select
-                    value={selectedCategoryIds.length > 0 ? selectedCategoryIds[0] : ""}
-                    onValueChange={(value) => setSelectedCategoryIds(value ? [value] : [])}
+                  <MultiSelect
+                    options={categoryOptions}
+                    selected={selectedCategoryIds}
+                    onSelect={setSelectedCategoryIds}
+                    placeholder="Select Categories"
                     disabled={categoriesLoading}
-                  >
-                    <SelectTrigger id="categories" className="mt-1">
-                      <SelectValue placeholder="Select Category" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {allCategories?.map((cat: Category) => (
-                        <SelectItem key={cat.id} value={String(cat.id)}>
-                          {cat.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  />
                   {categoriesLoading && <p className="text-xs text-muted-foreground mt-1">Loading categories...</p>}
                 </div>
                 <div>

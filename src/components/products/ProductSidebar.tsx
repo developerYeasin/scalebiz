@@ -8,6 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { ChevronUp } from "lucide-react";
 import { showInfo } from "@/utils/toast.js";
 import { Category } from "@/hooks/use-categories.ts"; // Import Category type
+import { MultiSelect, MultiSelectOption } from "@/components/ui/multi-select.tsx"; // Import MultiSelect
 
 interface ProductSidebarProps {
   selectedCategoryIds: string[];
@@ -34,9 +35,12 @@ const ProductSidebar = ({
   allCategories,
   categoriesLoading,
 }: ProductSidebarProps) => {
-  const handleAssignCategory = () => {
-    showInfo("Assigning category (dummy action).");
-  };
+  const categoryOptions: MultiSelectOption[] = React.useMemo(() => {
+    return allCategories?.map(cat => ({
+      value: String(cat.id),
+      label: cat.name,
+    })) || [];
+  }, [allCategories]);
 
   return (
     <div className="space-y-6">
@@ -47,26 +51,15 @@ const ProductSidebar = ({
         </CardHeader>
         <CardContent>
           <p className="text-sm text-muted-foreground mb-4">
-            {selectedCategoryIds.length > 0 && allCategories
-              ? `Assigned: ${allCategories.find(cat => String(cat.id) === selectedCategoryIds[0])?.name}`
-              : "No assigned category found"}
+            Select one or more categories for this product.
           </p>
-          <Select
-            value={selectedCategoryIds.length > 0 ? selectedCategoryIds[0] : ""}
-            onValueChange={(value) => setSelectedCategoryIds(value ? [value] : [])}
+          <MultiSelect
+            options={categoryOptions}
+            selected={selectedCategoryIds}
+            onSelect={setSelectedCategoryIds}
+            placeholder="Select Categories"
             disabled={categoriesLoading}
-          >
-            <SelectTrigger className="w-full">
-              <SelectValue placeholder="Select Category" />
-            </SelectTrigger>
-            <SelectContent>
-              {allCategories?.map((cat) => (
-                <SelectItem key={cat.id} value={String(cat.id)}>
-                  {cat.name}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          />
           {categoriesLoading && <p className="text-xs text-muted-foreground mt-1">Loading categories...</p>}
         </CardContent>
       </Card>
