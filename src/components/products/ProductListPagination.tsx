@@ -11,7 +11,16 @@ import {
 } from "@/components/ui/pagination.jsx";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select.jsx";
 
-const ProductListPagination = ({ currentPage, totalPages, onPageChange, itemsPerPage, onItemsPerPageChange, totalItems }) => {
+interface ProductListPaginationProps {
+  currentPage: number;
+  totalPages: number;
+  onPageChange: (page: number) => void;
+  itemsPerPage: number;
+  onItemsPerPageChange: (value: string) => void;
+  totalItems: number;
+}
+
+const ProductListPagination = ({ currentPage, totalPages, onPageChange, itemsPerPage, onItemsPerPageChange, totalItems }: ProductListPaginationProps) => {
   const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
 
   return (
