@@ -47,8 +47,8 @@ const RegisterPage = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900">
-      <Card className="w-[500px] max-w-[90%] my-20 mx-auto"> {/* Added mx-auto for horizontal centering */}
+    <div className="min-h-screen flex flex-col items-center bg-gray-100 dark:bg-gray-900"> {/* Adjusted parent div classes */}
+      <Card className="w-[500px] max-w-[90%] my-20 mx-auto"> {/* Applied consistent width and vertical margin */}
         <CardHeader className="text-center">
           <CardTitle className="text-2xl font-bold">Register</CardTitle>
           <CardDescription>Create your account to get started</CardDescription>
