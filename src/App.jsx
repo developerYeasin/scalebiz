@@ -36,7 +36,9 @@ import SocialLinksPage from "./pages/shop-settings/SocialLinksPage.jsx";
 import Billing from "./pages/Billing.jsx";
 import Subscription from "./pages/Subscription.jsx";
 import ZatiqAcademy from "./pages/ZatiqAcademy.jsx";
-import VendorDashboard from "./pages/vendor/VendorDashboard.jsx"; // New import
+import VendorDashboard from "./pages/vendor/VendorDashboard.jsx";
+import LoginPage from "./pages/auth/LoginPage.jsx"; // New import
+import RegisterPage from "./pages/auth/RegisterPage.jsx"; // New import
 
 
 const queryClient = new QueryClient();
@@ -48,6 +50,11 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
+          {/* Auth Routes - No Layout */}
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+
+          {/* Application Routes - With Layout */}
           <Route path="/" element={<Layout><Dashboard /></Layout>} />
           <Route path="/dashboard" element={<Layout><Dashboard /></Layout>} />
           <Route path="/orders" element={<Layout><Orders /></Layout>} />
@@ -78,7 +85,7 @@ const App = () => (
           <Route path="/billing" element={<Layout><Billing /></Layout>} />
           <Route path="/subscription" element={<Layout><Subscription /></Layout>} />
           <Route path="/zatiq-academy" element={<Layout><ZatiqAcademy /></Layout>} />
-          <Route path="/vendor-dashboard" element={<Layout><VendorDashboard /></Layout>} /> {/* New Route */}
+          <Route path="/vendor-dashboard" element={<Layout><VendorDashboard /></Layout>} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
