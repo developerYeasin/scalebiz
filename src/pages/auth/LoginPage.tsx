@@ -59,7 +59,7 @@ const LoginPage = () => {
                 required
               />
             </div>
-            <div className="grid gap-2 relative"> {/* Added relative positioning */}
+            <div className="grid gap-2 relative">
               <Label htmlFor="password">Password</Label>
               <Input
                 id="password"
@@ -67,12 +67,13 @@ const LoginPage = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
+                className="pr-10" // Add right padding to make space for the button
               />
               <Button
                 type="button"
                 variant="ghost"
                 size="icon"
-                className="absolute right-2 top-1/2 -translate-y-1/2 h-8 w-8 text-muted-foreground" // Adjusted positioning
+                className="absolute right-2 top-1/2 -translate-y-1/2 h-8 w-8 text-muted-foreground hover:bg-transparent hover:text-muted-foreground" // Adjusted positioning and removed hover
                 onClick={() => setShowPassword((prev) => !prev)} // Toggle password visibility
               >
                 {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
