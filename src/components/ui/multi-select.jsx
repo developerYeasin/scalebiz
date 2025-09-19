@@ -8,24 +8,23 @@ import { Badge } from "@/components/ui/badge.jsx";
 import { Button } from "@/components/ui/button.jsx";
 import {
   Command,
+  CommandEmpty,
   CommandGroup,
+  CommandInput,
   CommandItem,
   CommandList,
 } from "@/components/ui/command.jsx";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover.jsx";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover.jsx";
 import { Checkbox } from "@/components/ui/checkbox.jsx";
 
 const MultiSelect = ({
   options,
   selected,
   onSelect,
-  placeholder = "Select items...",
-  disabled = false,
+  placeholder,
   className,
+  disabled = false,
+  ...props
 }) => {
   const [open, setOpen] = React.useState(false);
 
@@ -51,16 +50,15 @@ const MultiSelect = ({
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className={cn(
-            "w-full justify-between h-auto min-h-[38px] flex-wrap",
-            selected.length > 0 ? "pr-2" : "pr-3",
-            className
-          )}
+          className={cn("w-full justify-between", className)}
           disabled={disabled}
+          {...props}
         >
-          {selected.length > 0 ? (
-            <div className="flex flex-wrap gap-1">
-              {selectedLabels.map((label, index) => (
+          <div className="flex flex-wrap gap-1">
+            {selected.length === 0 ? (
+              <span className="text-muted-foreground">{placeholder}</span>
+            ) : (
+              selectedLabels.map((label, index) => (
                 <Badge key={index} variant="secondary" className="flex items-center gap-1">
                   {label}
                   <X
@@ -71,27 +69,30 @@ const MultiSelect = ({
                     }}
                   />
                 </Badge>
-              ))}
-            </div>
-          ) : (
-            <span className="text-muted-foreground">{placeholder}</span>
-          )}
+              ))
+            )}
+          </div>
           <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0">
         <Command>
+          <CommandInput placeholder="Search options..." />
           <CommandList>
+            <CommandEmpty>No options found.</CommandEmpty>
             <CommandGroup>
               {options.map((option) => (
                 <CommandItem
                   key={option.value}
+                  value={option.label} // Use label for searchability
                   onSelect={() => handleSelect(option.value)}
-                  className="flex items-center gap-2 cursor-pointer"
+                  disabled={disabled}
                 >
                   <Checkbox
                     checked={selected.includes(option.value)}
                     onCheckedChange={() => handleSelect(option.value)}
+                    className="mr-2"
+                    disabled={disabled}
                   />
                   {option.label}
                   <Check
