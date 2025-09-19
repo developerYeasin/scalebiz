@@ -27,21 +27,21 @@ const MultiSelect = ({
   ...props
 }) => {
   const [open, setOpen] = React.useState(false);
-  const inputRef = React.useRef(null);
 
+  // Use a direct update for onSelect to ensure the latest 'selected' state is always used
   const handleToggleItem = React.useCallback((value) => {
-    onSelect((prevSelected) => {
-      if (prevSelected.includes(value)) {
-        return prevSelected.filter((item) => item !== value);
-      } else {
-        return [...prevSelected, value];
-      }
-    });
-  }, [onSelect]);
+    let newSelected;
+    if (selected.includes(value)) {
+      newSelected = selected.filter((item) => item !== value);
+    } else {
+      newSelected = [...selected, value];
+    }
+    onSelect(newSelected); // Direct update
+  }, [selected, onSelect]); // Dependency on 'selected' is now explicit
 
   const handleRemoveItem = React.useCallback((value) => {
-    onSelect((prevSelected) => prevSelected.filter((item) => item !== value));
-  }, [onSelect]);
+    onSelect(selected.filter((item) => item !== value));
+  }, [selected, onSelect]);
 
   const selectedLabels = React.useMemo(() => {
     return selected
@@ -58,7 +58,7 @@ const MultiSelect = ({
           aria-expanded={open}
           className={cn("w-full justify-between h-auto min-h-[40px] px-3 py-2", className)}
           disabled={disabled}
-          onClick={() => setOpen(true)} // Ensure button click opens popover
+          onClick={() => setOpen(true)}
           {...props}
         >
           <div className="flex flex-wrap gap-1 items-center">
@@ -94,13 +94,13 @@ const MultiSelect = ({
               {options.map((option) => (
                 <CommandItem
                   key={option.value}
-                  value={option.label} // Use label for searchability
+                  value={option.value} // Changed from option.label to option.value for consistency
                   onSelect={() => handleToggleItem(option.value)}
                   className="flex items-center cursor-pointer"
                 >
                   <Checkbox
                     checked={selected.includes(option.value)}
-                    onCheckedChange={() => handleToggleItem(option.value)} // Keep this for direct checkbox interaction
+                    onCheckedChange={() => handleToggleItem(option.value)}
                     className="mr-2"
                     disabled={disabled}
                   />
