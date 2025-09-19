@@ -186,8 +186,11 @@ const CreateCategoryDialog = ({ isOpen, onClose, onSave, initialData }: CreateCa
                       backgroundColor: 'hsl(var(--popover))',
                       borderColor: 'hsl(var(--border))',
                       zIndex: 9999, // Ensure high z-index for the menu
-                      maxHeight: '200px', // Added to enable scrolling
-                      overflowY: 'auto',  // Added to enable scrolling
+                    }),
+                    menuList: (baseStyles) => ({ // Targeting menuList for scrolling
+                      ...baseStyles,
+                      maxHeight: '200px', // Set max height for scroll
+                      overflowY: 'auto',  // Enable vertical scrolling
                     }),
                     option: (baseStyles, { isFocused, isSelected }) => ({
                       ...baseStyles,
