@@ -10,22 +10,16 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area.jsx";
 import { cn } from "@/lib/utils.js";
 import { showInfo } from "@/utils/toast.js";
 
-const productCategories = [
-  "All products",
-  "Inner item",
-  "Borka",
-  "Gown",
-  "Overcoat",
-  "Tops",
-  "T-shirt",
-  "co ords",
-  "Saree",
-  "One Piece",
-  "Two Piece",
-  "Three Piece", // Added based on mock data
-];
+interface ProductListHeaderProps {
+  activeCategory: string;
+  setActiveCategory: (category: string) => void;
+  searchTerm: string;
+  onSearchChange: (term: string) => void;
+  totalProducts: number;
+  productCategories: string[]; // Dynamic list of categories
+}
 
-const ProductListHeader = ({ activeCategory, setActiveCategory, searchTerm, onSearchChange, totalProducts }) => {
+const ProductListHeader = ({ activeCategory, setActiveCategory, searchTerm, onSearchChange, totalProducts, productCategories }: ProductListHeaderProps) => {
   return (
     <div className="flex flex-col gap-4 mb-6">
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">

@@ -10,9 +10,9 @@ import Layout from "./components/Layout.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
 import Orders from "./pages/Orders.jsx";
 import CreateOrder from "./pages/CreateOrder.jsx";
-import Products from "./pages/Products.jsx";
+import Products from "./pages/Products.tsx"; // Updated import
 import AddProduct from "./pages/AddProduct.jsx";
-import Categories from "./pages/Categories.tsx"; // Updated import
+import Categories from "./pages/Categories.tsx";
 import Customers from "./pages/Customers.jsx";
 import ManageShop from "./pages/ManageShop.jsx";
 import CustomizeTheme from "./pages/CustomizeTheme.jsx";
@@ -40,7 +40,7 @@ import ZatiqAcademy from "./pages/ZatiqAcademy.jsx";
 import VendorDashboard from "./pages/vendor/VendorDashboard.jsx";
 import LoginPage from "./pages/auth/LoginPage.tsx";
 import RegisterPage from "./pages/auth/RegisterPage.tsx";
-import Profile from "./pages/Profile.tsx"; // New import for Profile page
+import Profile from "./pages/Profile.tsx";
 
 import { isAuthenticated } from "./utils/auth.js"; // Import isAuthenticated utility
 
@@ -103,7 +103,7 @@ const App = () => (
           <Route path="/subscription" element={<ProtectedRoute><Layout><Subscription /></Layout></ProtectedRoute>} />
           <Route path="/zatiq-academy" element={<ProtectedRoute><Layout><ZatiqAcademy /></Layout></ProtectedRoute>} />
           <Route path="/vendor-dashboard" element={<ProtectedRoute><Layout><VendorDashboard /></Layout></ProtectedRoute>} />
-          <Route path="/profile" element={<ProtectedRoute><Layout><Profile /></Layout></ProtectedRoute>} /> {/* New Profile Route */}
+          <Route path="/profile" element={<ProtectedRoute><Layout><Profile /></Layout></ProtectedRoute>} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
