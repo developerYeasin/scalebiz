@@ -158,6 +158,7 @@ const CreateCategoryDialog = ({ isOpen, onClose, onSave, initialData }: CreateCa
                   isClearable={true}
                   placeholder="Select Parent Category"
                   className="mt-1"
+                  menuPortalTarget={document.body} // Explicitly portal to body
                   styles={{
                     control: (baseStyles) => ({
                       ...baseStyles,
@@ -184,6 +185,7 @@ const CreateCategoryDialog = ({ isOpen, onClose, onSave, initialData }: CreateCa
                       ...baseStyles,
                       backgroundColor: 'hsl(var(--popover))',
                       borderColor: 'hsl(var(--border))',
+                      zIndex: 9999, // Ensure high z-index for the menu
                     }),
                     option: (baseStyles, { isFocused, isSelected }) => ({
                       ...baseStyles,
@@ -202,6 +204,7 @@ const CreateCategoryDialog = ({ isOpen, onClose, onSave, initialData }: CreateCa
                         color: 'hsl(var(--primary-foreground))',
                       },
                     }),
+                    menuPortal: (base) => ({ ...base, zIndex: 9999 }), // Ensure high z-index for the portal
                   }}
                 />
                 {categoriesLoading && <p className="text-xs text-muted-foreground mt-1">Loading parent categories...</p>}
