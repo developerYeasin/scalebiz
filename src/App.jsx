@@ -41,6 +41,8 @@ import VendorDashboard from "./pages/vendor/VendorDashboard.jsx";
 import LoginPage from "./pages/auth/LoginPage.tsx";
 import RegisterPage from "./pages/auth/RegisterPage.tsx";
 import Profile from "./pages/Profile.tsx";
+import ProductViewPage from "./pages/products/ProductViewPage.tsx"; // New import
+import ProductEditPage from "./pages/products/ProductEditPage.tsx"; // New import
 
 import { isAuthenticated } from "./utils/auth.js"; // Import isAuthenticated utility
 
@@ -78,6 +80,8 @@ const App = () => (
           <Route path="/orders/create" element={<ProtectedRoute><Layout><CreateOrder /></Layout></ProtectedRoute>} />
           <Route path="/products" element={<ProtectedRoute><Layout><Products /></Layout></ProtectedRoute>} />
           <Route path="/products/add" element={<ProtectedRoute><Layout><AddProduct /></Layout></ProtectedRoute>} />
+          <Route path="/products/:productId" element={<ProtectedRoute><Layout><ProductViewPage /></Layout></ProtectedRoute>} /> {/* New route for product view */}
+          <Route path="/products/:productId/edit" element={<ProtectedRoute><Layout><ProductEditPage /></Layout></ProtectedRoute>} /> {/* New route for product edit */}
           <Route path="/categories" element={<ProtectedRoute><Layout><Categories /></Layout></ProtectedRoute>} />
           <Route path="/customers" element={<ProtectedRoute><Layout><Customers /></Layout></ProtectedRoute>} />
           <Route path="/manage-shop" element={<ProtectedRoute><Layout><ManageShop /></Layout></ProtectedRoute>} />

@@ -13,6 +13,7 @@ import { Eye, Pencil, Trash2, ShoppingCart, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button.jsx";
 import { showInfo, showError, showSuccess } from "@/utils/toast.js";
 import { Product } from "@/hooks/use-products.ts"; // Import Product type
+import { Link } from "react-router-dom"; // Import Link for navigation
 
 interface ProductListTableProps {
   products: Product[];
@@ -20,16 +21,6 @@ interface ProductListTableProps {
 }
 
 const ProductListTable = ({ products, onDeleteProduct }: ProductListTableProps) => {
-  const handleViewProduct = (productId: number) => {
-    showInfo(`Viewing product ${productId}`);
-    // In a real app, you might navigate to a product detail page
-  };
-
-  const handleEditProduct = (productId: number) => {
-    showInfo(`Editing product ${productId}`);
-    // In a real app, you might navigate to an edit product page
-  };
-
   const handleAddToOrder = (productName: string) => {
     showSuccess(`Added ${productName} to order!`);
   };
@@ -73,11 +64,15 @@ const ProductListTable = ({ products, onDeleteProduct }: ProductListTableProps) 
                 <TableCell>{product.stock_quantity}</TableCell>
                 <TableCell className="text-right">
                   <div className="flex items-center justify-end space-x-2">
-                    <Button variant="ghost" size="icon" onClick={() => handleViewProduct(product.id)}>
-                      <Eye className="h-4 w-4" />
+                    <Button variant="ghost" size="icon" asChild>
+                      <Link to={`/products/${product.id}`}>
+                        <Eye className="h-4 w-4" />
+                      </Link>
                     </Button>
-                    <Button variant="ghost" size="icon" onClick={() => handleEditProduct(product.id)}>
-                      <Pencil className="h-4 w-4" />
+                    <Button variant="ghost" size="icon" asChild>
+                      <Link to={`/products/${product.id}/edit`}>
+                        <Pencil className="h-4 w-4" />
+                      </Link>
                     </Button>
                     <Button variant="ghost" size="icon" className="text-destructive hover:text-destructive" onClick={() => onDeleteProduct(product.id)}>
                       <Trash2 className="h-4 w-4" />
