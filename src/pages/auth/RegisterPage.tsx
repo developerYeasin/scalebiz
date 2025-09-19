@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label.jsx";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card.jsx";
 import { showSuccess, showError } from "@/utils/toast.js";
 import api from "@/utils/api.js"; // Use the configured API instance
+import { Eye, EyeOff } from "lucide-react"; // Import Eye and EyeOff icons
 
 const RegisterPage = () => {
   const navigate = useNavigate();
@@ -19,6 +20,7 @@ const RegisterPage = () => {
   const [preferredLanguage, setPreferredLanguage] = React.useState("en");
   const [timezone, setTimezone] = React.useState("Dhaka");
   const [loading, setLoading] = React.useState(false);
+  const [showPassword, setShowPassword] = React.useState(false); // New state for password visibility
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -46,7 +48,7 @@ const RegisterPage = () => {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900">
-      <Card className="w-full max-w-md">
+      <Card className="w-[500px] max-w-[90%]"> {/* Applied consistent width */}
         <CardHeader className="text-center">
           <CardTitle className="text-2xl font-bold">Register</CardTitle>
           <CardDescription>Create your account to get started</CardDescription>
@@ -75,15 +77,25 @@ const RegisterPage = () => {
                 required
               />
             </div>
-            <div className="grid gap-2">
+            <div className="grid gap-2 relative"> {/* Added relative positioning */}
               <Label htmlFor="password">Password</Label>
               <Input
                 id="password"
-                type="password"
+                type={showPassword ? "text" : "password"} // Toggle input type
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
+                className="pr-10" // Add right padding to make space for the button
               />
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
+                className="absolute right-2 top-1/2 -translate-y-1/2 h-8 w-8 text-muted-foreground hover:bg-transparent hover:text-muted-foreground" // Adjusted positioning and removed hover
+                onClick={() => setShowPassword((prev) => !prev)} // Toggle password visibility
+              >
+                {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+              </Button>
             </div>
             <div className="grid gap-2">
               <Label htmlFor="phone_number">Phone Number</Label>
