@@ -40,8 +40,8 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900">
-      <Card className="w-[500px] max-w-[90%]">
+    <div className="min-h-screen flex flex-col items-center bg-gray-100 dark:bg-gray-900"> {/* Changed to flex-col and items-center */}
+      <Card className="w-[500px] max-w-[90%] my-20 mx-auto"> {/* Added my-20 and mx-auto */}
         <CardHeader className="text-center">
           <CardTitle className="text-2xl font-bold">Login</CardTitle>
           <CardDescription>Enter your email below to login to your account</CardDescription>
