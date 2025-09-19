@@ -8,9 +8,7 @@ export default defineConfig(() => ({
     host: "::",
     port: 8080,
   },
-  plugins: [dyadComponentTagger(), react({
-    jsxRuntime: 'automatic' // Explicitly set jsxRuntime for .jsx files
-  })],
+  plugins: [dyadComponentTagger(), react()], // Removed explicit jsxRuntime setting
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
