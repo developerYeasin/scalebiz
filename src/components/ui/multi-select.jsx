@@ -111,10 +111,11 @@ const MultiSelect = ({
                         setOpen(true); // Keep popover open after selection
                       }}
                       className="flex items-center cursor-pointer"
+                      aria-disabled={false} // Explicitly ensure CommandItem is not disabled
                     >
                       <Checkbox
                         checked={selected.includes(option.value)}
-                        disabled={false} // Explicitly set disabled to false
+                        // Removed disabled prop entirely to avoid conflicts
                         className="mr-2"
                       />
                       {option.label}
