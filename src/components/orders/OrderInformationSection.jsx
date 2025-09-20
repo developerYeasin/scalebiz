@@ -6,7 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Label } from "@/components/ui/label.jsx";
 import { ChevronUp } from "lucide-react";
 
-const OrderInformationSection = () => {
+const OrderInformationSection = ({ orderType, setOrderType, orderStatus, setOrderStatus }) => {
   return (
     <Card className="mb-6">
       <CardHeader className="flex flex-row items-center justify-between">
@@ -17,7 +17,7 @@ const OrderInformationSection = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <Label htmlFor="orderType">Order Type</Label>
-            <Select defaultValue="In shop">
+            <Select value={orderType} onValueChange={setOrderType}>
               <SelectTrigger id="orderType">
                 <SelectValue placeholder="In shop" />
               </SelectTrigger>
@@ -29,7 +29,7 @@ const OrderInformationSection = () => {
           </div>
           <div>
             <Label htmlFor="orderStatus">Order Status</Label>
-            <Select defaultValue="Order Completed">
+            <Select value={orderStatus} onValueChange={setOrderStatus}>
               <SelectTrigger id="orderStatus">
                 <SelectValue placeholder="Order Completed" />
               </SelectTrigger>
