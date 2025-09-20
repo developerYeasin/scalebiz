@@ -114,7 +114,7 @@ const MultiSelect = ({
                     >
                       <Checkbox
                         checked={selected.includes(option.value)}
-                        // Removed onCheckedChange from Checkbox, as CommandItem's onSelect handles the toggle
+                        disabled={false} // Explicitly set disabled to false
                         className="mr-2"
                       />
                       {option.label}
