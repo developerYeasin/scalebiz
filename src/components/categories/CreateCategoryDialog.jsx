@@ -178,7 +178,7 @@ const CreateCategoryDialog = ({ isOpen, onClose, onSave, initialData }) => {
         </ScrollArea>
         <div className="flex justify-end gap-2 mt-4 p-4 border-t">
           <Button variant="outline" onClick={onClose}>Cancel</Button>
-          <Button onClick={handleSaveClick}>
+          <Button onClick={handleSaveClick} disabled={!categoryName}>
             {initialData ? "Save Changes" : "Create Category"}
           </Button>
         </div>

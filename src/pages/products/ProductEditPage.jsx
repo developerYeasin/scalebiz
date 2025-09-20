@@ -21,7 +21,7 @@ const ProductEditPage = () => {
   const navigate = useNavigate();
 
   const { data: product, isLoading, error } = useProductById(id);
-  const { updateProduct } = useProducts();
+  const { updateProduct, isUpdating } = useProducts(); // Get isUpdating state
   const { categories: allCategories, isLoading: categoriesLoading } = useCategories();
 
   const [name, setName] = React.useState("");
@@ -91,6 +91,8 @@ const ProductEditPage = () => {
     })) || [];
   }, [allCategories]);
 
+  const isSaveDisabled = !name || !price || !stockQuantity || isUpdating;
+
   if (isLoading || categoriesLoading) {
     return (
       <div className="p-4 md:p-6 text-center">
@@ -139,9 +141,9 @@ const ProductEditPage = () => {
               Cancel
             </Link>
           </Button>
-          <Button onClick={handleSave}>
+          <Button onClick={handleSave} disabled={isSaveDisabled}>
             <Check className="h-4 w-4 mr-2" />
-            Save Changes
+            {isUpdating ? "Saving..." : "Save Changes"}
           </Button>
         </div>
       </div>

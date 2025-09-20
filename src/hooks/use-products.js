@@ -73,7 +73,9 @@ export const useProducts = () => {
     isLoading,
     error,
     createProduct: createProductMutation.mutate,
+    isCreating: createProductMutation.isPending,
     updateProduct: updateProductMutation.mutate,
+    isUpdating: updateProductMutation.isPending, // Exposed for use in components
     deleteProduct: deleteProductMutation.mutate,
   };
 };
