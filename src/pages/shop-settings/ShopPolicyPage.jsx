@@ -101,9 +101,6 @@ If you have any questions about our Refund, Return, and Cancellation Policy, ple
         lastUpdated="2025-07-10"
         content={returnCancellationContent}
       />
-      <div className="flex justify-end mt-4">
-        <Button>Update Policy</Button>
-      </div>
     </SettingsPageLayout>
   );
 };

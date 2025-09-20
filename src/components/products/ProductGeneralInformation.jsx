@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input.jsx";
 import { Label } from "@/components/ui/label.jsx";
 import { Textarea } from "@/components/ui/textarea.jsx";
 import { ChevronUp } from "lucide-react";
+import RichTextEditor from '@/components/ui/RichTextEditor.jsx';
 
 const ProductGeneralInformation = ({
   itemName,
@@ -46,30 +47,10 @@ const ProductGeneralInformation = ({
           </div>
           <div>
             <Label htmlFor="productDescription">Product Description</Label>
-            <div className="border rounded-md mt-1">
-              <div className="flex items-center border-b p-2 space-x-2">
-                <span className="text-sm font-medium">Normal</span>
-                <span className="text-sm font-medium">&#9660;</span>
-                <span className="text-sm font-medium">B</span>
-                <span className="text-sm font-medium">I</span>
-                <span className="text-sm font-medium">U</span>
-                <span className="text-sm font-medium">"</span>
-                <span className="text-sm font-medium">A</span>
-                <span className="text-sm font-medium">::</span>
-                <span className="text-sm font-medium">::</span>
-                <span className="text-sm font-medium">::</span>
-                <span className="text-sm font-medium">::</span>
-                <span className="text-sm font-medium">@</span>
-                <span className="text-sm font-medium">Tx</span>
-              </div>
-              <Textarea
-                id="productDescription"
-                placeholder="Write something..."
-                className="border-none focus-visible:ring-0"
-                value={productDescription}
-                onChange={(e) => setProductDescription(e.target.value)}
-              />
-            </div>
+            <RichTextEditor
+              content={productDescription}
+              onChange={setProductDescription}
+            />
           </div>
         </div>
       </CardContent>
