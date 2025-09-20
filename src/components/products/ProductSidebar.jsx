@@ -42,7 +42,6 @@ const ProductSidebar = ({
             selected={selectedCategoryIds}
             onSelect={setSelectedCategoryIds}
             placeholder={categoriesLoading ? "Loading categories..." : "Select Categories"}
-            // Removed disabled={categoriesLoading} to allow interaction
           />
           {categoriesLoading && <p className="text-xs text-muted-foreground mt-1">Categories are loading...</p>}
         </CardContent>

@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/command.jsx";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover.jsx";
 import { Checkbox } from "@/components/ui/checkbox.jsx";
+import { ScrollArea } from "@/components/ui/scroll-area.jsx";
 
 const MultiSelect = ({
   options, // Array of { value: string, label: string }
@@ -29,20 +30,20 @@ const MultiSelect = ({
   const [open, setOpen] = React.useState(false);
   const [inputValue, setInputValue] = React.useState("");
 
-  const handleToggleOption = React.useCallback((value) => {
-    let newSelected;
-    if (selected.includes(value)) {
-      newSelected = selected.filter((item) => item !== value);
-    } else {
-      newSelected = [...selected, value];
-    }
+  // Function to toggle selection of an option
+  const toggleOption = React.useCallback((optionValue) => {
+    const newSelected = selected.includes(optionValue)
+      ? selected.filter((item) => item !== optionValue)
+      : [...selected, optionValue];
     onSelect(newSelected);
   }, [selected, onSelect]);
 
-  const handleRemoveBadge = React.useCallback((valueToRemove) => {
-    onSelect(selected.filter((item) => item !== valueToRemove));
+  // Function to remove a selected item via its badge
+  const removeBadge = React.useCallback((optionValue) => {
+    onSelect(selected.filter((item) => item !== optionValue));
   }, [selected, onSelect]);
 
+  // Get labels for selected values to display in badges
   const selectedLabels = React.useMemo(() => {
     return selected
       .map((value) => options.find((option) => option.value === value)?.label)
@@ -58,7 +59,6 @@ const MultiSelect = ({
           aria-expanded={open}
           className={cn("w-full justify-between h-auto min-h-[40px] px-3 py-2", className)}
           disabled={disabled}
-          onClick={() => setOpen(true)}
           {...props}
         >
           <div className="flex flex-wrap gap-1 items-center">
@@ -75,7 +75,7 @@ const MultiSelect = ({
                       onClick={(e) => {
                         e.stopPropagation(); // Prevent popover from closing
                         if (optionValue) {
-                          handleRemoveBadge(optionValue);
+                          removeBadge(optionValue);
                         }
                       }}
                     />
@@ -95,34 +95,30 @@ const MultiSelect = ({
             onValueChange={setInputValue}
           />
           <CommandList>
-            <CommandEmpty>No options found.</CommandEmpty>
-            <CommandGroup>
-              {options.map((option) => (
-                <CommandItem
-                  key={option.value}
-                  value={option.label} // Use label for search filtering
-                  onSelect={() => {
-                    handleToggleOption(option.value);
-                    setInputValue(""); // Clear input after selection
-                  }}
-                  className="flex items-center cursor-pointer"
-                >
-                  <Checkbox
-                    checked={selected.includes(option.value)}
-                    onCheckedChange={() => handleToggleOption(option.value)}
-                    className="mr-2"
-                    disabled={disabled}
-                  />
-                  {option.label}
-                  <Check
-                    className={cn(
-                      "ml-auto h-4 w-4",
-                      selected.includes(option.value) ? "opacity-100" : "opacity-0"
-                    )}
-                  />
-                </CommandItem>
-              ))}
-            </CommandGroup>
+            <ScrollArea className="h-48">
+              <CommandEmpty>No options found.</CommandEmpty>
+              <CommandGroup>
+                {options.map((option) => (
+                  <CommandItem
+                    key={option.value}
+                    value={option.label} // Use label for search filtering
+                    onSelect={() => {
+                      toggleOption(option.value);
+                      setInputValue(""); // Clear input after selection
+                    }}
+                    className="flex items-center cursor-pointer"
+                  >
+                    <Checkbox
+                      checked={selected.includes(option.value)}
+                      onCheckedChange={() => toggleOption(option.value)}
+                      className="mr-2"
+                      disabled={disabled}
+                    />
+                    {option.label}
+                  </CommandItem>
+                ))}
+              </CommandGroup>
+            </ScrollArea>
           </CommandList>
         </Command>
       </PopoverContent>
