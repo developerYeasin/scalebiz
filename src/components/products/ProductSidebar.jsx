@@ -41,7 +41,8 @@ const ProductSidebar = ({
             options={categoryOptions}
             selected={selectedCategoryIds}
             onSelect={setSelectedCategoryIds}
-            placeholder={categoriesLoading ? "Loading categories..." : "Select Categories"}
+            placeholder="Select Categories"
+            loading={categoriesLoading} // Pass loading state
           />
           {categoriesLoading && <p className="text-xs text-muted-foreground mt-1">Categories are loading...</p>}
         </CardContent>

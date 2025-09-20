@@ -24,7 +24,7 @@ const MultiSelect = ({
   onSelect, // Function to call when selection changes: (newSelectedValues: string[]) => void
   placeholder,
   className,
-  disabled = false, // Overall disabled state for the component
+  loading = false, // New loading prop
   ...props
 }) => {
   const [open, setOpen] = React.useState(false);
@@ -58,8 +58,7 @@ const MultiSelect = ({
           role="combobox"
           aria-expanded={open}
           className={cn("w-full justify-between h-auto min-h-[40px] px-3 py-2", className)}
-          disabled={disabled} // Disable the trigger button if the component is disabled
-          {...props}
+          {...props} // Pass other props like `aria-label` if needed
         >
           <div className="flex flex-wrap gap-1 items-center">
             {selected.length === 0 ? (
@@ -93,12 +92,11 @@ const MultiSelect = ({
             placeholder="Search options..."
             value={inputValue}
             onValueChange={setInputValue}
-            disabled={disabled} // Disable search input if the component is disabled
           />
           <CommandList>
             <ScrollArea className="h-48">
-              {disabled ? (
-                <CommandEmpty>Loading categories...</CommandEmpty> // Show loading message if disabled
+              {loading ? (
+                <CommandEmpty>Loading options...</CommandEmpty>
               ) : options.length === 0 ? (
                 <CommandEmpty>No options found.</CommandEmpty>
               ) : (
@@ -117,7 +115,6 @@ const MultiSelect = ({
                         checked={selected.includes(option.value)}
                         onCheckedChange={() => toggleOption(option.value)}
                         className="mr-2"
-                        // Removed `disabled={disabled}` here to ensure checkboxes are always interactive when visible
                       />
                       {option.label}
                     </CommandItem>
