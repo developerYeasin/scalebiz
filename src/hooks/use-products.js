@@ -25,6 +25,7 @@ const updateProduct = async (updatedProduct) => {
 
 const deleteProduct = async (id) => {
   await api.delete(`/products/${id}`);
+  return id; // Return the id to use it in onSuccess
 };
 
 export const useProducts = () => {
@@ -48,8 +49,14 @@ export const useProducts = () => {
 
   const updateProductMutation = useMutation({
     mutationFn: updateProduct,
-    onSuccess: () => {
+    onSuccess: (updatedProductData, variables) => {
+      // Invalidate the main products list to refetch it next time it's needed.
       queryClient.invalidateQueries({ queryKey: ["products"] });
+
+      // Immediately update the cache for the specific product that was edited.
+      // This prevents the view page from needing to refetch.
+      queryClient.setQueryData(["product", variables.id], updatedProductData);
+
       showSuccess("Product updated successfully!");
     },
     onError: (err) => {
@@ -59,8 +66,13 @@ export const useProducts = () => {
 
   const deleteProductMutation = useMutation({
     mutationFn: deleteProduct,
-    onSuccess: () => {
+    onSuccess: (deletedProductId) => {
+      // Invalidate the main products list to ensure it's fresh.
       queryClient.invalidateQueries({ queryKey: ["products"] });
+
+      // Remove the specific product's query from the cache.
+      queryClient.removeQueries({ queryKey: ["product", deletedProductId] });
+
       showSuccess("Product deleted successfully!");
     },
     onError: (err) => {
@@ -75,7 +87,7 @@ export const useProducts = () => {
     createProduct: createProductMutation.mutate,
     isCreating: createProductMutation.isPending,
     updateProduct: updateProductMutation.mutate,
-    isUpdating: updateProductMutation.isPending, // Exposed for use in components
+    isUpdating: updateProductMutation.isPending,
     deleteProduct: deleteProductMutation.mutate,
   };
 };
