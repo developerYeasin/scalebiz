@@ -61,8 +61,8 @@ export const useOrders = (page, limit) => {
     mutationFn: updateOrder,
     onSuccess: (data, variables) => {
       queryClient.invalidateQueries({ queryKey: ["orders"] });
-      queryClient.setQueryData(["order", variables.id], data.data.order);
-      showSuccess("Order updated successfully!");
+      queryClient.invalidateQueries({ queryKey: ["order", variables.id] });
+      showSuccess(data.message || "Order updated successfully!");
     },
     onError: (err) => {
       showError(err.response?.data?.message || "Failed to update order.");
