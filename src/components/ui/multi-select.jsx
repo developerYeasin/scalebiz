@@ -24,7 +24,7 @@ const MultiSelect = ({
   onSelect, // Function to call when selection changes: (newSelectedValues: string[]) => void
   placeholder,
   className,
-  disabled = false,
+  disabled = false, // Overall disabled state for the component
   ...props
 }) => {
   const [open, setOpen] = React.useState(false);
@@ -58,7 +58,7 @@ const MultiSelect = ({
           role="combobox"
           aria-expanded={open}
           className={cn("w-full justify-between h-auto min-h-[40px] px-3 py-2", className)}
-          disabled={disabled}
+          disabled={disabled} // Disable the trigger button if the component is disabled
           {...props}
         >
           <div className="flex flex-wrap gap-1 items-center">
@@ -93,31 +93,37 @@ const MultiSelect = ({
             placeholder="Search options..."
             value={inputValue}
             onValueChange={setInputValue}
+            disabled={disabled} // Disable search input if the component is disabled
           />
           <CommandList>
             <ScrollArea className="h-48">
-              <CommandEmpty>No options found.</CommandEmpty>
-              <CommandGroup>
-                {options.map((option) => (
-                  <CommandItem
-                    key={option.value}
-                    value={option.label} // Use label for search filtering
-                    onSelect={() => {
-                      toggleOption(option.value);
-                      setInputValue(""); // Clear input after selection
-                    }}
-                    className="flex items-center cursor-pointer"
-                  >
-                    <Checkbox
-                      checked={selected.includes(option.value)}
-                      onCheckedChange={() => toggleOption(option.value)}
-                      className="mr-2"
-                      disabled={disabled}
-                    />
-                    {option.label}
-                  </CommandItem>
-                ))}
-              </CommandGroup>
+              {disabled ? (
+                <CommandEmpty>Loading categories...</CommandEmpty> // Show loading message if disabled
+              ) : options.length === 0 ? (
+                <CommandEmpty>No options found.</CommandEmpty>
+              ) : (
+                <CommandGroup>
+                  {options.map((option) => (
+                    <CommandItem
+                      key={option.value}
+                      value={option.label} // Use label for search filtering
+                      onSelect={() => {
+                        toggleOption(option.value);
+                        setInputValue(""); // Clear input after selection
+                      }}
+                      className="flex items-center cursor-pointer"
+                    >
+                      <Checkbox
+                        checked={selected.includes(option.value)}
+                        onCheckedChange={() => toggleOption(option.value)}
+                        className="mr-2"
+                        // Removed `disabled={disabled}` here to ensure checkboxes are always interactive when visible
+                      />
+                      {option.label}
+                    </CommandItem>
+                  ))}
+                </CommandGroup>
+              )}
             </ScrollArea>
           </CommandList>
         </Command>
