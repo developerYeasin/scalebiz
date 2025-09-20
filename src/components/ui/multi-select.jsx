@@ -101,20 +101,24 @@ const MultiSelect = ({
                   {options.map((option) => (
                     <CommandItem
                       key={option.value}
-                      value={option.label}
+                      value={option.value} // Use option.value for CommandItem's value
                       onSelect={() => {
+                        // This handles clicks on the CommandItem row itself
                         toggleOption(option.value);
                         setInputValue("");
                         // Keep popover open after selection for multi-select
                       }}
                       className="flex items-center cursor-pointer"
-                      data-disabled={false} // Explicitly ensure CommandItem is not disabled
+                      data-disabled={false}
                       aria-disabled={false}
                     >
                       <Checkbox
                         checked={selected.includes(option.value)}
                         onCheckedChange={() => toggleOption(option.value)} // Direct interaction with checkbox
                         className="mr-2"
+                        // Prevent event bubbling from checkbox to CommandItem's onSelect if needed,
+                        // though cmdk usually handles this gracefully.
+                        onClick={(e) => e.stopPropagation()}
                       />
                       {option.label}
                     </CommandItem>
