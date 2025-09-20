@@ -46,6 +46,9 @@ const AddProduct = () => {
   // Shipping
   const [applyDefaultDeliveryCharges, setApplyDefaultDeliveryCharges] = React.useState(true);
 
+  // Variants
+  const [variants, setVariants] = React.useState([]);
+
   // Sidebar
   const [selectedCategoryIds, setSelectedCategoryIds] = React.useState([]);
   const [brandName, setBrandName] = React.useState("");
@@ -71,6 +74,7 @@ const AddProduct = () => {
       setWarranty("");
       setInitialSoldCount("0");
       setApplyDefaultDeliveryCharges(true);
+      setVariants([]);
       setSelectedCategoryIds([]);
       setBrandName("");
       setCondition("new");
@@ -105,6 +109,7 @@ const AddProduct = () => {
       sku: skuCode || null,
       barcode: productSerial || null, // Using productSerial as barcode for now
       category_ids: selectedCategoryIds.map(Number),
+      variants: variants, // Including variants in the payload
     };
 
     createProduct(payload, {
@@ -165,7 +170,7 @@ const AddProduct = () => {
             applyDefaultDeliveryCharges={applyDefaultDeliveryCharges}
             setApplyDefaultDeliveryCharges={setApplyDefaultDeliveryCharges}
           />
-          <ProductVariants />
+          <ProductVariants variants={variants} setVariants={setVariants} />
           <ProductDetails />
         </div>
         <div className="lg:col-span-1">
