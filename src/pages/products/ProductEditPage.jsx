@@ -215,7 +215,7 @@ const ProductEditPage = () => {
                     selected={selectedCategoryIds}
                     onSelect={setSelectedCategoryIds}
                     placeholder="Select Categories"
-                    disabled={categoriesLoading}
+                    loading={categoriesLoading}
                   />
                   {categoriesLoading && <p className="text-xs text-muted-foreground mt-1">Loading categories...</p>}
                 </div>

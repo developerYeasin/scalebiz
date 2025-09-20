@@ -108,12 +108,13 @@ const MultiSelect = ({
                       onSelect={() => {
                         toggleOption(option.value);
                         setInputValue(""); // Clear input after selection
+                        setOpen(true); // Keep popover open after selection
                       }}
                       className="flex items-center cursor-pointer"
                     >
                       <Checkbox
                         checked={selected.includes(option.value)}
-                        onCheckedChange={() => toggleOption(option.value)}
+                        // Removed onCheckedChange from Checkbox, as CommandItem's onSelect handles the toggle
                         className="mr-2"
                       />
                       {option.label}
