@@ -24,13 +24,12 @@ const MultiSelect = ({
   onSelect, // Function to call when selection changes: (newSelectedValues: string[]) => void
   placeholder,
   className,
-  loading = false, // New loading prop
+  loading = false,
   ...props
 }) => {
   const [open, setOpen] = React.useState(false);
   const [inputValue, setInputValue] = React.useState("");
 
-  // Function to toggle selection of an option
   const toggleOption = React.useCallback((optionValue) => {
     const newSelected = selected.includes(optionValue)
       ? selected.filter((item) => item !== optionValue)
@@ -38,12 +37,10 @@ const MultiSelect = ({
     onSelect(newSelected);
   }, [selected, onSelect]);
 
-  // Function to remove a selected item via its badge
   const removeBadge = React.useCallback((optionValue) => {
     onSelect(selected.filter((item) => item !== optionValue));
   }, [selected, onSelect]);
 
-  // Get labels for selected values to display in badges
   const selectedLabels = React.useMemo(() => {
     return selected
       .map((value) => options.find((option) => option.value === value)?.label)
@@ -58,7 +55,7 @@ const MultiSelect = ({
           role="combobox"
           aria-expanded={open}
           className={cn("w-full justify-between h-auto min-h-[40px] px-3 py-2", className)}
-          {...props} // Pass other props like `aria-label` if needed
+          {...props}
         >
           <div className="flex flex-wrap gap-1 items-center">
             {selected.length === 0 ? (
@@ -72,7 +69,7 @@ const MultiSelect = ({
                     <X
                       className="h-3 w-3 cursor-pointer text-muted-foreground hover:text-foreground"
                       onClick={(e) => {
-                        e.stopPropagation(); // Prevent popover from closing
+                        e.stopPropagation();
                         if (optionValue) {
                           removeBadge(optionValue);
                         }
@@ -104,16 +101,19 @@ const MultiSelect = ({
                   {options.map((option) => (
                     <CommandItem
                       key={option.value}
-                      value={option.label} // Use label for search filtering
+                      value={option.label}
                       onSelect={() => {
                         toggleOption(option.value);
-                        setInputValue(""); // Clear input after selection
+                        setInputValue("");
+                        // Keep popover open after selection for multi-select
                       }}
                       className="flex items-center cursor-pointer"
+                      data-disabled={false} // Explicitly ensure CommandItem is not disabled
+                      aria-disabled={false}
                     >
                       <Checkbox
                         checked={selected.includes(option.value)}
-                        onCheckedChange={() => toggleOption(option.value)}
+                        onCheckedChange={() => toggleOption(option.value)} // Direct interaction with checkbox
                         className="mr-2"
                       />
                       {option.label}
