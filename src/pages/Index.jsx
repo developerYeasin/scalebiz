@@ -1,4 +1,4 @@
-import { MadeWithDyad } from "@/components/made-with-dyad.jsx";
+import { MadeWithDyad } from "@/components/made-with-scalebiz.jsx";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button.jsx";
 

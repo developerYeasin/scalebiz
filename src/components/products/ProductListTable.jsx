@@ -11,14 +11,9 @@ import {
 } from "@/components/ui/table.jsx";
 import { Eye, Pencil, Trash2, ShoppingCart } from "lucide-react";
 import { Button } from "@/components/ui/button.jsx";
-import { showInfo, showError, showSuccess } from "@/utils/toast.js";
 import { Link } from "react-router-dom";
 
-const OrdersTable = ({ products, onDeleteProduct }) => {
-  const handleAddToOrder = (productName) => {
-    showSuccess(`Added ${productName} to order!`);
-  };
-
+const ProductListTable = ({ products, onDeleteProduct, onQuickOrder }) => {
   return (
     <div className="rounded-md border overflow-x-auto">
       <Table>
@@ -70,7 +65,7 @@ const OrdersTable = ({ products, onDeleteProduct }) => {
                     <Button variant="ghost" size="icon" className="text-destructive hover:text-destructive" onClick={() => onDeleteProduct(product.id)}>
                       <Trash2 className="h-4 w-4" />
                     </Button>
-                    <Button className="bg-purple-600 hover:bg-purple-700 text-white" onClick={() => handleAddToOrder(product.name)}>
+                    <Button className="bg-purple-600 hover:bg-purple-700 text-white" onClick={() => onQuickOrder(product)}>
                       <ShoppingCart className="h-4 w-4 mr-2" />
                       Add to order
                     </Button>
@@ -85,4 +80,4 @@ const OrdersTable = ({ products, onDeleteProduct }) => {
   );
 };
 
-export default OrdersTable;
+export default ProductListTable;

@@ -6,6 +6,7 @@ import ProductListTable from "@/components/products/ProductListTable.jsx";
 import ProductListPagination from "@/components/products/ProductListPagination.jsx";
 import { useProducts } from "@/hooks/use-products.js";
 import { useCategories } from "@/hooks/use-categories.js";
+import CreateOrderFromProductDialog from "@/components/products/CreateOrderFromProductDialog.jsx";
 
 const Products = () => {
   const { products, isLoading, error, deleteProduct } = useProducts();
@@ -15,6 +16,7 @@ const Products = () => {
   const [searchTerm, setSearchTerm] = React.useState("");
   const [currentPage, setCurrentPage] = React.useState(1);
   const [itemsPerPage, setItemsPerPage] = React.useState(10);
+  const [quickOrderProduct, setQuickOrderProduct] = React.useState(null);
 
   const allProductCategories = React.useMemo(() => {
     const uniqueCategories = new Set();
@@ -57,6 +59,10 @@ const Products = () => {
     }
   };
 
+  const handleQuickOrder = (product) => {
+    setQuickOrderProduct(product);
+  };
+
   if (isLoading || categoriesLoading) {
     return <div className="p-4 md:p-6 text-center">Loading products...</div>;
   }
@@ -75,7 +81,11 @@ const Products = () => {
         totalProducts={filteredProducts.length}
         productCategories={allProductCategories}
       />
-      <ProductListTable products={paginatedProducts} onDeleteProduct={handleDeleteProduct} />
+      <ProductListTable
+        products={paginatedProducts}
+        onDeleteProduct={handleDeleteProduct}
+        onQuickOrder={handleQuickOrder}
+      />
       <ProductListPagination
         currentPage={currentPage}
         totalPages={totalPages}
@@ -83,6 +93,11 @@ const Products = () => {
         itemsPerPage={itemsPerPage}
         onItemsPerPageChange={handleItemsPerPageChange}
         totalItems={filteredProducts.length}
+      />
+      <CreateOrderFromProductDialog
+        isOpen={!!quickOrderProduct}
+        onClose={() => setQuickOrderProduct(null)}
+        product={quickOrderProduct}
       />
     </div>
   );

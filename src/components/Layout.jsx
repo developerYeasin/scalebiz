@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { MadeWithDyad } from "@/components/made-with-dyad.jsx";
+import { MadeWithDyad } from "@/components/made-with-scalebiz.jsx";
 import Sidebar from "@/components/Sidebar.jsx";
 import { useIsMobile } from "@/hooks/use-mobile.js";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet.jsx";
@@ -86,7 +86,7 @@ const Layout = ({ children }) => {
             </DropdownMenuContent>
           </DropdownMenu>
         </header>
-        <div className="p-4 md:p-6 h-full bg-background">
+        <div className="p-4 md:p-6 bg-background">
           {children}
         </div>
         <MadeWithDyad />
