@@ -4,11 +4,20 @@ import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card.jsx";
 import { Button } from "@/components/ui/button.jsx";
 import { Image, ChevronUp } from "lucide-react";
-import { showInfo } from "@/utils/toast.js";
+import { uploadMultipleImages } from "@/utils/upload.js";
 
 const ShowcasedBannerSection = () => {
-  const handleUpload = () => {
-    showInfo("Showcased banner upload initiated (dummy action).");
+  const imagesInputRef = React.useRef(null);
+
+  const handleUpload = async (event) => {
+    const files = Array.from(event.target.files);
+    if (files.length === 0) return;
+    try {
+      await uploadMultipleImages(files);
+      // In a real app, you'd update state with the new image URLs
+    } catch (error) {
+      // Error is handled by the toast in the upload utility
+    }
   };
 
   return (
@@ -21,7 +30,15 @@ const ShowcasedBannerSection = () => {
         <p className="text-sm text-muted-foreground mb-4">
           Select upto 4 items to get a better visual impact on your website
         </p>
-        <Button className="mb-4" onClick={handleUpload}>Upload (0/4)</Button>
+        <input
+          type="file"
+          ref={imagesInputRef}
+          onChange={handleUpload}
+          accept="image/png, image/jpeg, image/gif"
+          style={{ display: 'none' }}
+          multiple
+        />
+        <Button className="mb-4" onClick={() => imagesInputRef.current.click()}>Upload (0/4)</Button>
         <div className="relative border-2 border-dashed border-gray-300 rounded-md p-6 text-center flex flex-col items-center justify-center h-48">
           <img src="https://picsum.photos/seed/showcased-banner/400/200" alt="Showcased Banner Placeholder" className="h-full w-full object-cover rounded-md absolute inset-0 opacity-50" />
           <Image className="h-12 w-12 text-muted-foreground mb-2 relative z-10" />

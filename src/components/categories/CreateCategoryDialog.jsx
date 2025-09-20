@@ -17,6 +17,7 @@ import { showInfo } from "@/utils/toast.js";
 import { useCategories } from "@/hooks/use-categories.js";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select.jsx";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area.jsx";
+import { uploadSingleImage } from "@/utils/upload.js";
 
 const CreateCategoryDialog = ({ isOpen, onClose, onSave, initialData }) => {
   const { categories: allCategories, isLoading: categoriesLoading } = useCategories();
@@ -25,6 +26,9 @@ const CreateCategoryDialog = ({ isOpen, onClose, onSave, initialData }) => {
   const [bannerImageUrl, setBannerImageUrl] = React.useState(initialData?.image_url || "");
   const [squareImageUrl, setSquareImageUrl] = React.useState(initialData?.image_url || "");
   const [parentId, setParentId] = React.useState(initialData?.parent_id ? String(initialData.parent_id) : null);
+
+  const bannerInputRef = React.useRef(null);
+  const squareInputRef = React.useRef(null);
 
   React.useEffect(() => {
     if (initialData) {
@@ -42,14 +46,20 @@ const CreateCategoryDialog = ({ isOpen, onClose, onSave, initialData }) => {
     }
   }, [initialData]);
 
-  const handleAddBannerImage = () => {
-    showInfo("Banner image upload initiated (dummy action).");
-    setBannerImageUrl("https://picsum.photos/seed/uploaded-banner/1300/380");
-  };
+  const handleFileSelect = async (event, imageType) => {
+    const file = event.target.files[0];
+    if (!file) return;
 
-  const handleAddSquareImage = () => {
-    showInfo("Square image upload initiated (dummy action).");
-    setSquareImageUrl("https://picsum.photos/seed/uploaded-square/500/500");
+    try {
+      const { imageUrl } = await uploadSingleImage(file);
+      if (imageType === 'banner') {
+        setBannerImageUrl(imageUrl);
+      } else {
+        setSquareImageUrl(imageUrl);
+      }
+    } catch (error) {
+      // Error is handled by the toast in the upload utility
+    }
   };
 
   const handleSaveClick = () => {
@@ -97,6 +107,13 @@ const CreateCategoryDialog = ({ isOpen, onClose, onSave, initialData }) => {
         <ScrollArea className="flex-1 h-0">
           <div className="grid gap-4 p-4">
             <div className="border-2 border-dashed border-gray-300 rounded-md p-6 text-center flex flex-col items-center justify-center">
+              <input
+                type="file"
+                ref={bannerInputRef}
+                onChange={(e) => handleFileSelect(e, 'banner')}
+                accept="image/png, image/jpeg, image/gif"
+                style={{ display: 'none' }}
+              />
               {bannerImageUrl ? (
                 <img src={bannerImageUrl} alt="Banner" className="h-24 w-auto object-contain mb-2" />
               ) : (
@@ -105,13 +122,20 @@ const CreateCategoryDialog = ({ isOpen, onClose, onSave, initialData }) => {
               <p className="text-sm text-muted-foreground mb-2">
                 Upload a banner image for the category. Recommended size is 1300×380 pixels. Maximum file size is 4MB.
               </p>
-              <Button variant="outline" onClick={handleAddBannerImage}>
+              <Button variant="outline" onClick={() => bannerInputRef.current.click()}>
                 {bannerImageUrl ? "Change Image" : "Add Image"}
               </Button>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="border-2 border-dashed border-gray-300 rounded-md p-6 text-center flex flex-col items-center justify-center">
+                <input
+                  type="file"
+                  ref={squareInputRef}
+                  onChange={(e) => handleFileSelect(e, 'square')}
+                  accept="image/png, image/jpeg, image/gif"
+                  style={{ display: 'none' }}
+                />
                 {squareImageUrl ? (
                   <img src={squareImageUrl} alt="Square" className="h-24 w-24 object-cover mb-2" />
                 ) : (
@@ -120,7 +144,7 @@ const CreateCategoryDialog = ({ isOpen, onClose, onSave, initialData }) => {
                 <p className="text-sm text-muted-foreground mb-2">
                   Upload a square image for the category (1:1) aspect ratio. Recommended size is 500×500 pixels. Maximum file size is 4MB.
                 </p>
-                <Button variant="outline" onClick={handleAddSquareImage}>
+                <Button variant="outline" onClick={() => squareInputRef.current.click()}>
                   {squareImageUrl ? "Change Image" : "Add Image"}
                 </Button>
               </div>

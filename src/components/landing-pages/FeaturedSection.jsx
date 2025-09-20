@@ -4,11 +4,20 @@ import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card.jsx";
 import { Button } from "@/components/ui/button.jsx";
 import { ChevronUp, Image } from "lucide-react";
-import { showInfo } from "@/utils/toast.js";
+import { uploadMultipleImages } from "@/utils/upload.js";
 
 const FeaturedSection = () => {
-  const handleUpload = () => {
-    showInfo("Featured items upload initiated (dummy action).");
+  const imagesInputRef = React.useRef(null);
+
+  const handleUpload = async (event) => {
+    const files = Array.from(event.target.files);
+    if (files.length === 0) return;
+    try {
+      await uploadMultipleImages(files);
+      // In a real app, you'd update state with the new image URLs
+    } catch (error) {
+      // Error is handled by the toast in the upload utility
+    }
   };
 
   return (
@@ -21,7 +30,15 @@ const FeaturedSection = () => {
         <p className="text-sm text-muted-foreground mb-4">
           You can upload up to 2 items for a better visual impact on your website
         </p>
-        <Button className="mb-4" onClick={handleUpload}>Upload (0/2)</Button>
+        <input
+          type="file"
+          ref={imagesInputRef}
+          onChange={handleUpload}
+          accept="image/png, image/jpeg, image/gif"
+          style={{ display: 'none' }}
+          multiple
+        />
+        <Button className="mb-4" onClick={() => imagesInputRef.current.click()}>Upload (0/2)</Button>
         <div className="border-2 border-dashed border-gray-300 rounded-md p-6 text-center text-muted-foreground h-24 flex items-center justify-center">
           <Image className="h-8 w-8 text-muted-foreground mr-2" />
           No featured items found. Click "Upload" to add new items.

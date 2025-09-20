@@ -11,9 +11,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { ArrowLeft, X, Check, Upload } from "lucide-react";
 import { useProductById, useProducts } from "@/hooks/use-products.js";
 import { useCategories } from "@/hooks/use-categories.js";
-import { showSuccess, showError, showInfo } from "@/utils/toast.js";
+import { showSuccess, showError } from "@/utils/toast.js";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area.jsx";
 import ReactSelectMulti from "@/components/ui/ReactSelectMulti.jsx";
+import { uploadSingleImage } from "@/utils/upload.js";
 
 const ProductEditPage = () => {
   const { productId } = useParams();
@@ -33,6 +34,8 @@ const ProductEditPage = () => {
   const [selectedCategoryIds, setSelectedCategoryIds] = React.useState([]);
   const [status, setStatus] = React.useState("");
   const [condition, setCondition] = React.useState("");
+
+  const imageInputRef = React.useRef(null);
 
   React.useEffect(() => {
     if (product) {
@@ -79,9 +82,16 @@ const ProductEditPage = () => {
     });
   };
 
-  const handleImageUpload = () => {
-    showInfo("Image upload functionality not yet implemented.");
-    setImageUrl("https://picsum.photos/seed/edited-product-image/400/300");
+  const handleImageUpload = async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    try {
+      const { imageUrl: uploadedUrl } = await uploadSingleImage(file);
+      setImageUrl(uploadedUrl);
+    } catch (error) {
+      // Error is handled by the toast in the upload utility
+    }
   };
 
   const categoryOptions = React.useMemo(() => {
@@ -199,7 +209,14 @@ const ProductEditPage = () => {
                   <Label htmlFor="imageUrl">Main Image URL</Label>
                   <div className="flex items-center gap-2 mt-1">
                     <Input id="imageUrl" value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} placeholder="https://example.com/image.jpg" />
-                    <Button variant="outline" onClick={handleImageUpload}>
+                    <input
+                      type="file"
+                      ref={imageInputRef}
+                      onChange={handleImageUpload}
+                      accept="image/png, image/jpeg, image/gif"
+                      style={{ display: 'none' }}
+                    />
+                    <Button variant="outline" onClick={() => imageInputRef.current.click()}>
                       <Upload className="h-4 w-4 mr-2" /> Upload
                     </Button>
                   </div>

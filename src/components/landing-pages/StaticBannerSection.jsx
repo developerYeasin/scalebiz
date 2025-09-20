@@ -4,11 +4,20 @@ import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card.jsx";
 import { Button } from "@/components/ui/button.jsx";
 import { Image, ChevronUp } from "lucide-react";
-import { showInfo } from "@/utils/toast.js";
+import { uploadSingleImage } from "@/utils/upload.js";
 
 const StaticBannerSection = () => {
-  const handleUpload = () => {
-    showInfo("Static banner upload initiated (dummy action).");
+  const bannerInputRef = React.useRef(null);
+
+  const handleUpload = async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+    try {
+      await uploadSingleImage(file);
+      // In a real app, you'd update state with the new banner URL
+    } catch (error) {
+      // Error is handled by the toast in the upload utility
+    }
   };
 
   return (
@@ -21,7 +30,14 @@ const StaticBannerSection = () => {
         <p className="text-sm text-muted-foreground mb-4">
           Select upto 1 items to get a better visual impact on your website
         </p>
-        <Button className="mb-4" onClick={handleUpload}>Upload (0/1)</Button>
+        <input
+          type="file"
+          ref={bannerInputRef}
+          onChange={handleUpload}
+          accept="image/png, image/jpeg, image/gif"
+          style={{ display: 'none' }}
+        />
+        <Button className="mb-4" onClick={() => bannerInputRef.current.click()}>Upload (0/1)</Button>
         <div className="relative border-2 border-dashed border-gray-300 rounded-md p-6 text-center flex flex-col items-center justify-center h-48">
           <img src="https://picsum.photos/seed/static-banner/400/200" alt="Static Banner Placeholder" className="h-full w-full object-cover rounded-md absolute inset-0 opacity-50" />
           <Image className="h-12 w-12 text-muted-foreground mb-2 relative z-10" />

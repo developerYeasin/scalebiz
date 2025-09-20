@@ -4,17 +4,26 @@ import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card.jsx";
 import { Button } from "@/components/ui/button.jsx";
 import { Image, Video, ChevronUp } from "lucide-react";
-import { showInfo } from "@/utils/toast.js";
 import { Input } from "@/components/ui/input.jsx";
+import { uploadSingleImage } from "@/utils/upload.js";
 
 const ProductMedia = ({ imageUrl, setImageUrl, hoverImageUrl, setHoverImageUrl, videoUrl, setVideoUrl }) => {
-  const handleAddImage = (type) => {
-    showInfo("Image upload initiated (dummy action).");
-    const dummyImageUrl = `https://picsum.photos/seed/product-media-${type}-${Date.now()}/100/100`;
-    if (type === 'main') {
-      setImageUrl(dummyImageUrl);
-    } else {
-      setHoverImageUrl(dummyImageUrl);
+  const mainImageInputRef = React.useRef(null);
+  const hoverImageInputRef = React.useRef(null);
+
+  const handleFileSelect = async (event, imageType) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    try {
+      const { imageUrl: uploadedUrl } = await uploadSingleImage(file);
+      if (imageType === 'main') {
+        setImageUrl(uploadedUrl);
+      } else {
+        setHoverImageUrl(uploadedUrl);
+      }
+    } catch (error) {
+      // Error is handled by the toast in the upload utility
     }
   };
 
@@ -27,6 +36,13 @@ const ProductMedia = ({ imageUrl, setImageUrl, hoverImageUrl, setHoverImageUrl, 
       <CardContent>
         <div className="grid gap-4">
           <div className="border-2 border-dashed border-gray-300 rounded-md p-6 text-center flex flex-col items-center justify-center">
+            <input
+              type="file"
+              ref={mainImageInputRef}
+              onChange={(e) => handleFileSelect(e, 'main')}
+              accept="image/png, image/jpeg, image/gif"
+              style={{ display: 'none' }}
+            />
             {imageUrl ? (
               <img src={imageUrl} alt="Product Main Image" className="h-24 w-auto object-contain mb-2" />
             ) : (
@@ -35,11 +51,18 @@ const ProductMedia = ({ imageUrl, setImageUrl, hoverImageUrl, setHoverImageUrl, 
             <p className="text-sm text-muted-foreground mb-2">
               Drag and drop main image here, or click add image. Supported formats: JPG, PNG, Max size: 4MB
             </p>
-            <Button variant="outline" onClick={() => handleAddImage('main')}>
+            <Button variant="outline" onClick={() => mainImageInputRef.current.click()}>
               {imageUrl ? "Change Main Image" : "Add Main Image"}
             </Button>
           </div>
           <div className="border-2 border-dashed border-gray-300 rounded-md p-6 text-center flex flex-col items-center justify-center">
+            <input
+              type="file"
+              ref={hoverImageInputRef}
+              onChange={(e) => handleFileSelect(e, 'hover')}
+              accept="image/png, image/jpeg, image/gif"
+              style={{ display: 'none' }}
+            />
             {hoverImageUrl ? (
               <img src={hoverImageUrl} alt="Product Hover Image" className="h-24 w-auto object-contain mb-2" />
             ) : (
@@ -48,7 +71,7 @@ const ProductMedia = ({ imageUrl, setImageUrl, hoverImageUrl, setHoverImageUrl, 
             <p className="text-sm text-muted-foreground mb-2">
               Drag and drop hover image here, or click add image. Supported formats: JPG, PNG, Max size: 4MB
             </p>
-            <Button variant="outline" onClick={() => handleAddImage('hover')}>
+            <Button variant="outline" onClick={() => hoverImageInputRef.current.click()}>
               {hoverImageUrl ? "Change Hover Image" : "Add Hover Image"}
             </Button>
           </div>

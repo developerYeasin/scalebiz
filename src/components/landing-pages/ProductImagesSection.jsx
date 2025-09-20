@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input.jsx";
 import { Label } from "@/components/ui/label.jsx";
 import { ChevronUp, X } from "lucide-react";
 import { showSuccess, showError } from "@/utils/toast.js";
+import { uploadMultipleImages } from "@/utils/upload.js";
 
 const ProductImagesSection = () => {
   const [sectionTitle, setSectionTitle] = React.useState("");
@@ -15,15 +16,23 @@ const ProductImagesSection = () => {
     "https://picsum.photos/seed/landing-prod-img2/100/100",
   ]);
   const maxLength = 100;
+  const imagesInputRef = React.useRef(null);
 
-  const handleUploadImage = () => {
-    // Dummy logic for adding an image
-    if (uploadedImages.length < 6) {
-      const newImage = `https://picsum.photos/seed/new-landing-prod-img${uploadedImages.length + 1}/100/100`;
-      setUploadedImages([...uploadedImages, newImage]);
-      showSuccess("Image uploaded (dummy action).");
-    } else {
-      showError("Maximum 6 images allowed.");
+  const handleUploadImages = async (event) => {
+    const files = Array.from(event.target.files);
+    if (files.length === 0) return;
+
+    if (uploadedImages.length + files.length > 6) {
+      showError("You can upload a maximum of 6 images in total.");
+      return;
+    }
+
+    try {
+      const { images } = await uploadMultipleImages(files);
+      const newImageUrls = images.map(img => img.imageUrl);
+      setUploadedImages(prev => [...prev, ...newImageUrls]);
+    } catch (error) {
+      // Error is handled by the toast in the upload utility
     }
   };
 
@@ -42,7 +51,17 @@ const ProductImagesSection = () => {
         <p className="text-sm text-muted-foreground mb-4">
           Upload upto 6 items to get a better visual impact on your website
         </p>
-        <Button className="mb-4" onClick={handleUploadImage} disabled={uploadedImages.length >= 6}>Upload ({uploadedImages.length}/6)</Button>
+        <input
+          type="file"
+          ref={imagesInputRef}
+          onChange={handleUploadImages}
+          accept="image/png, image/jpeg, image/gif"
+          style={{ display: 'none' }}
+          multiple
+        />
+        <Button className="mb-4" onClick={() => imagesInputRef.current.click()} disabled={uploadedImages.length >= 6}>
+          Upload ({uploadedImages.length}/6)
+        </Button>
         <div className="mb-4">
           <Label htmlFor="sectionTitle">Section title</Label>
           <Input
