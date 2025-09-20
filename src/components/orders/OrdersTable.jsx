@@ -13,19 +13,8 @@ import { Checkbox } from "@/components/ui/checkbox.jsx";
 import { Badge } from "@/components/ui/badge.jsx";
 import { Button } from "@/components/ui/button.jsx";
 import { Eye, Pencil, Trash2 } from "lucide-react";
-import { showInfo } from "@/utils/toast.js";
 
-const OrdersTable = ({ orders, onDeleteOrder }) => {
-  const handleViewOrder = (orderId) => {
-    showInfo(`Viewing order ${orderId}`);
-    // This can be changed to navigate to an order details page later
-  };
-
-  const handleEditOrder = (orderId) => {
-    showInfo(`Editing order ${orderId}`);
-    // This can be changed to navigate to an order edit page later
-  };
-
+const OrdersTable = ({ orders, onViewClick, onEditClick, onDeleteClick }) => {
   return (
     <div className="rounded-md border overflow-x-auto">
       <Table>
@@ -70,13 +59,13 @@ const OrdersTable = ({ orders, onDeleteOrder }) => {
                 </TableCell>
                 <TableCell className="text-right">
                   <div className="flex justify-end space-x-2">
-                    <Button variant="ghost" size="icon" onClick={() => handleViewOrder(order.id)}>
+                    <Button variant="ghost" size="icon" onClick={() => onViewClick(order.id)}>
                       <Eye className="h-4 w-4" />
                     </Button>
-                    <Button variant="ghost" size="icon" onClick={() => handleEditOrder(order.id)}>
+                    <Button variant="ghost" size="icon" onClick={() => onEditClick(order.id)}>
                       <Pencil className="h-4 w-4" />
                     </Button>
-                    <Button variant="ghost" size="icon" className="text-destructive hover:text-destructive" onClick={() => onDeleteOrder(order.id)}>
+                    <Button variant="ghost" size="icon" className="text-destructive hover:text-destructive" onClick={() => onDeleteClick(order.id)}>
                       <Trash2 className="h-4 w-4" />
                     </Button>
                   </div>

@@ -27,7 +27,7 @@ const createOrder = async (newOrder) => {
 // Update an existing order
 const updateOrder = async (updatedOrder) => {
   const { id, ...payload } = updatedOrder;
-  const response = await api.put(`/orders/${id}`, payload);
+  const response = await api.patch(`/orders/${id}`, payload);
   return response.data;
 };
 

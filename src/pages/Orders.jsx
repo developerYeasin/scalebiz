@@ -7,6 +7,9 @@ import OrdersTabs from "@/components/orders/OrdersTabs.jsx";
 import OrdersTable from "@/components/orders/OrdersTable.jsx";
 import OrdersPagination from "@/components/orders/OrdersPagination.jsx";
 import { useOrders } from "@/hooks/use-orders.js";
+import ViewOrderDialog from "@/components/orders/ViewOrderDialog.jsx";
+import EditOrderDialog from "@/components/orders/EditOrderDialog.jsx";
+import DeleteOrderDialog from "@/components/orders/DeleteOrderDialog.jsx";
 
 const Orders = () => {
   const [activeTab, setActiveTab] = React.useState("All Orders");
@@ -14,9 +17,12 @@ const Orders = () => {
   const [currentPage, setCurrentPage] = React.useState(1);
   const [itemsPerPage, setItemsPerPage] = React.useState(10);
 
+  const [viewingOrderId, setViewingOrderId] = React.useState(null);
+  const [editingOrderId, setEditingOrderId] = React.useState(null);
+  const [deletingOrderId, setDeletingOrderId] = React.useState(null);
+
   const { ordersData, isLoading, error, deleteOrder } = useOrders(currentPage, itemsPerPage);
 
-  // Client-side filtering. For a better experience, this should be handled by the backend.
   const filteredOrders = React.useMemo(() => {
     if (!ordersData?.data?.orders) return [];
     
@@ -29,9 +35,11 @@ const Orders = () => {
     });
   }, [ordersData, activeTab, searchTerm]);
 
-  const handleDeleteOrder = (orderId) => {
-    if (window.confirm("Are you sure you want to delete this order?")) {
-      deleteOrder(orderId);
+  const handleDeleteConfirm = () => {
+    if (deletingOrderId) {
+      deleteOrder(deletingOrderId, {
+        onSuccess: () => setDeletingOrderId(null),
+      });
     }
   };
 
@@ -51,7 +59,12 @@ const Orders = () => {
       {isLoading ? (
         <div className="text-center p-10">Loading orders...</div>
       ) : (
-        <OrdersTable orders={filteredOrders} onDeleteOrder={handleDeleteOrder} />
+        <OrdersTable
+          orders={filteredOrders}
+          onViewClick={setViewingOrderId}
+          onEditClick={setEditingOrderId}
+          onDeleteClick={setDeletingOrderId}
+        />
       )}
       <OrdersPagination
         currentPage={currentPage}
@@ -63,6 +76,22 @@ const Orders = () => {
           setCurrentPage(1);
         }}
         totalItems={ordersData?.total_count || 0}
+      />
+
+      <ViewOrderDialog
+        isOpen={!!viewingOrderId}
+        onClose={() => setViewingOrderId(null)}
+        orderId={viewingOrderId}
+      />
+      <EditOrderDialog
+        isOpen={!!editingOrderId}
+        onClose={() => setEditingOrderId(null)}
+        orderId={editingOrderId}
+      />
+      <DeleteOrderDialog
+        isOpen={!!deletingOrderId}
+        onClose={() => setDeletingOrderId(null)}
+        onConfirm={handleDeleteConfirm}
       />
     </div>
   );
