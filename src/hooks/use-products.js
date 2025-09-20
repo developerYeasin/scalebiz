@@ -20,7 +20,7 @@ const createProduct = async (newProduct) => {
 const updateProduct = async (updatedProduct) => {
   const { id, ...payload } = updatedProduct;
   const response = await api.put(`/products/${id}`, payload);
-  return response.data.data.product;
+  return response.data;
 };
 
 const deleteProduct = async (id) => {
@@ -43,24 +43,22 @@ export const useProducts = () => {
       showSuccess("Product created successfully!");
     },
     onError: (err) => {
-      showError(err.message || "Failed to create product.");
+      showError(err.response?.data?.message || "Failed to create product.");
     },
   });
 
   const updateProductMutation = useMutation({
     mutationFn: updateProduct,
-    onSuccess: (updatedProductData, variables) => {
-      // Invalidate the main products list to refetch it next time it's needed.
+    onSuccess: (data, variables) => {
+      // Invalidate queries to refetch fresh data from the server.
       queryClient.invalidateQueries({ queryKey: ["products"] });
+      queryClient.invalidateQueries({ queryKey: ["product", variables.id] });
 
-      // Immediately update the cache for the specific product that was edited.
-      // This prevents the view page from needing to refetch.
-      queryClient.setQueryData(["product", variables.id], updatedProductData);
-
-      showSuccess("Product updated successfully!");
+      // Show the success message from the API response.
+      showSuccess(data.message || "Product updated successfully!");
     },
     onError: (err) => {
-      showError(err.message || "Failed to update product.");
+      showError(err.response?.data?.message || "Failed to update product.");
     },
   });
 
@@ -76,7 +74,7 @@ export const useProducts = () => {
       showSuccess("Product deleted successfully!");
     },
     onError: (err) => {
-      showError(err.message || "Failed to delete product.");
+      showError(err.response?.data?.message || "Failed to delete product.");
     },
   });
 
