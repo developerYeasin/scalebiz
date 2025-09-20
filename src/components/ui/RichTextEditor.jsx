@@ -1,9 +1,13 @@
 "use client";
 
 import React, { useMemo, useRef } from 'react';
-import ReactQuill from 'react-quill';
+import ReactQuill, { Quill } from 'react-quill';
 import 'react-quill/dist/quill.snow.css'; // Import Quill styles
+import ImageResize from 'quill-image-resize-module-react';
 import { uploadSingleImage } from '@/utils/upload';
+
+// Register the image resize module with Quill
+Quill.register('modules/imageResize', ImageResize);
 
 const RichTextEditor = ({ content, onChange }) => {
   const quillRef = useRef(null);
@@ -31,7 +35,7 @@ const RichTextEditor = ({ content, onChange }) => {
     };
   };
 
-  // Configure the toolbar modules
+  // Configure the toolbar and image resize modules
   const modules = useMemo(() => ({
     toolbar: {
       container: [
@@ -47,6 +51,10 @@ const RichTextEditor = ({ content, onChange }) => {
         image: imageHandler,
       },
     },
+    imageResize: {
+      parchment: Quill.import('parchment'),
+      modules: ['Resize', 'DisplaySize', 'Toolbar']
+    }
   }), []);
 
   return (
