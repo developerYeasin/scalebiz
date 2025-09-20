@@ -108,14 +108,12 @@ const MultiSelect = ({
                       onSelect={() => {
                         toggleOption(option.value);
                         setInputValue(""); // Clear input after selection
-                        setOpen(true); // Keep popover open after selection
                       }}
                       className="flex items-center cursor-pointer"
-                      aria-disabled={false} // Explicitly ensure CommandItem is not disabled
                     >
                       <Checkbox
                         checked={selected.includes(option.value)}
-                        // Removed disabled prop entirely to avoid conflicts
+                        onCheckedChange={() => toggleOption(option.value)}
                         className="mr-2"
                       />
                       {option.label}

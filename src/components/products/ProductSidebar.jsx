@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card.j
 import { Input } from "@/components/ui/input.jsx";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select.jsx";
 import { ChevronUp } from "lucide-react";
-import { MultiSelect } from "@/components/ui/multi-select.jsx";
+// Removed MultiSelect import
 
 const ProductSidebar = ({
   selectedCategoryIds,
@@ -26,6 +26,14 @@ const ProductSidebar = ({
     })) || [];
   }, [allCategories]);
 
+  // For single select, we expect selectedCategoryIds to be an array with 0 or 1 item.
+  // We'll use the first item if available, or 'none' as a placeholder.
+  const currentSelectedCategory = selectedCategoryIds.length > 0 ? selectedCategoryIds[0] : "none";
+
+  const handleCategoryChange = (value) => {
+    setSelectedCategoryIds(value === "none" ? [] : [value]);
+  };
+
   return (
     <div className="space-y-6">
       <Card>
@@ -35,15 +43,25 @@ const ProductSidebar = ({
         </CardHeader>
         <CardContent>
           <p className="text-sm text-muted-foreground mb-4">
-            Select one or more categories for this product.
+            Select a category for this product.
           </p>
-          <MultiSelect
-            options={categoryOptions}
-            selected={selectedCategoryIds}
-            onSelect={setSelectedCategoryIds}
-            placeholder="Select Categories"
-            loading={categoriesLoading} // Pass loading state
-          />
+          <Select
+            value={currentSelectedCategory}
+            onValueChange={handleCategoryChange}
+            disabled={categoriesLoading}
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="Select Category" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="none">No Category</SelectItem>
+              {categoryOptions.map((option) => (
+                <SelectItem key={option.value} value={option.value}>
+                  {option.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
           {categoriesLoading && <p className="text-xs text-muted-foreground mt-1">Categories are loading...</p>}
         </CardContent>
       </Card>

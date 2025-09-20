@@ -13,7 +13,7 @@ import { useProductById, useProducts } from "@/hooks/use-products.js";
 import { useCategories } from "@/hooks/use-categories.js";
 import { showSuccess, showError, showInfo } from "@/utils/toast.js";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area.jsx";
-import { MultiSelect } from "@/components/ui/multi-select.jsx";
+// Removed MultiSelect import
 
 const ProductEditPage = () => {
   const { productId } = useParams();
@@ -30,7 +30,7 @@ const ProductEditPage = () => {
   const [price, setPrice] = React.useState("");
   const [stockQuantity, setStockQuantity] = React.useState("");
   const [imageUrl, setImageUrl] = React.useState("");
-  const [selectedCategoryIds, setSelectedCategoryIds] = React.useState([]);
+  const [selectedCategoryId, setSelectedCategoryId] = React.useState("none"); // Changed to single ID
   const [status, setStatus] = React.useState("");
   const [condition, setCondition] = React.useState("");
 
@@ -42,7 +42,8 @@ const ProductEditPage = () => {
       setPrice(product.price || "");
       setStockQuantity(String(product.stock_quantity) || "");
       setImageUrl(product.image_url || "");
-      setSelectedCategoryIds(product.categories?.map(cat => String(cat.id)) || []);
+      // Set single selected category
+      setSelectedCategoryId(product.categories && product.categories.length > 0 ? String(product.categories[0].id) : "none");
       setStatus(product.status || "");
       setCondition(product.condition || "");
     }
@@ -66,7 +67,7 @@ const ProductEditPage = () => {
       price: parseFloat(price),
       stock_quantity: parseInt(stockQuantity),
       image_url: imageUrl,
-      category_ids: selectedCategoryIds.map(Number),
+      category_ids: selectedCategoryId === "none" ? [] : [Number(selectedCategoryId)], // Adjust payload for single select
       status: status,
       condition: condition,
     };
@@ -209,14 +210,24 @@ const ProductEditPage = () => {
               </CardHeader>
               <CardContent className="grid gap-4">
                 <div>
-                  <Label htmlFor="categories">Categories</Label>
-                  <MultiSelect
-                    options={categoryOptions}
-                    selected={selectedCategoryIds}
-                    onSelect={setSelectedCategoryIds}
-                    placeholder="Select Categories"
-                    loading={categoriesLoading}
-                  />
+                  <Label htmlFor="categories">Category</Label>
+                  <Select
+                    value={selectedCategoryId}
+                    onValueChange={setSelectedCategoryId}
+                    disabled={categoriesLoading}
+                  >
+                    <SelectTrigger id="categories" className="mt-1">
+                      <SelectValue placeholder="Select Category" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="none">No Category</SelectItem>
+                      {categoryOptions.map((option) => (
+                        <SelectItem key={option.value} value={option.value}>
+                          {option.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                   {categoriesLoading && <p className="text-xs text-muted-foreground mt-1">Loading categories...</p>}
                 </div>
                 <div>
