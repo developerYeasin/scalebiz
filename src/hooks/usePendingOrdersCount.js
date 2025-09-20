@@ -5,7 +5,7 @@ import api from "@/utils/api.js";
 
 // This function will fetch the counts of orders for various statuses.
 const fetchOrderStatusCounts = async () => {
-  const response = await api.get("/orders/status-counts");
+  const response = await api.get("/orders-status-counts");
   // We expect the backend to return an object with counts, e.g., { pending: 25, shipped: 10 }
   return response.data.data.counts;
 };
