@@ -20,17 +20,21 @@ import {
   ReceiptText,
   Gem,
   HelpCircle,
-  Building, // New icon for Vendor Dashboard
+  Building,
 } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area.jsx";
+import { usePendingOrdersCount } from "@/hooks/usePendingOrdersCount.js"; // New import
 
 const Sidebar = ({ onClose }) => {
   const location = useLocation();
   const currentPath = location.pathname;
+  const { data: orderCounts, isLoading } = usePendingOrdersCount();
+
+  const pendingOrdersCount = orderCounts?.pending || 0;
 
   const mainNavItems = [
     { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
-    { name: "Orders", href: "/orders", icon: Tag, badge: "25" },
+    { name: "Orders", href: "/orders", icon: Tag, badge: !isLoading && pendingOrdersCount > 0 ? String(pendingOrdersCount) : null },
     { name: "Products", href: "/products", icon: Package },
     { name: "Categories", href: "/categories", icon: Layers },
     { name: "Customers", href: "/customers", icon: Users },
@@ -55,17 +59,14 @@ const Sidebar = ({ onClose }) => {
 
   const academyItem = { name: "Scalebiz Academy", href: "/zatiq-academy", icon: HelpCircle };
 
-  const vendorItems = [ // New section for vendor
+  const vendorItems = [
     { name: "Vendor Dashboard", href: "/vendor-dashboard", icon: Building },
   ];
 
   const isActive = (href) => {
-    // Exact match for dashboard to avoid being active for other potential routes starting with /dashboard
     if (href === "/dashboard") {
       return currentPath === href;
     }
-    // For other routes, check if the current path starts with the href.
-    // This handles nested routes like /orders/create correctly highlighting /orders.
     return currentPath.startsWith(href);
   };
 
@@ -194,7 +195,7 @@ const Sidebar = ({ onClose }) => {
             </li>
           </ul>
 
-          <h2 className="px-4 pt-6 pb-2 text-xs font-semibold uppercase text-muted-foreground">Vendor</h2> {/* New section header */}
+          <h2 className="px-4 pt-6 pb-2 text-xs font-semibold uppercase text-muted-foreground">Vendor</h2>
           <ul className="space-y-1 px-4">
             {vendorItems.map((item) => (
               <li key={item.name}>
