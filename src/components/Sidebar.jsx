@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils.js";
 import { Button } from "@/components/ui/button.jsx";
 import { Badge } from "@/components/ui/badge.jsx";
@@ -25,6 +25,9 @@ import {
 import { ScrollArea } from "@/components/ui/scroll-area.jsx";
 
 const Sidebar = ({ onClose }) => {
+  const location = useLocation();
+  const currentPath = location.pathname;
+
   const mainNavItems = [
     { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
     { name: "Orders", href: "/orders", icon: Tag, badge: "25" },
@@ -56,6 +59,16 @@ const Sidebar = ({ onClose }) => {
     { name: "Vendor Dashboard", href: "/vendor-dashboard", icon: Building },
   ];
 
+  const isActive = (href) => {
+    // Exact match for dashboard to avoid being active for other potential routes starting with /dashboard
+    if (href === "/dashboard") {
+      return currentPath === href;
+    }
+    // For other routes, check if the current path starts with the href.
+    // This handles nested routes like /orders/create correctly highlighting /orders.
+    return currentPath.startsWith(href);
+  };
+
   return (
     <div className="flex h-full flex-col border-r bg-sidebar text-sidebar-foreground">
       <div className="flex h-16 items-center justify-between border-b px-4">
@@ -77,7 +90,7 @@ const Sidebar = ({ onClose }) => {
                   variant="ghost"
                   className={cn(
                     "w-full justify-start text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
-                    // Add active state styling if needed
+                    isActive(item.href) && "bg-sidebar-accent text-sidebar-accent-foreground"
                   )}
                   onClick={onClose}
                 >
@@ -104,6 +117,7 @@ const Sidebar = ({ onClose }) => {
                   variant="ghost"
                   className={cn(
                     "w-full justify-start text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
+                    isActive(item.href) && "bg-sidebar-accent text-sidebar-accent-foreground"
                   )}
                   onClick={onClose}
                 >
@@ -125,6 +139,7 @@ const Sidebar = ({ onClose }) => {
                   variant="ghost"
                   className={cn(
                     "w-full justify-start text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
+                    isActive(item.href) && "bg-sidebar-accent text-sidebar-accent-foreground"
                   )}
                   onClick={onClose}
                 >
@@ -146,6 +161,7 @@ const Sidebar = ({ onClose }) => {
                   variant="ghost"
                   className={cn(
                     "w-full justify-start text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
+                    isActive(item.href) && "bg-sidebar-accent text-sidebar-accent-foreground"
                   )}
                   onClick={onClose}
                 >
@@ -166,6 +182,7 @@ const Sidebar = ({ onClose }) => {
                 variant="ghost"
                 className={cn(
                   "w-full justify-start text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
+                  isActive(academyItem.href) && "bg-sidebar-accent text-sidebar-accent-foreground"
                 )}
                 onClick={onClose}
               >
@@ -186,6 +203,7 @@ const Sidebar = ({ onClose }) => {
                   variant="ghost"
                   className={cn(
                     "w-full justify-start text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
+                    isActive(item.href) && "bg-sidebar-accent text-sidebar-accent-foreground"
                   )}
                   onClick={onClose}
                 >
