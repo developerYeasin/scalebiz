@@ -13,7 +13,7 @@ import { useProductById, useProducts } from "@/hooks/use-products.js";
 import { useCategories } from "@/hooks/use-categories.js";
 import { showSuccess, showError, showInfo } from "@/utils/toast.js";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area.jsx";
-import { MultiSelect } from "@/components/ui/multi-select.jsx"; // Re-import MultiSelect
+import ReactSelectMulti from "@/components/ui/ReactSelectMulti.jsx";
 
 const ProductEditPage = () => {
   const { productId } = useParams();
@@ -30,7 +30,7 @@ const ProductEditPage = () => {
   const [price, setPrice] = React.useState("");
   const [stockQuantity, setStockQuantity] = React.useState("");
   const [imageUrl, setImageUrl] = React.useState("");
-  const [selectedCategoryIds, setSelectedCategoryIds] = React.useState([]); // Changed to array for MultiSelect
+  const [selectedCategoryIds, setSelectedCategoryIds] = React.useState([]);
   const [status, setStatus] = React.useState("");
   const [condition, setCondition] = React.useState("");
 
@@ -42,7 +42,6 @@ const ProductEditPage = () => {
       setPrice(product.price || "");
       setStockQuantity(String(product.stock_quantity) || "");
       setImageUrl(product.image_url || "");
-      // Initialize selectedCategoryIds as an array of strings
       setSelectedCategoryIds(product.categories?.map(cat => String(cat.id)) || []);
       setStatus(product.status || "");
       setCondition(product.condition || "");
@@ -67,7 +66,7 @@ const ProductEditPage = () => {
       price: parseFloat(price),
       stock_quantity: parseInt(stockQuantity),
       image_url: imageUrl,
-      category_ids: selectedCategoryIds.map(Number), // Convert back to array of numbers for payload
+      category_ids: selectedCategoryIds.map(Number),
       status: status,
       condition: condition,
     };
@@ -91,6 +90,15 @@ const ProductEditPage = () => {
       label: cat.name,
     })) || [];
   }, [allCategories]);
+
+  const selectedValueForSelect = React.useMemo(() => {
+    return categoryOptions.filter(option => selectedCategoryIds.includes(option.value));
+  }, [selectedCategoryIds, categoryOptions]);
+
+  const handleCategoryChange = (selectedOptions) => {
+    const selectedIds = selectedOptions ? selectedOptions.map(option => option.value) : [];
+    setSelectedCategoryIds(selectedIds);
+  };
 
   const isSaveDisabled = !name || !price || !stockQuantity || isUpdating;
 
@@ -211,10 +219,10 @@ const ProductEditPage = () => {
               <CardContent className="grid gap-4">
                 <div>
                   <Label htmlFor="categories">Category</Label>
-                  <MultiSelect
+                  <ReactSelectMulti
                     options={categoryOptions}
-                    selected={selectedCategoryIds}
-                    onSelect={setSelectedCategoryIds}
+                    value={selectedValueForSelect}
+                    onChange={handleCategoryChange}
                     placeholder="Select Categories..."
                     loading={categoriesLoading}
                   />

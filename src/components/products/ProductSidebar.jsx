@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card.j
 import { Input } from "@/components/ui/input.jsx";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select.jsx";
 import { ChevronUp } from "lucide-react";
-import { MultiSelect } from "@/components/ui/multi-select.jsx"; // Re-import MultiSelect
+import ReactSelectMulti from "@/components/ui/ReactSelectMulti.jsx";
 
 const ProductSidebar = ({
   selectedCategoryIds,
@@ -26,6 +26,15 @@ const ProductSidebar = ({
     })) || [];
   }, [allCategories]);
 
+  const selectedValue = React.useMemo(() => {
+    return categoryOptions.filter(option => selectedCategoryIds.includes(option.value));
+  }, [selectedCategoryIds, categoryOptions]);
+
+  const handleCategoryChange = (selectedOptions) => {
+    const selectedIds = selectedOptions ? selectedOptions.map(option => option.value) : [];
+    setSelectedCategoryIds(selectedIds);
+  };
+
   return (
     <div className="space-y-6">
       <Card>
@@ -37,10 +46,10 @@ const ProductSidebar = ({
           <p className="text-sm text-muted-foreground mb-4">
             Select categories for this product.
           </p>
-          <MultiSelect
+          <ReactSelectMulti
             options={categoryOptions}
-            selected={selectedCategoryIds}
-            onSelect={setSelectedCategoryIds}
+            value={selectedValue}
+            onChange={handleCategoryChange}
             placeholder="Select Categories..."
             loading={categoriesLoading}
           />
