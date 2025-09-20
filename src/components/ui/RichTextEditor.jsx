@@ -1,36 +1,63 @@
 "use client";
 
-import React from 'react';
-import { useEditor, EditorContent } from '@tiptap/react';
-import StarterKit from '@tiptap/starter-kit';
-import Image from '@tiptap/extension-image';
-import { TextStyle } from '@tiptap/extension-text-style';
-import { Color } from '@tiptap/extension-color';
-import EditorToolbar from './EditorToolbar';
+import React, { useMemo, useRef } from 'react';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css'; // Import Quill styles
+import { uploadSingleImage } from '@/utils/upload';
 
 const RichTextEditor = ({ content, onChange }) => {
-  const editor = useEditor({
-    extensions: [
-      StarterKit,
-      Image,
-      TextStyle,
-      Color,
-    ],
-    content: content,
-    onUpdate: ({ editor }) => {
-      onChange(editor.getHTML());
-    },
-    editorProps: {
-      attributes: {
-        class: 'prose dark:prose-invert max-w-none focus:outline-none p-4 min-h-[200px]',
+  const quillRef = useRef(null);
+
+  // Custom handler for the image upload button in the toolbar
+  const imageHandler = () => {
+    const input = document.createElement('input');
+    input.setAttribute('type', 'file');
+    input.setAttribute('accept', 'image/*');
+    input.click();
+
+    input.onchange = async () => {
+      const file = input.files[0];
+      if (file) {
+        try {
+          const { imageUrl } = await uploadSingleImage(file);
+          const quill = quillRef.current.getEditor();
+          const range = quill.getSelection(true);
+          // Insert the uploaded image into the editor
+          quill.insertEmbed(range.index, 'image', imageUrl);
+        } catch (error) {
+          console.error('Image upload failed for Quill editor:', error);
+        }
+      }
+    };
+  };
+
+  // Configure the toolbar modules
+  const modules = useMemo(() => ({
+    toolbar: {
+      container: [
+        [{ 'header': [1, 2, 3, false] }],
+        ['bold', 'italic', 'strike'],
+        [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+        [{ 'color': [] }],
+        ['image'],
+        ['clean']
+      ],
+      handlers: {
+        image: imageHandler,
       },
     },
-  });
+  }), []);
 
   return (
-    <div className="border rounded-md">
-      <EditorToolbar editor={editor} />
-      <EditorContent editor={editor} />
+    <div className="bg-background">
+      <ReactQuill
+        ref={quillRef}
+        theme="snow"
+        value={content}
+        onChange={onChange}
+        modules={modules}
+        placeholder="Write your description here..."
+      />
     </div>
   );
 };

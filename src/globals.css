@@ -99,27 +99,19 @@
   }
 }
 
-/* Tiptap Editor Styles */
+/* Quill Editor Styles */
 @layer components {
-  .tiptap > p.is-editor-empty:first-child::before {
+  .ql-toolbar {
+    @apply rounded-t-md border-b bg-muted/50;
+  }
+  .ql-container {
+    @apply rounded-b-md;
+  }
+  .ql-editor {
+    @apply min-h-[200px] text-base;
+  }
+  .ql-editor.ql-blank::before {
+    @apply text-muted-foreground not-italic;
     content: attr(data-placeholder);
-    float: left;
-    color: hsl(var(--muted-foreground));
-    pointer-events: none;
-    height: 0;
-  }
-
-  .tiptap img {
-    max-width: 100%;
-    height: auto;
-    border-radius: var(--radius);
-  }
-
-  .tiptap:focus {
-    outline: none;
-  }
-
-  .is-active {
-    @apply bg-accent text-accent-foreground;
   }
 }
