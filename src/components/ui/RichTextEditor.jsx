@@ -36,10 +36,11 @@ const RichTextEditor = ({ content, onChange }) => {
     toolbar: {
       container: [
         [{ 'header': [1, 2, 3, false] }],
-        ['bold', 'italic', 'strike'],
-        [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+        ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+        [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}],
+        [{ 'align': [] }],
         [{ 'color': [] }],
-        ['image'],
+        ['link', 'image'],
         ['clean']
       ],
       handlers: {
