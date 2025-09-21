@@ -7,6 +7,7 @@ import ProductListPagination from "@/components/products/ProductListPagination.j
 import { useProducts } from "@/hooks/use-products.js";
 import { useCategories } from "@/hooks/use-categories.js";
 import CreateOrderFromProductDialog from "@/components/products/CreateOrderFromProductDialog.jsx";
+import { useDebounce } from "@/hooks/use-debounce.js";
 
 const Products = () => {
   const { products, isLoading, error, deleteProduct } = useProducts();
@@ -17,6 +18,8 @@ const Products = () => {
   const [currentPage, setCurrentPage] = React.useState(1);
   const [itemsPerPage, setItemsPerPage] = React.useState(10);
   const [quickOrderProduct, setQuickOrderProduct] = React.useState(null);
+
+  const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
   const allProductCategories = React.useMemo(() => {
     const uniqueCategories = new Set();
@@ -32,11 +35,16 @@ const Products = () => {
     return products.filter(product => {
       const matchesCategory = activeCategory === "All products" ||
                               (product.categories && product.categories.some(cat => cat.name.toLowerCase() === activeCategory.toLowerCase()));
-      const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                            (product.sku && product.sku.toLowerCase().includes(searchTerm.toLowerCase()));
+      const matchesSearch = product.name.toLowerCase().includes(debouncedSearchTerm.toLowerCase()) ||
+                            (product.sku && product.sku.toLowerCase().includes(debouncedSearchTerm.toLowerCase()));
       return matchesCategory && matchesSearch;
     });
-  }, [products, activeCategory, searchTerm]);
+  }, [products, activeCategory, debouncedSearchTerm]);
+
+  // Reset to page 1 when search term or category changes
+  React.useEffect(() => {
+    setCurrentPage(1);
+  }, [debouncedSearchTerm, activeCategory]);
 
   const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
   const paginatedProducts = filteredProducts.slice(

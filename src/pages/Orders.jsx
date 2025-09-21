@@ -10,6 +10,7 @@ import { useOrders } from "@/hooks/use-orders.js";
 import ViewOrderDialog from "@/components/orders/ViewOrderDialog.jsx";
 import EditOrderDialog from "@/components/orders/EditOrderDialog.jsx";
 import DeleteOrderDialog from "@/components/orders/DeleteOrderDialog.jsx";
+import { useDebounce } from "@/hooks/use-debounce.js";
 
 const Orders = () => {
   const [activeTab, setActiveTab] = React.useState("All Orders");
@@ -21,9 +22,18 @@ const Orders = () => {
   const [editingOrderId, setEditingOrderId] = React.useState(null);
   const [deletingOrderId, setDeletingOrderId] = React.useState(null);
 
-  const { ordersData, isLoading, error, deleteOrder } = useOrders(currentPage, itemsPerPage, activeTab, searchTerm);
+  const debouncedSearchTerm = useDebounce(searchTerm, 500);
+
+  const { ordersData, isLoading, error, deleteOrder } = useOrders(currentPage, itemsPerPage, activeTab, debouncedSearchTerm);
 
   const orders = ordersData?.data?.orders || [];
+
+  // Reset to page 1 when search term changes
+  React.useEffect(() => {
+    if (debouncedSearchTerm) {
+      setCurrentPage(1);
+    }
+  }, [debouncedSearchTerm]);
 
   const handleDeleteConfirm = () => {
     if (deletingOrderId) {

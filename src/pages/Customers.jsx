@@ -4,6 +4,7 @@ import React from "react";
 import CustomerListHeader from "@/components/customers/CustomerListHeader.jsx";
 import CustomerListTable from "@/components/customers/CustomerListTable.jsx";
 import CustomerListPagination from "@/components/customers/CustomerListPagination.jsx";
+import { useDebounce } from "@/hooks/use-debounce.js";
 
 const mockCustomers = [
   { name: "Shakwat Hossain", phone: "+8801708378659", email: "shakwathossain007@gmail.com", address: "Level 13, City Centre, 90/1 Motijheel C/A Motijheel, Dhaka, Dhaka,", district: "Dha" },
@@ -22,11 +23,20 @@ const Customers = () => {
   const [currentPage, setCurrentPage] = React.useState(1);
   const [itemsPerPage, setItemsPerPage] = React.useState(10);
 
+  const debouncedSearchTerm = useDebounce(searchTerm, 500);
+
   const filteredCustomers = mockCustomers.filter(customer =>
-    customer.phone.includes(searchTerm) ||
-    customer.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    customer.email.toLowerCase().includes(searchTerm.toLowerCase())
+    customer.phone.includes(debouncedSearchTerm) ||
+    customer.name.toLowerCase().includes(debouncedSearchTerm.toLowerCase()) ||
+    customer.email.toLowerCase().includes(debouncedSearchTerm.toLowerCase())
   );
+
+  // Reset to page 1 when search term changes
+  React.useEffect(() => {
+    if (debouncedSearchTerm) {
+      setCurrentPage(1);
+    }
+  }, [debouncedSearchTerm]);
 
   const totalPages = Math.ceil(filteredCustomers.length / itemsPerPage);
   const paginatedCustomers = filteredCustomers.slice(

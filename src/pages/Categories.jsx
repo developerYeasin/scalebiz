@@ -7,6 +7,7 @@ import CategoryListPagination from "@/components/categories/CategoryListPaginati
 import CreateCategoryDialog from "@/components/categories/CreateCategoryDialog.jsx";
 import { useCategories } from "@/hooks/use-categories.js";
 import { showInfo, showError } from "@/utils/toast.js";
+import { useDebounce } from "@/hooks/use-debounce.js";
 
 const Categories = () => {
   const [isCreateCategoryDialogOpen, setIsCreateCategoryDialogOpen] = React.useState(false);
@@ -16,14 +17,22 @@ const Categories = () => {
   const [itemsPerPage, setItemsPerPage] = React.useState(10);
 
   const { categories, isLoading, error, createCategory, updateCategory, deleteCategory } = useCategories();
+  const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
   const filteredCategories = React.useMemo(() => {
     if (!categories) return [];
     return categories.filter(category =>
-      category.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      category.description?.toLowerCase().includes(searchTerm.toLowerCase())
+      category.name.toLowerCase().includes(debouncedSearchTerm.toLowerCase()) ||
+      (category.description && category.description.toLowerCase().includes(debouncedSearchTerm.toLowerCase()))
     );
-  }, [categories, searchTerm]);
+  }, [categories, debouncedSearchTerm]);
+
+  // Reset to page 1 when search term changes
+  React.useEffect(() => {
+    if (debouncedSearchTerm) {
+      setCurrentPage(1);
+    }
+  }, [debouncedSearchTerm]);
 
   const totalPages = Math.ceil(filteredCategories.length / itemsPerPage);
   const paginatedCategories = filteredCategories.slice(
