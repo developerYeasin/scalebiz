@@ -3,28 +3,28 @@ import api from "@/utils/api.js";
 import { showSuccess, showError } from "@/utils/toast.js";
 
 const fetchProducts = async () => {
-  const response = await api.get("/products");
+  const response = await api.get("/owner/products");
   return response.data.data.products;
 };
 
 const fetchProductById = async (id) => {
-  const response = await api.get(`/products/${id}`);
+  const response = await api.get(`/owner/products/${id}`);
   return response.data.data.product;
 };
 
 const createProduct = async (newProduct) => {
-  const response = await api.post("/products", newProduct);
+  const response = await api.post("/owner/products", newProduct);
   return response.data.data.product;
 };
 
 const updateProduct = async (updatedProduct) => {
   const { id, ...payload } = updatedProduct;
-  const response = await api.put(`/products/${id}`, payload);
+  const response = await api.put(`/owner/products/${id}`, payload);
   return response.data;
 };
 
 const deleteProduct = async (id) => {
-  await api.delete(`/products/${id}`);
+  await api.delete(`/owner/products/${id}`);
   return id; // Return the id to use it in onSuccess
 };
 
