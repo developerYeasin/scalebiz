@@ -31,7 +31,7 @@ const Products = () => {
 
     return products.filter(product => {
       const matchesCategory = activeCategory === "All products" ||
-                              product.categories.some(cat => cat.name.toLowerCase() === activeCategory.toLowerCase());
+                              (product.categories && product.categories.some(cat => cat.name.toLowerCase() === activeCategory.toLowerCase()));
       const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                             (product.sku && product.sku.toLowerCase().includes(searchTerm.toLowerCase()));
       return matchesCategory && matchesSearch;
