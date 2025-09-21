@@ -7,11 +7,37 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Search, Download, Plus, ShoppingCart, User } from "lucide-react";
 import { Badge } from "@/components/ui/badge.jsx";
 import { Link } from "react-router-dom";
-import { showSuccess, showInfo } from "@/utils/toast.js";
+import { showSuccess, showInfo, showError } from "@/utils/toast.js";
+import api from "@/utils/api.js";
 
 const OrdersHeader = ({ searchTerm, onSearchChange, totalOrders }) => {
-  const handleExport = () => {
-    showSuccess("Exporting orders...");
+  const handleExport = async () => {
+    showInfo("Exporting orders...");
+    try {
+      const response = await api.get("/store/orders-export", {
+        responseType: 'blob', // Important to handle raw data
+      });
+      
+      const blob = new Blob([response.data], { type: 'text/csv' });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      
+      // Create a filename with the current date
+      const date = new Date().toISOString().slice(0, 10);
+      link.setAttribute('download', `orders-export-${date}.csv`);
+      
+      document.body.appendChild(link);
+      link.click();
+      
+      link.parentNode.removeChild(link);
+      window.URL.revokeObjectURL(url);
+      
+      showSuccess("Orders exported successfully!");
+    } catch (error) {
+      console.error("Export failed:", error);
+      showError("Failed to export orders.");
+    }
   };
 
   return (

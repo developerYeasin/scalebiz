@@ -21,19 +21,9 @@ const Orders = () => {
   const [editingOrderId, setEditingOrderId] = React.useState(null);
   const [deletingOrderId, setDeletingOrderId] = React.useState(null);
 
-  const { ordersData, isLoading, error, deleteOrder } = useOrders(currentPage, itemsPerPage);
+  const { ordersData, isLoading, error, deleteOrder } = useOrders(currentPage, itemsPerPage, activeTab, searchTerm);
 
-  const filteredOrders = React.useMemo(() => {
-    if (!ordersData?.data?.orders) return [];
-    
-    return ordersData.data.orders.filter(order => {
-      const matchesTab = activeTab === "All Orders" || order.status.toLowerCase() === activeTab.replace("Order ", "").toLowerCase();
-      const matchesSearch = order.order_number.includes(searchTerm) ||
-                            (order.user_name && order.user_name.toLowerCase().includes(searchTerm.toLowerCase())) ||
-                            order.customer_phone.includes(searchTerm);
-      return matchesTab && matchesSearch;
-    });
-  }, [ordersData, activeTab, searchTerm]);
+  const orders = ordersData?.data?.orders || [];
 
   const handleDeleteConfirm = () => {
     if (deletingOrderId) {
@@ -60,7 +50,7 @@ const Orders = () => {
         <div className="text-center p-10">Loading orders...</div>
       ) : (
         <OrdersTable
-          orders={filteredOrders}
+          orders={orders}
           onViewClick={setViewingOrderId}
           onEditClick={setEditingOrderId}
           onDeleteClick={setDeletingOrderId}

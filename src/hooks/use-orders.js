@@ -5,10 +5,16 @@ import api from "@/utils/api.js";
 import { showSuccess, showError } from "@/utils/toast.js";
 
 // Fetch paginated orders
-const fetchOrders = async ({ page = 1, limit = 10 }) => {
-  const response = await api.get("/store/orders", {
-    params: { page, limit }
-  });
+const fetchOrders = async ({ page = 1, limit = 10, status, search }) => {
+  const params = { page, limit };
+  if (status && status !== "All Orders") {
+    // API expects status like 'confirmed', not 'Order Confirmed'
+    params.status = status.replace("Order ", "").toLowerCase();
+  }
+  if (search) {
+    params.search = search;
+  }
+  const response = await api.get("/store/orders", { params });
   return response.data;
 };
 
@@ -16,6 +22,14 @@ const fetchOrders = async ({ page = 1, limit = 10 }) => {
 const fetchOrderById = async (id) => {
   const response = await api.get(`/store/orders/${id}`);
   return response.data.data.order;
+};
+
+// Fetch orders summary
+const fetchOrdersSummary = async (period) => {
+  const response = await api.get("/store/orders-summary", {
+    params: { period }
+  });
+  return response.data.data;
 };
 
 // Create a new order
@@ -37,12 +51,12 @@ const deleteOrder = async (id) => {
   return id;
 };
 
-export const useOrders = (page, limit) => {
+export const useOrders = (page, limit, status, search) => {
   const queryClient = useQueryClient();
 
   const { data, isLoading, error } = useQuery({
-    queryKey: ["orders", { page, limit }],
-    queryFn: () => fetchOrders({ page, limit }),
+    queryKey: ["orders", { page, limit, status, search }],
+    queryFn: () => fetchOrders({ page, limit, status, search }),
     keepPreviousData: true,
   });
 
@@ -97,5 +111,12 @@ export const useOrderById = (id) => {
     queryKey: ["order", id],
     queryFn: () => fetchOrderById(id),
     enabled: !!id,
+  });
+};
+
+export const useOrdersSummary = (period) => {
+  return useQuery({
+    queryKey: ["ordersSummary", period],
+    queryFn: () => fetchOrdersSummary(period),
   });
 };
