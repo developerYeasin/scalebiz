@@ -23,6 +23,7 @@ import Settings from "./pages/Settings.jsx";
 import Analytics from "./pages/Analytics.jsx";
 
 // Import shop settings pages
+import SettingsLayout from "./pages/shop-settings/SettingsLayout.jsx";
 import ShopSettingsPage from "./pages/shop-settings/ShopSettingsPage.jsx";
 import ShopDomainPage from "./pages/shop-settings/ShopDomainPage.jsx";
 import ShopPolicyPage from "./pages/shop-settings/ShopPolicyPage.jsx";
@@ -85,17 +86,20 @@ const App = () => (
           <Route path="/categories" element={<ProtectedRoute><Layout><Categories /></Layout></ProtectedRoute>} />
           <Route path="/customers" element={<ProtectedRoute><Layout><Customers /></Layout></ProtectedRoute>} />
           <Route path="/manage-shop" element={<ProtectedRoute><Layout><ManageShop /></Layout></ProtectedRoute>} />
-          {/* New Manage Shop Sub-Routes */}
-          <Route path="/manage-shop/shop-settings" element={<ProtectedRoute><Layout><ShopSettingsPage /></Layout></ProtectedRoute>} />
-          <Route path="/manage-shop/shop-domain" element={<ProtectedRoute><Layout><ShopDomainPage /></Layout></ProtectedRoute>} />
-          <Route path="/manage-shop/shop-policy" element={<ProtectedRoute><Layout><ShopPolicyPage /></Layout></ProtectedRoute>} />
-          <Route path="/manage-shop/delivery-support" element={<ProtectedRoute><Layout><DeliverySupportPage /></Layout></ProtectedRoute>} />
-          <Route path="/manage-shop/payment-gateway" element={<ProtectedRoute><Layout><PaymentGatewayPage /></Layout></ProtectedRoute>} />
-          <Route path="/manage-shop/seo-marketing" element={<ProtectedRoute><Layout><SeoMarketingPage /></Layout></ProtectedRoute>} />
-          <Route path="/manage-shop/sms-support" element={<ProtectedRoute><Layout><SmsSupportPage /></Layout></ProtectedRoute>} />
-          <Route path="/manage-shop/chat-support" element={<ProtectedRoute><Layout><ChatSupportPage /></Layout></ProtectedRoute>} />
-          <Route path="/manage-shop/social-links" element={<ProtectedRoute><Layout><SocialLinksPage /></Layout></ProtectedRoute>} />
-          {/* End New Manage Shop Sub-Routes */}
+          
+          {/* Manage Shop Sub-Routes with new layout */}
+          <Route element={<ProtectedRoute><Layout><SettingsLayout /></Layout></ProtectedRoute>}>
+            <Route path="/manage-shop/shop-settings" element={<ShopSettingsPage />} />
+            <Route path="/manage-shop/shop-domain" element={<ShopDomainPage />} />
+            <Route path="/manage-shop/shop-policy" element={<ShopPolicyPage />} />
+            <Route path="/manage-shop/delivery-support" element={<DeliverySupportPage />} />
+            <Route path="/manage-shop/payment-gateway" element={<PaymentGatewayPage />} />
+            <Route path="/manage-shop/seo-marketing" element={<SeoMarketingPage />} />
+            <Route path="/manage-shop/sms-support" element={<SmsSupportPage />} />
+            <Route path="/manage-shop/chat-support" element={<ChatSupportPage />} />
+            <Route path="/manage-shop/social-links" element={<SocialLinksPage />} />
+          </Route>
+          
           <Route path="/customize-theme" element={<ProtectedRoute><Layout><CustomizeTheme /></Layout></ProtectedRoute>} />
           <Route path="/landing-pages" element={<ProtectedRoute><Layout><LandingPages /></Layout></ProtectedRoute>} />
           <Route path="/promo-codes" element={<ProtectedRoute><Layout><PromoCodes /></Layout></ProtectedRoute>} />

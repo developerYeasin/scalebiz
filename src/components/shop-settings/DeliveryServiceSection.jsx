@@ -8,25 +8,44 @@ import { Switch } from "@/components/ui/switch.jsx";
 import { Button } from "@/components/ui/button.jsx";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select.jsx";
 import { Plus, Trash2, ChevronUp } from "lucide-react";
-import { cn } from "@/lib/utils.js";
-import { showInfo, showError, showSuccess } from "@/utils/toast.js";
+import { useStoreConfig } from "@/contexts/StoreConfigurationContext.jsx";
+import { Skeleton } from "@/components/ui/skeleton.jsx";
 
 const DeliveryServiceSection = () => {
-  const [activeTab, setActiveTab] = React.useState("Zones");
-  const [specificCharges, setSpecificCharges] = React.useState([{ id: 1, zone: "Dhaka", charge: "80" }]);
+  const { config, isLoading, updateNested, save, isUpdating } = useStoreConfig();
+
+  if (isLoading || !config) {
+    return (
+      <Card className="mb-6">
+        <CardHeader>
+          <CardTitle>Delivery Service</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <Skeleton className="h-10 w-full" />
+          <Skeleton className="h-10 w-full" />
+          <Skeleton className="h-10 w-full" />
+        </CardContent>
+      </Card>
+    );
+  }
+
+  const deliveryZones = config.delivery_settings?.zones || [];
 
   const addSpecificCharge = () => {
-    setSpecificCharges([...specificCharges, { id: specificCharges.length + 1, zone: "Not Selected", charge: "0" }]);
-    showInfo("New specific charge row added.");
+    const newZones = [...deliveryZones, { id: Date.now(), zone_name: "Not Selected", charge: "0" }];
+    updateNested('delivery_settings.zones', newZones);
   };
 
   const removeSpecificCharge = (id) => {
-    setSpecificCharges(specificCharges.filter(charge => charge.id !== id));
-    showError("Specific charge removed.");
+    const newZones = deliveryZones.filter(charge => charge.id !== id);
+    updateNested('delivery_settings.zones', newZones);
   };
 
-  const handleUpdateDeliveryCharges = () => {
-    showSuccess("Delivery charges updated successfully!");
+  const updateZoneField = (id, field, value) => {
+    const newZones = deliveryZones.map(zone =>
+      zone.id === id ? { ...zone, [field]: value } : zone
+    );
+    updateNested('delivery_settings.zones', newZones);
   };
 
   return (
@@ -38,7 +57,13 @@ const DeliveryServiceSection = () => {
       <CardContent>
         <div className="mb-4">
           <Label htmlFor="deliveryCharge">Delivery Charge (Default)</Label>
-          <Input id="deliveryCharge" defaultValue="150" className="mt-1" />
+          <Input
+            id="deliveryCharge"
+            type="number"
+            value={config.delivery_settings?.default_charge || ''}
+            onChange={(e) => updateNested('delivery_settings.default_charge', e.target.value)}
+            className="mt-1"
+          />
           <p className="text-xs text-muted-foreground mt-1">
             Default delivery charge will be applied to all areas, except for the specific zones listed below.
           </p>
@@ -47,60 +72,42 @@ const DeliveryServiceSection = () => {
         <div className="flex items-center justify-between mb-4">
           <Label htmlFor="deliveryChargeRefundable" className="text-sm">
             Delivery Charge Not refundable?
-            <p className="text-xs text-muted-foreground mt-1">
-              Enabling this option ensures if you return a order the delivery charage will not be refunded.
-            </p>
           </Label>
-          <div className="flex items-center gap-2">
-            <span className="text-sm text-muted-foreground">[NO]</span>
-            <Switch id="deliveryChargeRefundable" />
-          </div>
-        </div>
-
-        <h3 className="text-lg font-semibold mb-2">Delivery option:</h3>
-        <div className="flex space-x-2 mb-4">
-          {["Zones", "Districts", "Upazila/P.S"].map((tab) => (
-            <Button
-              key={tab}
-              variant="outline"
-              className={cn(
-                "px-4 py-2 rounded-md text-sm",
-                activeTab === tab
-                  ? "bg-primary text-primary-foreground hover:bg-primary/90"
-                  : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
-              )}
-              onClick={() => setActiveTab(tab)}
-            >
-              {tab}
-            </Button>
-          ))}
+          <Switch
+            id="deliveryChargeRefundable"
+            checked={config.delivery_settings?.charge_not_refundable || false}
+            onCheckedChange={(checked) => updateNested('delivery_settings.charge_not_refundable', checked)}
+          />
         </div>
 
         <h3 className="text-lg font-semibold mb-2">Specific Delivery Charges</h3>
-        {specificCharges.map((charge, index) => (
+        {deliveryZones.map((charge, index) => (
           <div key={charge.id} className="grid grid-cols-1 md:grid-cols-3 gap-4 items-end mb-4">
             <div>
               <Label htmlFor={`deliveryZone-${charge.id}`}>Select delivery zone</Label>
-              <Select defaultValue={charge.zone}>
-                <SelectTrigger id={`deliveryZone-${charge.id}`} className="mt-1">
-                  <SelectValue placeholder="Select delivery zone" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="Dhaka">Dhaka</SelectItem>
-                  <SelectItem value="Chittagong">Chittagong</SelectItem>
-                  <SelectItem value="Not Selected">Not Selected</SelectItem>
-                </SelectContent>
-              </Select>
+              <Input
+                id={`deliveryZone-${charge.id}`}
+                value={charge.zone_name}
+                onChange={(e) => updateZoneField(charge.id, 'zone_name', e.target.value)}
+                placeholder="e.g., Dhaka"
+                className="mt-1"
+              />
             </div>
             <div>
               <Label htmlFor={`chargeAmount-${charge.id}`}>Charge</Label>
-              <Input id={`chargeAmount-${charge.id}`} defaultValue={charge.charge} className="mt-1" />
+              <Input
+                id={`chargeAmount-${charge.id}`}
+                type="number"
+                value={charge.charge}
+                onChange={(e) => updateZoneField(charge.id, 'charge', e.target.value)}
+                className="mt-1"
+              />
             </div>
             <div className="flex gap-2">
               <Button variant="outline" size="icon" className="text-destructive hover:text-destructive" onClick={() => removeSpecificCharge(charge.id)}>
                 <Trash2 className="h-4 w-4" />
               </Button>
-              {index === specificCharges.length - 1 && (
+              {index === deliveryZones.length - 1 && (
                 <Button variant="outline" size="icon" onClick={addSpecificCharge}>
                   <Plus className="h-4 w-4" />
                 </Button>
@@ -109,7 +116,9 @@ const DeliveryServiceSection = () => {
           </div>
         ))}
         <div className="flex justify-end mt-4">
-          <Button onClick={handleUpdateDeliveryCharges}>Update Delivery Charges</Button>
+          <Button onClick={save} disabled={isUpdating}>
+            {isUpdating ? 'Saving...' : 'Update Delivery Charges'}
+          </Button>
         </div>
       </CardContent>
     </Card>

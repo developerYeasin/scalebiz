@@ -5,21 +5,38 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card.j
 import { Button } from "@/components/ui/button.jsx";
 import { ChevronUp, Upload } from "lucide-react";
 import { uploadSingleImage } from "@/utils/upload.js";
+import { useStoreConfig } from "@/contexts/StoreConfigurationContext.jsx";
+import { Skeleton } from "@/components/ui/skeleton.jsx";
 
 const ShopLogo = () => {
+  const { config, isLoading, updateNested, save } = useStoreConfig();
   const logoInputRef = React.useRef(null);
 
   const handleUploadLogo = async (event) => {
     const file = event.target.files[0];
     if (!file) return;
     try {
-      await uploadSingleImage(file);
-      // In a real app, you'd likely update the displayed logo URL here
-      // For now, the success toast from the utility is sufficient.
+      const { imageUrl } = await uploadSingleImage(file);
+      updateNested('logo_url', imageUrl);
+      // Automatically save after successful upload
+      save();
     } catch (error) {
       // Error is handled by the toast in the upload utility
     }
   };
+
+  if (isLoading || !config) {
+    return (
+      <Card className="mb-6">
+        <CardHeader>
+          <CardTitle>Shop Logo</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <Skeleton className="h-24 w-full" />
+        </CardContent>
+      </Card>
+    );
+  }
 
   return (
     <Card className="mb-6">
@@ -28,9 +45,13 @@ const ShopLogo = () => {
         <ChevronUp className="h-5 w-5 text-muted-foreground" />
       </CardHeader>
       <CardContent className="text-center">
-        <div className="flex flex-col items-center justify-center p-4 border rounded-md mb-4">
-          <img src="https://picsum.photos/seed/shop-logo/200/50" alt="Shop Logo" className="h-16 object-contain mb-2" />
-          <p className="text-sm text-muted-foreground">Recommended size is 200×50 pixels. Maximum file size is 4MB.</p>
+        <div className="flex flex-col items-center justify-center p-4 border rounded-md mb-4 min-h-[120px]">
+          {config.logo_url ? (
+            <img src={config.logo_url} alt="Shop Logo" className="h-16 object-contain mb-2" />
+          ) : (
+            <p className="text-muted-foreground">No logo uploaded.</p>
+          )}
+          <p className="text-sm text-muted-foreground">Recommended size is 200×50 pixels. Max size: 4MB.</p>
         </div>
         <input
           type="file"

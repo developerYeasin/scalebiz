@@ -8,12 +8,28 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Button } from "@/components/ui/button.jsx";
 import { Switch } from "@/components/ui/switch.jsx";
 import { ChevronUp } from "lucide-react";
-import { showSuccess } from "@/utils/toast.js";
+import { useStoreConfig } from "@/contexts/StoreConfigurationContext.jsx";
+import { Skeleton } from "@/components/ui/skeleton.jsx";
 
 const ShopSettingsSection = () => {
-  const handleUpdateShopSettings = () => {
-    showSuccess("Shop settings updated successfully!");
-  };
+  const { config, isLoading, updateNested, save, isUpdating } = useStoreConfig();
+
+  if (isLoading || !config) {
+    return (
+      <Card className="mb-6">
+        <CardHeader>
+          <CardTitle>Shop Settings</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <Skeleton className="h-10 w-full" />
+          <Skeleton className="h-10 w-full" />
+          <div className="flex justify-end">
+            <Skeleton className="h-10 w-40" />
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
 
   return (
     <Card className="mb-6">
@@ -25,7 +41,10 @@ const ShopSettingsSection = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
           <div>
             <Label htmlFor="defaultLanguage">Default language</Label>
-            <Select defaultValue="English">
+            <Select
+              value={config.localization_settings?.default_language || 'English'}
+              onValueChange={(value) => updateNested('localization_settings.default_language', value)}
+            >
               <SelectTrigger id="defaultLanguage" className="mt-1">
                 <SelectValue placeholder="Select Language" />
               </SelectTrigger>
@@ -39,24 +58,40 @@ const ShopSettingsSection = () => {
             <Label htmlFor="maintainStockQuantity" className="text-sm">
               Maintain Stock Quantity
               <p className="text-xs text-muted-foreground mt-1">
-                Enabling this option ensures that products with zero stock will be marked as "Out of Stock" on the website. Customers will not be able to place orders for out-of-stock products, but they will still be able to view the product details.
+                Enabling this option ensures that products with zero stock will be marked as "Out of Stock" on the website.
               </p>
             </Label>
-            <Switch id="maintainStockQuantity" defaultChecked />
+            <Switch
+              id="maintainStockQuantity"
+              checked={config.integrations?.shop_rules?.maintain_stock || false}
+              onCheckedChange={(checked) => updateNested('integrations.shop_rules.maintain_stock', checked)}
+            />
           </div>
           <div className="flex items-center justify-between col-span-full md:col-span-1">
             <Label htmlFor="showProductSoldCount" className="text-sm">
               Show Product Sold Count
             </Label>
-            <Switch id="showProductSoldCount" defaultChecked />
+            <Switch
+              id="showProductSoldCount"
+              checked={config.integrations?.shop_rules?.show_sold_count || false}
+              onCheckedChange={(checked) => updateNested('integrations.shop_rules.show_sold_count', checked)}
+            />
           </div>
           <div>
             <Label htmlFor="vatTaxPercentage">VAT / Tax Percentage</Label>
-            <Input id="vatTaxPercentage" defaultValue="0" className="mt-1" />
+            <Input
+              id="vatTaxPercentage"
+              type="number"
+              value={config.payment_settings?.vat_tax_percentage || '0'}
+              onChange={(e) => updateNested('payment_settings.vat_tax_percentage', e.target.value)}
+              className="mt-1"
+            />
           </div>
         </div>
         <div className="flex justify-end mt-4">
-          <Button onClick={handleUpdateShopSettings}>Update Shop Settings</Button>
+          <Button onClick={save} disabled={isUpdating}>
+            {isUpdating ? 'Saving...' : 'Update Shop Settings'}
+          </Button>
         </div>
       </CardContent>
     </Card>

@@ -4,14 +4,38 @@ import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card.jsx";
 import { Input } from "@/components/ui/input.jsx";
 import { Button } from "@/components/ui/button.jsx";
-import { Copy, Trash2 } from "lucide-react";
-import { ChevronUp } from "lucide-react";
+import { Copy, Trash2, ChevronUp } from "lucide-react";
 import { showSuccess, showError } from "@/utils/toast.js";
+import { useStoreConfig } from "@/contexts/StoreConfigurationContext.jsx";
+import { Skeleton } from "@/components/ui/skeleton.jsx";
 
 const ShopDomainsSection = () => {
-  const handleSaveDomain = () => {
-    showSuccess("Domain saved successfully!");
-  };
+  const { config, isLoading, updateNested, save, isUpdating } = useStoreConfig();
+  const [subdomain, setSubdomain] = React.useState("");
+
+  React.useEffect(() => {
+    if (config?.hostname) {
+      // Assuming hostname is like 'subdomain.maindomain.com' or just 'customdomain.com'
+      const parts = config.hostname.split('.');
+      if (parts.length > 2) { // Heuristic for subdomain
+        setSubdomain(parts[0]);
+      }
+    }
+  }, [config]);
+
+  if (isLoading || !config) {
+    return (
+      <Card className="mb-6">
+        <CardHeader>
+          <CardTitle>Shop Domains</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <Skeleton className="h-10 w-full" />
+          <Skeleton className="h-10 w-full" />
+        </CardContent>
+      </Card>
+    );
+  }
 
   const handleCopy = (text) => {
     navigator.clipboard.writeText(text);
@@ -19,7 +43,16 @@ const ShopDomainsSection = () => {
   };
 
   const handleDeleteDomain = () => {
-    showError("Domain deleted (dummy action).");
+    updateNested('hostname', ''); // Clear the hostname
+    save();
+    showError("Custom domain removed.");
+  };
+
+  const handleSaveSubdomain = () => {
+    // This logic assumes a base domain. Let's use 'scalebiz.com' as an example.
+    const newHostname = `${subdomain}.scalebiz.com`;
+    updateNested('hostname', newHostname);
+    save();
   };
 
   return (
@@ -30,77 +63,42 @@ const ShopDomainsSection = () => {
       </CardHeader>
       <CardContent>
         <h3 className="text-lg font-semibold mb-2">Your Free Domain</h3>
-        <div className="flex flex-wrap gap-2 mb-4">
-          <Button variant="outline" className="px-4 py-2 rounded-md" onClick={() => handleCopy("scalebiz.com")}>scalebiz.com</Button>
-          <Button variant="outline" className="px-4 py-2 rounded-md" onClick={() => handleCopy("sellbd.shop")}>sellbd.shop</Button>
-          <Button variant="outline" className="px-4 py-2 rounded-md" onClick={() => handleCopy("myecom.site")}>myecom.site</Button>
-          <Button variant="outline" className="px-4 py-2 rounded-md" onClick={() => handleCopy("bdcsite.net")}>bdcsite.net</Button>
-        </div>
         <div className="flex items-center gap-2 mb-6">
-          <Input placeholder="myshop" className="flex-1" />
+          <Input
+            placeholder="myshop"
+            className="flex-1"
+            value={subdomain}
+            onChange={(e) => setSubdomain(e.target.value)}
+          />
           <span className="text-muted-foreground">.scalebiz.com</span>
-          <Button onClick={handleSaveDomain}>Save Domain</Button>
+          <Button onClick={handleSaveSubdomain} disabled={isUpdating}>
+            {isUpdating ? 'Saving...' : 'Save Domain'}
+          </Button>
         </div>
 
         <h3 className="text-lg font-semibold mb-2">Your Custom Domain</h3>
         <p className="text-sm text-muted-foreground mb-4">
-          Configure DNS Settings in Cloudflare
+          To change the domain, delete the existing one and add a new one.
         </p>
-        <p className="text-sm text-muted-foreground mb-4">
-          Ensure you add the following DNS records to your <a href="#" className="text-blue-500 hover:underline">Cloudflare DNS</a> with the TTL set to Auto and the Proxy Status set to Proxied. Then, set the SSL mode to Flexible. After adding the records, please allow up to 24 hours for your domain to be verified For any assistance, feel free to contact us.
-        </p>
-        <a href="#" className="text-blue-500 hover:underline text-sm mb-4 block">Full guide line - Click Here</a>
-
-        <div className="rounded-md border overflow-hidden mb-4">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="bg-muted/50">
-                <th className="text-left p-2 font-semibold">Type</th>
-                <th className="text-left p-2 font-semibold">Value</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td className="p-2">CNAME</td>
-                <td className="p-2 flex items-center justify-between">
-                  <span>procname.scalebiz.com</span>
-                  <Button variant="ghost" size="icon" onClick={() => handleCopy("procname.scalebiz.com")}>
-                    <Copy className="h-4 w-4" />
-                  </Button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
         <div className="flex items-center gap-2 mb-4">
-          <Input defaultValue="scalebiz.com" readOnly className="flex-1 bg-muted" />
-          <Button variant="outline" size="icon" onClick={() => handleCopy("scalebiz.com")}>
+          <Input
+            value={config.hostname || ''}
+            onChange={(e) => updateNested('hostname', e.target.value)}
+            placeholder="example.com"
+            className="flex-1"
+          />
+          <Button variant="outline" size="icon" onClick={() => handleCopy(config.hostname || '')}>
             <Copy className="h-4 w-4" />
           </Button>
-          <Button variant="outline" size="icon" className="text-destructive hover:text-destructive" onClick={() => handleDeleteDomain()}>
+          <Button variant="outline" size="icon" className="text-destructive hover:text-destructive" onClick={handleDeleteDomain}>
             <Trash2 className="h-4 w-4" />
           </Button>
         </div>
-
-        <div className="flex items-center gap-4 text-sm text-muted-foreground">
-          <span>Your domain IPs:</span>
-          <span className="flex items-center gap-1">
-            172.67.142.89
-            <Button variant="ghost" size="icon" className="h-auto w-auto p-1" onClick={() => handleCopy("172.67.142.89")}>
-              <Copy className="h-3 w-3" />
-            </Button>
-          </span>
-          <span className="flex items-center gap-1">
-            104.21.87.74
-            <Button variant="ghost" size="icon" className="h-auto w-auto p-1" onClick={() => handleCopy("104.21.87.74")}>
-              <Copy className="h-3 w-3" />
-            </Button>
-          </span>
+        <div className="flex justify-end">
+          <Button onClick={save} disabled={isUpdating}>
+            {isUpdating ? 'Saving...' : 'Update Custom Domain'}
+          </Button>
         </div>
-        <p className="text-xs text-muted-foreground mt-2">
-          To change the domain delete existing domain and add new one
-        </p>
       </CardContent>
     </Card>
   );

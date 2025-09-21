@@ -5,12 +5,43 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card.j
 import { Input } from "@/components/ui/input.jsx";
 import { Label } from "@/components/ui/label.jsx";
 import { Button } from "@/components/ui/button.jsx";
-import { ChevronUp } from "lucide-react";
-import { showSuccess } from "@/utils/toast.js";
+import { ChevronUp, Plus, Trash2 } from "lucide-react";
+import { useStoreConfig } from "@/contexts/StoreConfigurationContext.jsx";
+import { Skeleton } from "@/components/ui/skeleton.jsx";
 
 const SocialLinksSection = () => {
-  const handleUpdateSocialLinks = () => {
-    showSuccess("Social links updated successfully!");
+  const { config, isLoading, updateNested, save, isUpdating } = useStoreConfig();
+
+  if (isLoading || !config) {
+    return (
+      <Card className="mb-6">
+        <CardHeader>
+          <CardTitle>Social Links</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <Skeleton className="h-10 w-full" />
+          <Skeleton className="h-10 w-full" />
+        </CardContent>
+      </Card>
+    );
+  }
+
+  const socialLinks = config.layout_settings?.footer?.socialLinks || [];
+
+  const handleUpdateLink = (index, field, value) => {
+    const newLinks = [...socialLinks];
+    newLinks[index] = { ...newLinks[index], [field]: value };
+    updateNested('layout_settings.footer.socialLinks', newLinks);
+  };
+
+  const handleAddLink = () => {
+    const newLinks = [...socialLinks, { platform: '', url: '' }];
+    updateNested('layout_settings.footer.socialLinks', newLinks);
+  };
+
+  const handleRemoveLink = (index) => {
+    const newLinks = socialLinks.filter((_, i) => i !== index);
+    updateNested('layout_settings.footer.socialLinks', newLinks);
   };
 
   return (
@@ -20,50 +51,45 @@ const SocialLinksSection = () => {
         <ChevronUp className="h-5 w-5 text-muted-foreground" />
       </CardHeader>
       <CardContent>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-          <div>
-            <Label htmlFor="facebookLink">Facebook</Label>
-            <Input id="facebookLink" defaultValue="https://www.facebook.com/profile.php?id=6155567706512" className="mt-1" />
-          </div>
-          <div>
-            <Label htmlFor="instagramLink">Instagram</Label>
-            <Input id="instagramLink" defaultValue="https://www.instagram.com/scalebiz" className="mt-1" />
-          </div>
-          <div>
-            <Label htmlFor="linkedinLink">LinkedIn</Label>
-            <Input id="linkedinLink" defaultValue="https://www.linkedin.com/scalebiz" className="mt-1" />
-          </div>
-          <div>
-            <Label htmlFor="youtubeLink">Youtube</Label>
-            <Input id="youtubeLink" defaultValue="https://www.youtube.com/@Scalebiz" className="mt-1" />
-          </div>
-          <div>
-            <Label htmlFor="tiktokLink">Tiktok</Label>
-            <Input id="tiktokLink" defaultValue="https://www.tiktok.com/scalebiz" className="mt-1" />
-          </div>
-          <div>
-            <Label htmlFor="discordLink">Discord</Label>
-            <Input id="discordLink" defaultValue="https://www.discord.com/scalebiz" className="mt-1" />
-          </div>
-          <div>
-            <Label htmlFor="telegramLink">Telegram</Label>
-            <Input id="telegramLink" defaultValue="https://www.telegram.com/scalebiz" className="mt-1" />
-          </div>
-          <div>
-            <Label htmlFor="darazLink">Daraz</Label>
-            <Input id="darazLink" defaultValue="https://www.daraz.com.bd/shop" className="mt-1" />
-          </div>
-          <div>
-            <Label htmlFor="amazonLink">Amazon</Label>
-            <Input id="amazonLink" defaultValue="https://www.amazon.com/scalebiz" className="mt-1" />
-          </div>
-          <div>
-            <Label htmlFor="walmartLink">Walmart</Label>
-            <Input id="walmartLink" defaultValue="https://www.walmart.com/scalebiz" className="mt-1" />
-          </div>
+        <div className="space-y-4 mb-6">
+          {socialLinks.map((link, index) => (
+            <div key={index} className="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
+              <div>
+                <Label htmlFor={`platform-${index}`}>Platform</Label>
+                <Input
+                  id={`platform-${index}`}
+                  value={link.platform}
+                  onChange={(e) => handleUpdateLink(index, 'platform', e.target.value)}
+                  placeholder="e.g., facebook"
+                  className="mt-1"
+                />
+              </div>
+              <div className="md:col-span-2 flex items-end gap-2">
+                <div className="flex-1">
+                  <Label htmlFor={`url-${index}`}>URL</Label>
+                  <Input
+                    id={`url-${index}`}
+                    value={link.url}
+                    onChange={(e) => handleUpdateLink(index, 'url', e.target.value)}
+                    placeholder="https://..."
+                    className="mt-1"
+                  />
+                </div>
+                <Button variant="outline" size="icon" className="text-destructive hover:text-destructive" onClick={() => handleRemoveLink(index)}>
+                  <Trash2 className="h-4 w-4" />
+                </Button>
+              </div>
+            </div>
+          ))}
         </div>
-        <div className="flex justify-end">
-          <Button onClick={handleUpdateSocialLinks}>Update Social Links</Button>
+        <Button variant="outline" onClick={handleAddLink}>
+          <Plus className="h-4 w-4 mr-2" />
+          Add Link
+        </Button>
+        <div className="flex justify-end mt-4">
+          <Button onClick={save} disabled={isUpdating}>
+            {isUpdating ? 'Saving...' : 'Update Social Links'}
+          </Button>
         </div>
       </CardContent>
     </Card>

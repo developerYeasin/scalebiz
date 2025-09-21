@@ -8,12 +8,29 @@ import { Textarea } from "@/components/ui/textarea.jsx";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select.jsx";
 import { Button } from "@/components/ui/button.jsx";
 import { ChevronUp } from "lucide-react";
-import { showSuccess } from "@/utils/toast.js";
+import { useStoreConfig } from "@/contexts/StoreConfigurationContext.jsx";
+import { Skeleton } from "@/components/ui/skeleton.jsx";
 
 const ShopBasicInfo = () => {
-  const handleUpdateShopInfo = () => {
-    showSuccess("Shop basic information updated successfully!");
-  };
+  const { config, isLoading, updateNested, save, isUpdating } = useStoreConfig();
+
+  if (isLoading || !config) {
+    return (
+      <Card className="mb-6">
+        <CardHeader>
+          <CardTitle>Shop Basic Info</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <Skeleton className="h-10 w-full" />
+          <Skeleton className="h-10 w-full" />
+          <Skeleton className="h-20 w-full" />
+          <div className="flex justify-end">
+            <Skeleton className="h-10 w-32" />
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
 
   return (
     <Card className="mb-6">
@@ -25,36 +42,41 @@ const ShopBasicInfo = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
           <div>
             <Label htmlFor="businessId">Business ID</Label>
-            <Input id="businessId" defaultValue="107515" readOnly className="mt-1 bg-muted" />
+            <Input id="businessId" value={config.store_id || ''} readOnly className="mt-1 bg-muted" />
           </div>
           <div>
             <Label htmlFor="businessName">Business Name</Label>
-            <Input id="businessName" defaultValue="Scalebiz" className="mt-1" />
-          </div>
-          <div>
-            <Label htmlFor="businessType">Business Type</Label>
-            <Select defaultValue="Clothing & Apparel">
-              <SelectTrigger id="businessType" className="mt-1">
-                <SelectValue placeholder="Select Business Type" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="Clothing & Apparel">Clothing & Apparel</SelectItem>
-                <SelectItem value="Electronics">Electronics</SelectItem>
-                <SelectItem value="Food & Beverage">Food & Beverage</SelectItem>
-              </SelectContent>
-            </Select>
+            <Input
+              id="businessName"
+              value={config.store_name || ''}
+              onChange={(e) => updateNested('store_name', e.target.value)}
+              className="mt-1"
+            />
           </div>
           <div>
             <Label htmlFor="shopEmail">Shop Email</Label>
-            <Input id="shopEmail" defaultValue="info.scalebiz@gmail.com" className="mt-1" />
+            <Input
+              id="shopEmail"
+              value={config.layout_settings?.footer?.storeInfo?.email || ''}
+              onChange={(e) => updateNested('layout_settings.footer.storeInfo.email', e.target.value)}
+              className="mt-1"
+            />
           </div>
           <div>
             <Label htmlFor="shopPhoneNumber">Shop Phone Number</Label>
-            <Input id="shopPhoneNumber" defaultValue="+8801708378659" className="mt-1" />
+            <Input
+              id="shopPhoneNumber"
+              value={config.layout_settings?.footer?.storeInfo?.phone || ''}
+              onChange={(e) => updateNested('layout_settings.footer.storeInfo.phone', e.target.value)}
+              className="mt-1"
+            />
           </div>
           <div>
             <Label htmlFor="country">Country</Label>
-            <Select defaultValue="Bangladesh">
+            <Select
+              value={config.localization_settings?.country || ''}
+              onValueChange={(value) => updateNested('localization_settings.country', value)}
+            >
               <SelectTrigger id="country" className="mt-1">
                 <SelectValue placeholder="Select Country" />
               </SelectTrigger>
@@ -68,18 +90,27 @@ const ShopBasicInfo = () => {
         </div>
         <div className="mb-4">
           <Label htmlFor="shopAddress">Shop Address</Label>
-          <Textarea id="shopAddress" defaultValue="Dhaka, Bangladesh" rows={3} className="mt-1" />
-        </div>
-        <div className="mb-4">
-          <Label htmlFor="shopDetails">Shop Details (SEO & Data Feed)</Label>
-          <Textarea id="shopDetails" defaultValue="🛍️ আমাদের অফার গুলো-Scalebiz 🎁" rows={2} className="mt-1" />
+          <Textarea
+            id="shopAddress"
+            value={config.layout_settings?.footer?.storeInfo?.address || ''}
+            onChange={(e) => updateNested('layout_settings.footer.storeInfo.address', e.target.value)}
+            rows={3}
+            className="mt-1"
+          />
         </div>
         <div>
           <Label htmlFor="topbarAnnouncement">Topbar Announcement Message</Label>
-          <Input id="topbarAnnouncement" defaultValue="Welcome to Scalebiz" className="mt-1" />
+          <Input
+            id="topbarAnnouncement"
+            value={config.layout_settings?.announcementBar?.text || ''}
+            onChange={(e) => updateNested('layout_settings.announcementBar.text', e.target.value)}
+            className="mt-1"
+          />
         </div>
         <div className="flex justify-end mt-4">
-          <Button onClick={handleUpdateShopInfo}>Update Shop Info</Button>
+          <Button onClick={save} disabled={isUpdating}>
+            {isUpdating ? 'Saving...' : 'Update Shop Info'}
+          </Button>
         </div>
       </CardContent>
     </Card>
