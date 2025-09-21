@@ -3,28 +3,28 @@ import api from "@/utils/api.js";
 import { showSuccess, showError } from "@/utils/toast.js";
 
 const fetchCategories = async () => {
-  const response = await api.get("/categories");
+  const response = await api.get("/owner/categories");
   return response.data.data.categories;
 };
 
 const fetchCategoryById = async (id) => {
-  const response = await api.get(`/categories/${id}`);
+  const response = await api.get(`/owner/categories/${id}`);
   return response.data.data.category;
 };
 
 const createCategory = async (newCategory) => {
-  const response = await api.post("/categories", newCategory);
+  const response = await api.post("/owner/categories", newCategory);
   return response.data.data.category;
 };
 
 const updateCategory = async (updatedCategory) => {
   const { id, ...payload } = updatedCategory;
-  const response = await api.put(`/categories/${id}`, payload);
+  const response = await api.put(`/owner/categories/${id}`, payload);
   return response.data.data.category;
 };
 
 const deleteCategory = async (id) => {
-  await api.delete(`/categories/${id}`);
+  await api.delete(`/owner/categories/${id}`);
   return id;
 };
 
