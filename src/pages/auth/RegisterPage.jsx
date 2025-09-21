@@ -26,7 +26,7 @@ const RegisterPage = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      const response = await api.post("/auth/register", {
+      const response = await api.post("/owner/auth/register", {
         name,
         email,
         password,
