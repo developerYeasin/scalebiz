@@ -31,13 +31,13 @@ const CustomerListTable = ({ customers }) => {
               </TableCell>
             </TableRow>
           ) : (
-            customers.map((customer, index) => (
-              <TableRow key={index}>
+            customers.map((customer) => (
+              <TableRow key={customer.id}>
                 <TableCell className="font-medium">{customer.name}</TableCell>
                 <TableCell>{customer.phone}</TableCell>
                 <TableCell>{customer.email}</TableCell>
-                <TableCell>{customer.address}</TableCell>
-                <TableCell>{customer.district}</TableCell>
+                <TableCell>{[customer.street, customer.city, customer.country].filter(Boolean).join(', ') || 'N/A'}</TableCell>
+                <TableCell>{customer.district || 'N/A'}</TableCell>
               </TableRow>
             ))
           )}
