@@ -21,15 +21,29 @@ const CreateOrderFromProductDialog = ({ isOpen, onClose, product }) => {
   const { createOrder, isCreating } = useOrders();
   const [quantity, setQuantity] = React.useState(1);
   const [customerPhone, setCustomerPhone] = React.useState("");
-  const [customerAddress, setCustomerAddress] = React.useState("");
   const [customerNotes, setCustomerNotes] = React.useState("");
+
+  // Expanded address fields
+  const [street, setStreet] = React.useState("");
+  const [addressLine2, setAddressLine2] = React.useState("");
+  const [city, setCity] = React.useState("");
+  const [district, setDistrict] = React.useState("");
+  const [state, setState] = React.useState("");
+  const [zip, setZip] = React.useState("");
+  const [country, setCountry] = React.useState("");
 
   React.useEffect(() => {
     if (!isOpen) {
       // Reset form when dialog closes
       setQuantity(1);
       setCustomerPhone("");
-      setCustomerAddress("");
+      setStreet("");
+      setAddressLine2("");
+      setCity("");
+      setDistrict("");
+      setState("");
+      setZip("");
+      setCountry("");
       setCustomerNotes("");
     }
   }, [isOpen]);
@@ -39,28 +53,26 @@ const CreateOrderFromProductDialog = ({ isOpen, onClose, product }) => {
       showError("No product selected.");
       return;
     }
-    if (!customerPhone || !customerAddress) {
-      showError("Customer phone and address are required.");
+    if (!customerPhone || !street || !city || !country) {
+      showError("Customer phone, street, city, and country are required.");
       return;
     }
+
+    const addressPayload = {
+      street: street,
+      address: addressLine2,
+      city: city,
+      state: state,
+      zip: zip,
+      country: country,
+      district: district,
+    };
 
     const payload = {
       customer_email: "unauthenticated.customer@example.com", // Default value
       customer_phone: customerPhone,
-      shipping_address: {
-        street: customerAddress,
-        city: "N/A",
-        state: "N/A",
-        zip: "N/A",
-        country: "N/A",
-      },
-      billing_address: {
-        street: customerAddress,
-        city: "N/A",
-        state: "N/A",
-        zip: "N/A",
-        country: "N/A",
-      },
+      shipping_address: addressPayload,
+      billing_address: addressPayload,
       shipping_method: "Standard Shipping",
       payment_method: "Cash on Delivery", // Defaulting to COD
       customer_notes: customerNotes,
@@ -127,15 +139,87 @@ const CreateOrderFromProductDialog = ({ isOpen, onClose, product }) => {
               />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="address" className="text-right">
-                Address*
+              <Label htmlFor="street" className="text-right">
+                Street*
               </Label>
-              <Textarea
-                id="address"
-                value={customerAddress}
-                onChange={(e) => setCustomerAddress(e.target.value)}
+              <Input
+                id="street"
+                value={street}
+                onChange={(e) => setStreet(e.target.value)}
                 className="col-span-3"
-                placeholder="Customer's full shipping address"
+                placeholder="Street address"
+              />
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="addressLine2" className="text-right">
+                Address Line 2
+              </Label>
+              <Input
+                id="addressLine2"
+                value={addressLine2}
+                onChange={(e) => setAddressLine2(e.target.value)}
+                className="col-span-3"
+                placeholder="Apartment, suite, etc. (optional)"
+              />
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="city" className="text-right">
+                City*
+              </Label>
+              <Input
+                id="city"
+                value={city}
+                onChange={(e) => setCity(e.target.value)}
+                className="col-span-3"
+                placeholder="City"
+              />
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="district" className="text-right">
+                District
+              </Label>
+              <Input
+                id="district"
+                value={district}
+                onChange={(e) => setDistrict(e.target.value)}
+                className="col-span-3"
+                placeholder="District"
+              />
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="state" className="text-right">
+                State/Province
+              </Label>
+              <Input
+                id="state"
+                value={state}
+                onChange={(e) => setState(e.target.value)}
+                className="col-span-3"
+                placeholder="State / Province"
+              />
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="zip" className="text-right">
+                ZIP Code
+              </Label>
+              <Input
+                id="zip"
+                value={zip}
+                onChange={(e) => setZip(e.target.value)}
+                className="col-span-3"
+                placeholder="ZIP / Postal Code"
+              />
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="country" className="text-right">
+                Country*
+              </Label>
+              <Input
+                id="country"
+                value={country}
+                onChange={(e) => setCountry(e.target.value)}
+                className="col-span-3"
+                placeholder="Country"
               />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
