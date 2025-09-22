@@ -96,7 +96,12 @@ const ShowcasedBannerSection = () => {
           <div className="flex flex-wrap gap-4">
             {config.showcased_banner_images.map((src, index) => (
               <div key={index} className="relative w-24 h-24 rounded-md overflow-hidden border">
-                <img src={src} alt={`Showcased ${index + 1}`} className="block w-full h-full object-cover border border-blue-500" />
+                <img
+                  src={src}
+                  alt={`Showcased ${index + 1}`}
+                  className="block w-full h-full object-cover border border-blue-500"
+                  onError={(e) => console.error(`Failed to load showcased image ${index + 1}:`, e.target.src)}
+                />
                 <Button
                   variant="destructive"
                   size="icon"
