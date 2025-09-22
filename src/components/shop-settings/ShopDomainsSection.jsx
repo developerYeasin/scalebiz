@@ -56,7 +56,7 @@ const ShopDomainsSection = () => {
     save();
   };
 
-  const cnameValue = "procname.zatiqeasy.com";
+  const cnameValue = "myshop.scalebiz.com"; // Updated CNAME value
 
   return (
     <Card className="mb-6">
