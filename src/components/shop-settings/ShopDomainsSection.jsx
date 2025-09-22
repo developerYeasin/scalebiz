@@ -8,6 +8,7 @@ import { Copy, Trash2, ChevronUp } from "lucide-react";
 import { showSuccess, showError } from "@/utils/toast.js";
 import { useStoreConfig } from "@/contexts/StoreConfigurationContext.jsx";
 import { Skeleton } from "@/components/ui/skeleton.jsx";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table.jsx";
 
 const ShopDomainsSection = () => {
   const { config, isLoading, updateNested, save, isUpdating } = useStoreConfig();
@@ -55,6 +56,8 @@ const ShopDomainsSection = () => {
     save();
   };
 
+  const cnameValue = "procname.zatiqeasy.com";
+
   return (
     <Card className="mb-6">
       <CardHeader className="flex flex-row items-center justify-between">
@@ -98,6 +101,39 @@ const ShopDomainsSection = () => {
           <Button onClick={save} disabled={isUpdating}>
             {isUpdating ? 'Saving...' : 'Update Custom Domain'}
           </Button>
+        </div>
+
+        {/* New Cloudflare DNS Settings Section */}
+        <div className="mt-8 p-4 rounded-md bg-muted/50 border">
+          <h3 className="text-lg font-semibold mb-2">Configure DNS Settings in Cloudflare</h3>
+          <p className="text-sm text-muted-foreground mb-4">
+            Ensure you add the following DNS records to your <span className="font-semibold">Cloudflare DNS</span> with the <span className="font-semibold">TTL</span> set to <span className="font-semibold">Auto</span> and the <span className="font-semibold">Proxy Status</span> set to <span className="font-semibold">Proxied</span>. Then, set the <span className="font-semibold">SSL</span> mode to <span className="font-semibold">Flexible</span>. After adding the records, please allow up to 24 hours for your domain to be verified. For any assistance, feel free to contact us.
+          </p>
+          <a href="#" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline text-sm flex items-center gap-1 mb-4">
+            Full guide line - Click Here <Copy className="h-3 w-3" />
+          </a>
+
+          <div className="rounded-md border overflow-hidden">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="w-[100px]">Type</TableHead>
+                  <TableHead>Value</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                <TableRow>
+                  <TableCell className="font-medium">CNAME</TableCell>
+                  <TableCell className="flex items-center justify-between">
+                    <span className="text-purple-600">{cnameValue}</span>
+                    <Button variant="ghost" size="icon" onClick={() => handleCopy(cnameValue)}>
+                      <Copy className="h-4 w-4" />
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+          </div>
         </div>
       </CardContent>
     </Card>
