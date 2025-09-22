@@ -2,12 +2,12 @@
 
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card.jsx";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card.jsx";
 import { Button } from "@/components/ui/button.jsx";
 import { Label } from "@/components/ui/label.jsx";
 import { Input } from "@/components/ui/input.jsx";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar.jsx";
-import { User, LogOut, Pencil, X, Check } from "lucide-react";
+import { User, LogOut, Pencil, X, Check, Eye, EyeOff } from "lucide-react";
 import { showSuccess, showError } from "@/utils/toast.js";
 import api from "@/utils/api.js";
 import { logout } from "@/utils/auth.js";
@@ -27,11 +27,18 @@ const Profile = () => {
   const [editedPreferredLanguage, setEditedPreferredLanguage] = React.useState("");
   const [editedTimezone, setEditedTimezone] = React.useState("");
 
+  // States for password change
+  const [currentPassword, setCurrentPassword] = React.useState("");
+  const [newPassword, setNewPassword] = React.useState("");
+  const [showCurrentPassword, setShowCurrentPassword] = React.useState(false);
+  const [showNewPassword, setShowNewPassword] = React.useState(false);
+  const [isChangingPassword, setIsChangingPassword] = React.useState(false);
+
   const fetchProfile = React.useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await api.get("/auth/me");
+      const response = await api.get("/owner/auth/me");
       console.log("Profile API response:", response.data);
       const user = response.data.data.user;
       setUserData(user);
@@ -56,10 +63,19 @@ const Profile = () => {
     fetchProfile();
   }, [fetchProfile]);
 
-  const handleLogout = () => {
-    logout();
-    showSuccess("Logged out successfully!");
-    navigate("/login");
+  const handleLogout = async () => {
+    setLoading(true);
+    try {
+      await api.post("/owner/auth/logout");
+      logout();
+      showSuccess("Logged out successfully!");
+      navigate("/login");
+    } catch (err) {
+      console.error("Logout error:", err);
+      showError(err.response?.data?.message || "Logout failed.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleEditToggle = () => {
@@ -78,7 +94,7 @@ const Profile = () => {
   const handleUpdateProfile = async () => {
     setLoading(true);
     try {
-      const response = await api.put("/auth/me", {
+      const response = await api.put("/owner/auth/me", {
         name: editedName,
         email: editedEmail,
         phone_number: editedPhoneNumber,
@@ -97,6 +113,25 @@ const Profile = () => {
     }
   };
 
+  const handleChangePassword = async (e) => {
+    e.preventDefault();
+    setIsChangingPassword(true);
+    try {
+      await api.patch("/owner/auth/update-password", {
+        current_password: currentPassword,
+        new_password: newPassword,
+      });
+      showSuccess("Password updated successfully!");
+      setCurrentPassword("");
+      setNewPassword("");
+    } catch (err) {
+      console.error("Failed to update password:", err);
+      showError(err.response?.data?.message || "Failed to update password.");
+    } finally {
+      setIsChangingPassword(false);
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -107,25 +142,25 @@ const Profile = () => {
 
   if (error) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
+      <div className="flex flex-col items-center justify-center min-h-screen">
         <p className="text-destructive">{error}</p>
-        <Button onClick={handleLogout} className="ml-4">Go to Login</Button>
+        <Button onClick={handleLogout} className="ml-4 mt-4">Go to Login</Button>
       </div>
     );
   }
 
   if (!userData) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
+      <div className="flex flex-col items-center justify-center min-h-screen">
         <p>No user data found. Please log in.</p>
-        <Button onClick={handleLogout} className="ml-4">Go to Login</Button>
+        <Button onClick={handleLogout} className="ml-4 mt-4">Go to Login</Button>
       </div>
     );
   }
 
   return (
     <div className="p-4 md:p-6 max-w-2xl mx-auto">
-      <Card>
+      <Card className="mb-6">
         <CardHeader className="text-center">
           <CardTitle className="text-3xl font-bold">User Profile</CardTitle>
         </CardHeader>
@@ -226,18 +261,76 @@ const Profile = () => {
               </Button>
             )}
           </div>
-
-          <Button
-            variant="destructive"
-            className="w-full mt-4"
-            onClick={handleLogout}
-            disabled={loading}
-          >
-            <LogOut className="h-4 w-4 mr-2" />
-            Logout
-          </Button>
         </CardContent>
       </Card>
+
+      <Card className="mb-6">
+        <CardHeader>
+          <CardTitle>Change Password</CardTitle>
+          <CardDescription>Update your account password.</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleChangePassword} className="grid gap-4">
+            <div className="grid gap-2 relative">
+              <Label htmlFor="currentPassword">Current Password</Label>
+              <Input
+                id="currentPassword"
+                type={showCurrentPassword ? "text" : "password"}
+                value={currentPassword}
+                onChange={(e) => setCurrentPassword(e.target.value)}
+                required
+                className="pr-10"
+                disabled={isChangingPassword}
+              />
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
+                className="absolute right-2 top-1/2 -translate-y-1/2 h-8 w-8 text-muted-foreground hover:bg-transparent hover:text-muted-foreground"
+                onClick={() => setShowCurrentPassword((prev) => !prev)}
+                disabled={isChangingPassword}
+              >
+                {showCurrentPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+              </Button>
+            </div>
+            <div className="grid gap-2 relative">
+              <Label htmlFor="newPassword">New Password</Label>
+              <Input
+                id="newPassword"
+                type={showNewPassword ? "text" : "password"}
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                required
+                className="pr-10"
+                disabled={isChangingPassword}
+              />
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
+                className="absolute right-2 top-1/2 -translate-y-1/2 h-8 w-8 text-muted-foreground hover:bg-transparent hover:text-muted-foreground"
+                onClick={() => setShowNewPassword((prev) => !prev)}
+                disabled={isChangingPassword}
+              >
+                {showNewPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+              </Button>
+            </div>
+            <Button type="submit" className="w-full bg-purple-600 hover:bg-purple-700 text-white" disabled={isChangingPassword}>
+              {isChangingPassword ? "Updating..." : "Update Password"}
+            </Button>
+          </form>
+        </CardContent>
+      </Card>
+
+      <Button
+        variant="destructive"
+        className="w-full mt-4"
+        onClick={handleLogout}
+        disabled={loading || isChangingPassword}
+      >
+        <LogOut className="h-4 w-4 mr-2" />
+        Logout
+      </Button>
     </div>
   );
 };
