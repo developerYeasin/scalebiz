@@ -20,7 +20,7 @@ const fetchOrders = async ({ page = 1, limit = 10, status, search }) => {
 
 // Fetch a single order by ID
 const fetchOrderById = async (id) => {
-  const response = await api.get(`/store/orders/${id}`); // This endpoint was not specified to change, keeping as is.
+  const response = await api.get(`/owner/store/orders/${id}`); // Updated API endpoint
   return response.data.data.order;
 };
 
