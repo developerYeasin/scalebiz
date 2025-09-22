@@ -5,10 +5,27 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card.j
 import { Input } from "@/components/ui/input.jsx";
 import { Label } from "@/components/ui/label.jsx";
 import { ChevronUp } from "lucide-react";
+import { useLandingPageConfig } from "@/contexts/LandingPageSettingsContext.jsx";
+import { Skeleton } from "@/components/ui/skeleton.jsx";
 
 const ScrollingBannerText = () => {
-  const [text, setText] = React.useState("");
+  const { config, isLoading, updateNested, isUpdating } = useLandingPageConfig();
   const maxLength = 150;
+
+  if (isLoading || !config) {
+    return (
+      <Card className="mb-6">
+        <CardHeader className="flex flex-row items-center justify-between">
+          <CardTitle>Scrolling banner text</CardTitle>
+          <Skeleton className="h-5 w-5" />
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <Skeleton className="h-4 w-full" />
+          <Skeleton className="h-10 w-full" />
+        </CardContent>
+      </Card>
+    );
+  }
 
   return (
     <Card className="mb-6">
@@ -26,12 +43,13 @@ const ScrollingBannerText = () => {
             id="scrollingBannerText"
             placeholder="Input your desired scrolling banner text"
             className="mt-1"
-            value={text}
-            onChange={(e) => setText(e.target.value)}
+            value={config.scrolling_banner_text}
+            onChange={(e) => updateNested('scrolling_banner_text', e.target.value)}
             maxLength={maxLength}
+            disabled={isUpdating}
           />
           <p className="text-xs text-muted-foreground text-right mt-1">
-            Character limit: {maxLength - text.length}/{maxLength}
+            Character limit: {maxLength - config.scrolling_banner_text.length}/{maxLength}
           </p>
         </div>
       </CardContent>

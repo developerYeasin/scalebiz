@@ -7,14 +7,16 @@ import { ChevronUp } from "lucide-react";
 import { Switch } from "@/components/ui/switch.jsx";
 import { Label } from "@/components/ui/label.jsx";
 import { Input } from "@/components/ui/input.jsx";
-import { useStoreConfig } from "@/contexts/StoreConfigurationContext.jsx";
+import { useStoreConfig } from "@/contexts/StoreConfigurationContext.jsx"; // Keep for logo_url
+import { useThemeConfig } from "@/contexts/ThemeSettingsContext.jsx"; // New import for theme settings
 import { Skeleton } from "@/components/ui/skeleton.jsx";
 import { Link } from "react-router-dom";
 
 const ShopTheme = () => {
-  const { config, isLoading, updateNested, save, isUpdating } = useStoreConfig();
+  const { config: storeConfig, isLoading: storeConfigLoading, save: saveStoreConfig, isUpdating: isUpdatingStoreConfig } = useStoreConfig();
+  const { config: themeConfig, isLoading: themeConfigLoading, updateNested: updateThemeNested, save: saveThemeConfig, isUpdating: isUpdatingThemeConfig } = useThemeConfig();
 
-  if (isLoading || !config) {
+  if (storeConfigLoading || themeConfigLoading || !storeConfig || !themeConfig) {
     return (
       <Card className="mb-6">
         <CardHeader>
@@ -28,7 +30,8 @@ const ShopTheme = () => {
     );
   }
 
-  const themeColor = config.theme_settings?.primaryColor || '#000000';
+  const themeColor = themeConfig.primary_color || '#000000';
+  const isUpdating = isUpdatingStoreConfig || isUpdatingThemeConfig;
 
   return (
     <Card className="mb-6">
@@ -50,16 +53,18 @@ const ShopTheme = () => {
               id="theme-color"
               type="color"
               value={themeColor}
-              onChange={(e) => updateNested('theme_settings.primaryColor', e.target.value)}
+              onChange={(e) => updateThemeNested('primary_color', e.target.value)}
               className="w-16 h-10 p-0 border-none cursor-pointer"
+              disabled={isUpdating}
             />
             <Input
               value={themeColor}
-              onChange={(e) => updateNested('theme_settings.primaryColor', e.target.value)}
+              onChange={(e) => updateThemeNested('primary_color', e.target.value)}
               className="flex-1"
+              disabled={isUpdating}
             />
           </div>
-          <Button className="w-full mt-4" onClick={save} disabled={isUpdating}>
+          <Button className="w-full mt-4" onClick={saveThemeConfig} disabled={isUpdating}>
             {isUpdating ? 'Saving...' : 'Save Theme Color'}
           </Button>
         </div>
@@ -69,8 +74,9 @@ const ShopTheme = () => {
           </Label>
           <Switch
             id="dark-mode-toggle"
-            // This would require more logic to implement fully
-            // For now, it's a placeholder UI element
+            checked={themeConfig.theme_mode === 'Dark'}
+            onCheckedChange={(checked) => updateThemeNested('theme_mode', checked ? 'Dark' : 'Light')}
+            disabled={isUpdating}
           />
         </div>
         <Button variant="outline" className="w-full mt-4" asChild>

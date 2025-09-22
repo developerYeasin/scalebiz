@@ -8,11 +8,30 @@ import { Button } from "@/components/ui/button.jsx";
 import { Switch } from "@/components/ui/switch.jsx";
 import { Check, ChevronUp } from "lucide-react";
 import { cn } from "@/lib/utils.js";
+import { useLandingPageConfig } from "@/contexts/LandingPageSettingsContext.jsx";
+import { Skeleton } from "@/components/ui/skeleton.jsx";
 
 const GeneralSettings = () => {
-  const [primaryColor, setPrimaryColor] = React.useState("#6B46C1"); // Example purple
-  const [secondaryColor, setSecondaryColor] = React.useState("#000000"); // Example black
-  const [showProductDetails, setShowProductDetails] = React.useState(false);
+  const { config, isLoading, updateNested, save, isUpdating } = useLandingPageConfig();
+
+  if (isLoading || !config) {
+    return (
+      <Card className="mb-6">
+        <CardHeader className="flex flex-row items-center justify-between">
+          <CardTitle>General settings</CardTitle>
+          <Skeleton className="h-5 w-5" />
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <Skeleton className="h-4 w-full" />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <Skeleton className="h-20 w-full" />
+            <Skeleton className="h-20 w-full" />
+            <Skeleton className="h-20 w-full" />
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
 
   return (
     <Card className="mb-6">
@@ -32,19 +51,21 @@ const GeneralSettings = () => {
             <div className="flex items-center gap-2">
               <div
                 className="w-8 h-8 rounded-full border border-gray-300"
-                style={{ backgroundColor: primaryColor }}
+                style={{ backgroundColor: config.general_primary_color }}
               />
               <Input
                 id="primaryColor"
                 type="color"
-                value={primaryColor}
-                onChange={(e) => setPrimaryColor(e.target.value)}
+                value={config.general_primary_color}
+                onChange={(e) => updateNested('general_primary_color', e.target.value)}
                 className="w-16 h-10 p-0 border-none cursor-pointer"
+                disabled={isUpdating}
               />
               <Input
-                value={primaryColor}
-                onChange={(e) => setPrimaryColor(e.target.value)}
+                value={config.general_primary_color}
+                onChange={(e) => updateNested('general_primary_color', e.target.value)}
                 className="flex-1"
+                disabled={isUpdating}
               />
             </div>
           </div>
@@ -55,19 +76,21 @@ const GeneralSettings = () => {
             <div className="flex items-center gap-2">
               <div
                 className="w-8 h-8 rounded-full border border-gray-300"
-                style={{ backgroundColor: secondaryColor }}
+                style={{ backgroundColor: config.general_secondary_color }}
               />
               <Input
                 id="secondaryColor"
                 type="color"
-                value={secondaryColor}
-                onChange={(e) => setSecondaryColor(e.target.value)}
+                value={config.general_secondary_color}
+                onChange={(e) => updateNested('general_secondary_color', e.target.value)}
                 className="w-16 h-10 p-0 border-none cursor-pointer"
+                disabled={isUpdating}
               />
               <Input
-                value={secondaryColor}
-                onChange={(e) => setSecondaryColor(e.target.value)}
+                value={config.general_secondary_color}
+                onChange={(e) => updateNested('general_secondary_color', e.target.value)}
                 className="flex-1"
+                disabled={isUpdating}
               />
             </div>
           </div>
@@ -80,21 +103,23 @@ const GeneralSettings = () => {
                 variant="outline"
                 className={cn(
                   "flex-1",
-                  showProductDetails && "bg-primary text-primary-foreground hover:bg-primary/90"
+                  config.show_product_details && "bg-primary text-primary-foreground hover:bg-primary/90"
                 )}
-                onClick={() => setShowProductDetails(true)}
+                onClick={() => updateNested('show_product_details', true)}
+                disabled={isUpdating}
               >
-                Yes {showProductDetails && <Check className="h-4 w-4 ml-2" />}
+                Yes {config.show_product_details && <Check className="h-4 w-4 ml-2" />}
               </Button>
               <Button
                 variant="outline"
                 className={cn(
                   "flex-1",
-                  !showProductDetails && "bg-primary text-primary-foreground hover:bg-primary/90"
+                  !config.show_product_details && "bg-primary text-primary-foreground hover:bg-primary/90"
                 )}
-                onClick={() => setShowProductDetails(false)}
+                onClick={() => updateNested('show_product_details', false)}
+                disabled={isUpdating}
               >
-                No {!showProductDetails && <Check className="h-4 w-4 ml-2" />}
+                No {!config.show_product_details && <Check className="h-4 w-4 ml-2" />}
               </Button>
             </div>
           </div>

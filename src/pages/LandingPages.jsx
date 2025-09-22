@@ -14,8 +14,28 @@ import ShowcasedBannerSection from "@/components/landing-pages/ShowcasedBannerSe
 import StaticBannerSection from "@/components/landing-pages/StaticBannerSection.jsx";
 import ProductImagesSection from "@/components/landing-pages/ProductImagesSection.jsx";
 import ApplyThemeButton from "@/components/landing-pages/ApplyThemeButton.jsx";
+import { useLandingPageConfig } from "@/contexts/LandingPageSettingsContext.jsx"; // Import the new hook
+import { Skeleton } from "@/components/ui/skeleton.jsx";
 
 const LandingPages = () => {
+  const { isLoading, error } = useLandingPageConfig(); // Use the new hook
+
+  if (isLoading) {
+    return (
+      <div className="p-4 md:p-6 bg-background space-y-6">
+        <Skeleton className="h-16 w-full" />
+        <Skeleton className="h-48 w-full" />
+        <Skeleton className="h-32 w-full" />
+        <Skeleton className="h-64 w-full" />
+        <Skeleton className="h-64 w-full" />
+      </div>
+    );
+  }
+
+  if (error) {
+    return <div className="p-4 md:p-6 text-destructive">Error loading landing page settings: {error.message}</div>;
+  }
+
   return (
     <div className="p-4 md:p-6 bg-background">
       <LandingPageHeader />

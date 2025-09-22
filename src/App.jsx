@@ -87,7 +87,7 @@ const App = () => (
           <Route path="/customers" element={<ProtectedRoute><Layout><Customers /></Layout></ProtectedRoute>} />
           <Route path="/manage-shop" element={<ProtectedRoute><Layout><ManageShop /></Layout></ProtectedRoute>} />
           
-          {/* Manage Shop Sub-Routes with new layout */}
+          {/* Settings-related Routes with new SettingsLayout */}
           <Route element={<ProtectedRoute><Layout><SettingsLayout /></Layout></ProtectedRoute>}>
             <Route path="/manage-shop/shop-settings" element={<ShopSettingsPage />} />
             <Route path="/manage-shop/shop-domain" element={<ShopDomainPage />} />
@@ -98,10 +98,10 @@ const App = () => (
             <Route path="/manage-shop/sms-support" element={<SmsSupportPage />} />
             <Route path="/manage-shop/chat-support" element={<ChatSupportPage />} />
             <Route path="/manage-shop/social-links" element={<SocialLinksPage />} />
+            <Route path="/customize-theme" element={<CustomizeTheme />} /> {/* Now uses SettingsLayout */}
+            <Route path="/landing-pages" element={<LandingPages />} /> {/* Now uses SettingsLayout */}
           </Route>
           
-          <Route path="/customize-theme" element={<ProtectedRoute><Layout><CustomizeTheme /></Layout></ProtectedRoute>} />
-          <Route path="/landing-pages" element={<ProtectedRoute><Layout><LandingPages /></Layout></ProtectedRoute>} />
           <Route path="/promo-codes" element={<ProtectedRoute><Layout><PromoCodes /></Layout></ProtectedRoute>} />
           <Route path="/users-and-permissions" element={<ProtectedRoute><Layout><UsersAndPermissions /></Layout></ProtectedRoute>} />
           <Route path="/settings" element={<ProtectedRoute><Layout><Settings /></Layout></ProtectedRoute>} />

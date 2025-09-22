@@ -2,40 +2,43 @@
 
 import React from "react";
 import ThemeCard from "@/components/customize-theme/ThemeCard.jsx";
+import { useLandingPageConfig } from "@/contexts/LandingPageSettingsContext.jsx";
+import { Skeleton } from "@/components/ui/skeleton.jsx";
 
 const AvailableThemesSection = () => {
-  const [selectedTheme, setSelectedTheme] = React.useState("Arcadia");
+  const { config, isLoading, updateNested, isUpdating, availableLandingPageTemplates } = useLandingPageConfig();
 
-  const themes = [
-    {
-      title: "Arcadia",
-      imageSrc: "https://via.placeholder.com/300x200?text=Arcadia+Theme",
-      status: "active",
-    },
-    {
-      title: "Nirvana",
-      imageSrc: "https://via.placeholder.com/300x200?text=Nirvana+Theme",
-      status: "premium",
-    },
-    {
-      title: "More themes coming",
-      imageSrc: "",
-      status: "coming-soon",
-    },
-  ];
+  if (isLoading || !config || !availableLandingPageTemplates) {
+    return (
+      <div className="mb-6">
+        <Skeleton className="h-7 w-48 mb-4" />
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <Skeleton className="h-60 w-full" />
+          <Skeleton className="h-60 w-full" />
+          <Skeleton className="h-60 w-full" />
+        </div>
+      </div>
+    );
+  }
+
+  const handleSelectTemplate = (templateId, templateName) => {
+    updateNested('landing_page_template_id', templateId);
+    updateNested('selected_landing_theme_name', templateName); // Update the derived name for local state
+  };
 
   return (
     <div className="mb-6">
       <h2 className="text-xl font-semibold mb-4">Available Themes</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {themes.map((theme) => (
+        {availableLandingPageTemplates.map((template) => (
           <ThemeCard
-            key={theme.title}
-            title={theme.title}
-            imageSrc={theme.imageSrc}
-            status={theme.status}
-            isSelected={selectedTheme === theme.title}
-            onSelect={() => setSelectedTheme(theme.title)}
+            key={template.id}
+            title={template.name}
+            imageSrc={template.imageSrc}
+            status={template.status}
+            isSelected={config.landing_page_template_id === template.id}
+            onSelect={() => handleSelectTemplate(template.id, template.name)}
+            disabled={isUpdating || template.status === "coming-soon"}
           />
         ))}
       </div>
