@@ -40,15 +40,15 @@ const Profile = () => {
     try {
       const response = await api.get("/owner/auth/me");
       console.log("Profile API response:", response.data);
-      const user = response.data.data.user;
-      setUserData(user);
+      const owner = response.data.data.owner; // Changed from .user to .owner
+      setUserData(owner);
       // Initialize editable states with fetched data
-      setEditedName(user.name || "");
-      setEditedEmail(user.email || "");
-      setEditedPhoneNumber(user.phone_number || "");
-      setEditedAvatarUrl(user.avatar_url || "");
-      setEditedPreferredLanguage(user.preferred_language || "");
-      setEditedTimezone(user.timezone || "");
+      setEditedName(owner.name || "");
+      setEditedEmail(owner.email || "");
+      setEditedPhoneNumber(owner.phone_number || "");
+      setEditedAvatarUrl(owner.avatar_url || "");
+      setEditedPreferredLanguage(owner.preferred_language || "");
+      setEditedTimezone(owner.timezone || "");
       showSuccess("Profile data loaded!");
     } catch (err) {
       console.error("Failed to fetch profile:", err);
@@ -102,7 +102,7 @@ const Profile = () => {
         preferred_language: editedPreferredLanguage,
         timezone: editedTimezone,
       });
-      setUserData(response.data.data.user);
+      setUserData(response.data.data.owner); // Changed from .user to .owner
       showSuccess("Profile updated successfully!");
       setEditMode(false);
     } catch (err) {
