@@ -7,8 +7,8 @@ import { useAvailableLandingPageTemplates } from "./use-available-landing-page-t
 
 const fetchLandingPageSettings = async () => {
   const response = await api.get("/owner/landing-page-settings");
-  // Ensure default structure if no settings exist yet
-  const settings = response.data.data.landing_page_settings || {};
+  // Corrected access path from response.data.data.landing_page_settings to response.data.data.settings
+  const settings = response.data.data.settings || {};
   const defaultLandingPageTemplateId = 1; // Assuming 'Arcadia' template has ID 1 and is always available
 
   return {
@@ -32,7 +32,7 @@ const fetchLandingPageSettings = async () => {
 
 const updateLandingPageSettings = async (newSettings) => {
   const response = await api.put("/owner/landing-page-settings", newSettings);
-  return response.data.data.landing_page_settings;
+  return response.data.data.settings; // Also updated return path for consistency
 };
 
 export const useLandingPageSettings = () => {

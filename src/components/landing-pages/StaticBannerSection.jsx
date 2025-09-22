@@ -78,7 +78,7 @@ const StaticBannerSection = () => {
               <img
                 src={config.static_banner_image_url}
                 alt="Static Banner"
-                className="block w-full h-full object-cover rounded-md border border-blue-500"
+                className="block w-full h-full object-cover rounded-md"
                 onError={(e) => console.error("Failed to load static banner image:", e.target.src)}
               />
               <Button

@@ -3,7 +3,7 @@
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card.jsx";
 import { Button } from "@/components/ui/button.jsx";
-import { Image, ChevronUp, X } from "lucide-react"; // Added X for remove button
+import { Image, ChevronUp, X } from "lucide-react";
 import { uploadMultipleImages } from "@/utils/upload.js";
 import { useLandingPageConfig } from "@/contexts/LandingPageSettingsContext.jsx";
 import { showError } from "@/utils/toast.js";
@@ -13,10 +13,6 @@ const ShowcasedBannerSection = () => {
   const { config, isLoading, updateNested, save, isUpdating } = useLandingPageConfig();
   const imagesInputRef = React.useRef(null);
   const maxImages = 4;
-
-  // Debugging logs
-  console.log("ShowcasedBannerSection config:", config);
-  console.log("ShowcasedBannerSection showcased_banner_images:", config?.showcased_banner_images);
 
   const handleUpload = async (event) => {
     const files = Array.from(event.target.files);
@@ -99,7 +95,7 @@ const ShowcasedBannerSection = () => {
                 <img
                   src={src}
                   alt={`Showcased ${index + 1}`}
-                  className="block w-full h-full object-cover border border-blue-500"
+                  className="block w-full h-full object-cover rounded-md"
                   onError={(e) => console.error(`Failed to load showcased image ${index + 1}:`, e.target.src)}
                 />
                 <Button
