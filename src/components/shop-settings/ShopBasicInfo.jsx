@@ -42,7 +42,7 @@ const ShopBasicInfo = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
           <div>
             <Label htmlFor="businessId">Business ID</Label>
-            <Input id="businessId" value={config.store_id || ''} readOnly className="mt-1 bg-muted" />
+            <Input id="businessId" value={config.id || ''} readOnly className="mt-1 bg-muted" />
           </div>
           <div>
             <Label htmlFor="businessName">Business Name</Label>
