@@ -16,16 +16,17 @@ import {
   FileText,
   Gift,
   LineChart,
-  Square,
+  PanelLeftClose, // Changed from Square
+  PanelRightOpen, // New icon for expanded state
   ReceiptText,
   Gem,
   HelpCircle,
   Building,
 } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area.jsx";
-import { usePendingOrdersCount } from "@/hooks/usePendingOrdersCount.js"; // New import
+import { usePendingOrdersCount } from "@/hooks/usePendingOrdersCount.js";
 
-const Sidebar = ({ onClose }) => {
+const Sidebar = ({ onClose, isCollapsed, onToggleCollapse }) => {
   const location = useLocation();
   const currentPath = location.pathname;
   const { data: orderCounts, isLoading } = usePendingOrdersCount();
@@ -71,19 +72,26 @@ const Sidebar = ({ onClose }) => {
   };
 
   return (
-    <div className="flex h-full flex-col border-r bg-sidebar text-sidebar-foreground">
+    <div className={cn(
+      "flex h-full flex-col border-r bg-sidebar text-sidebar-foreground transition-all duration-200",
+      isCollapsed ? "w-16" : "w-64"
+    )}>
       <div className="flex h-16 items-center justify-between border-b px-4">
         <div className="flex items-center gap-2">
-          <div className="w-6 h-6 bg-purple-600 rounded-md flex items-center justify-center text-white font-bold text-sm">S</div>
-          <h1 className="text-xl font-semibold text-sidebar-primary-foreground">Scalebiz</h1>
+          {!isCollapsed && (
+            <>
+              <div className="w-6 h-6 bg-purple-600 rounded-md flex items-center justify-center text-white font-bold text-sm">S</div>
+              <h1 className="text-xl font-semibold text-sidebar-primary-foreground">Scalebiz</h1>
+            </>
+          )}
         </div>
-        <Button variant="ghost" size="icon" className="text-sidebar-foreground">
-          <Square className="h-5 w-5" />
+        <Button variant="ghost" size="icon" className="text-sidebar-foreground" onClick={onToggleCollapse}>
+          {isCollapsed ? <PanelRightOpen className="h-5 w-5" /> : <PanelLeftClose className="h-5 w-5" />}
         </Button>
       </div>
       <ScrollArea className="flex-1">
         <nav className="py-4">
-          <ul className="space-y-1 px-4">
+          <ul className="space-y-1 px-2">
             {mainNavItems.map((item) => (
               <li key={item.name}>
                 <Button
@@ -91,15 +99,19 @@ const Sidebar = ({ onClose }) => {
                   variant="ghost"
                   className={cn(
                     "w-full justify-start text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
-                    isActive(item.href) && "bg-sidebar-accent text-sidebar-accent-foreground"
+                    isActive(item.href) && "bg-sidebar-accent text-sidebar-accent-foreground",
+                    isCollapsed ? "px-2" : "px-4"
                   )}
                   onClick={onClose}
                 >
                   <Link to={item.href} className="flex items-center gap-3">
                     <item.icon className="h-5 w-5" />
-                    {item.name}
+                    {!isCollapsed && item.name}
                     {item.badge && (
-                      <Badge className="ml-auto bg-sidebar-accent text-sidebar-accent-foreground">
+                      <Badge className={cn(
+                        "ml-auto bg-sidebar-accent text-sidebar-accent-foreground",
+                        isCollapsed && "absolute top-1 right-1"
+                      )}>
                         {item.badge}
                       </Badge>
                     )}
@@ -109,8 +121,10 @@ const Sidebar = ({ onClose }) => {
             ))}
           </ul>
 
-          <h2 className="px-4 pt-6 pb-2 text-xs font-semibold uppercase text-muted-foreground">Configuration</h2>
-          <ul className="space-y-1 px-4">
+          {!isCollapsed && (
+            <h2 className="px-4 pt-6 pb-2 text-xs font-semibold uppercase text-muted-foreground">Configuration</h2>
+          )}
+          <ul className="space-y-1 px-2">
             {configurationItems.map((item) => (
               <li key={item.name}>
                 <Button
@@ -118,21 +132,24 @@ const Sidebar = ({ onClose }) => {
                   variant="ghost"
                   className={cn(
                     "w-full justify-start text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
-                    isActive(item.href) && "bg-sidebar-accent text-sidebar-accent-foreground"
+                    isActive(item.href) && "bg-sidebar-accent text-sidebar-accent-foreground",
+                    isCollapsed ? "px-2" : "px-4"
                   )}
                   onClick={onClose}
                 >
                   <Link to={item.href} className="flex items-center gap-3">
                     <item.icon className="h-5 w-5" />
-                    {item.name}
+                    {!isCollapsed && item.name}
                   </Link>
                 </Button>
               </li>
             ))}
           </ul>
 
-          <h2 className="px-4 pt-6 pb-2 text-xs font-semibold uppercase text-muted-foreground">Reports</h2>
-          <ul className="space-y-1 px-4">
+          {!isCollapsed && (
+            <h2 className="px-4 pt-6 pb-2 text-xs font-semibold uppercase text-muted-foreground">Reports</h2>
+          )}
+          <ul className="space-y-1 px-2">
             {reportItems.map((item) => (
               <li key={item.name}>
                 <Button
@@ -140,21 +157,24 @@ const Sidebar = ({ onClose }) => {
                   variant="ghost"
                   className={cn(
                     "w-full justify-start text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
-                    isActive(item.href) && "bg-sidebar-accent text-sidebar-accent-foreground"
+                    isActive(item.href) && "bg-sidebar-accent text-sidebar-accent-foreground",
+                    isCollapsed ? "px-2" : "px-4"
                   )}
                   onClick={onClose}
                 >
                   <Link to={item.href} className="flex items-center gap-3">
                     <item.icon className="h-5 w-5" />
-                    {item.name}
+                    {!isCollapsed && item.name}
                   </Link>
                 </Button>
               </li>
             ))}
           </ul>
 
-          <h2 className="px-4 pt-6 pb-2 text-xs font-semibold uppercase text-muted-foreground">Payment</h2>
-          <ul className="space-y-1 px-4">
+          {!isCollapsed && (
+            <h2 className="px-4 pt-6 pb-2 text-xs font-semibold uppercase text-muted-foreground">Payment</h2>
+          )}
+          <ul className="space-y-1 px-2">
             {paymentItems.map((item) => (
               <li key={item.name}>
                 <Button
@@ -162,41 +182,47 @@ const Sidebar = ({ onClose }) => {
                   variant="ghost"
                   className={cn(
                     "w-full justify-start text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
-                    isActive(item.href) && "bg-sidebar-accent text-sidebar-accent-foreground"
+                    isActive(item.href) && "bg-sidebar-accent text-sidebar-accent-foreground",
+                    isCollapsed ? "px-2" : "px-4"
                   )}
                   onClick={onClose}
                 >
                   <Link to={item.href} className="flex items-center gap-3">
                     <item.icon className="h-5 w-5" />
-                    {item.name}
+                    {!isCollapsed && item.name}
                   </Link>
                 </Button>
               </li>
             ))}
           </ul>
 
-          <h2 className="px-4 pt-6 pb-2 text-xs font-semibold uppercase text-muted-foreground">Academy</h2>
-          <ul className="space-y-1 px-4">
+          {!isCollapsed && (
+            <h2 className="px-4 pt-6 pb-2 text-xs font-semibold uppercase text-muted-foreground">Academy</h2>
+          )}
+          <ul className="space-y-1 px-2">
             <li>
               <Button
                 asChild
                 variant="ghost"
                 className={cn(
                   "w-full justify-start text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
-                  isActive(academyItem.href) && "bg-sidebar-accent text-sidebar-accent-foreground"
+                  isActive(academyItem.href) && "bg-sidebar-accent text-sidebar-accent-foreground",
+                  isCollapsed ? "px-2" : "px-4"
                 )}
                 onClick={onClose}
               >
                 <Link to={academyItem.href} className="flex items-center gap-3">
                   <academyItem.icon className="h-5 w-5" />
-                  {academyItem.name}
+                  {!isCollapsed && academyItem.name}
                 </Link>
               </Button>
             </li>
           </ul>
 
-          <h2 className="px-4 pt-6 pb-2 text-xs font-semibold uppercase text-muted-foreground">Vendor</h2>
-          <ul className="space-y-1 px-4">
+          {!isCollapsed && (
+            <h2 className="px-4 pt-6 pb-2 text-xs font-semibold uppercase text-muted-foreground">Vendor</h2>
+          )}
+          <ul className="space-y-1 px-2">
             {vendorItems.map((item) => (
               <li key={item.name}>
                 <Button
@@ -204,13 +230,14 @@ const Sidebar = ({ onClose }) => {
                   variant="ghost"
                   className={cn(
                     "w-full justify-start text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
-                    isActive(item.href) && "bg-sidebar-accent text-sidebar-accent-foreground"
+                    isActive(item.href) && "bg-sidebar-accent text-sidebar-accent-foreground",
+                    isCollapsed ? "px-2" : "px-4"
                   )}
                   onClick={onClose}
                 >
                   <Link to={item.href} className="flex items-center gap-3">
                     <item.icon className="h-5 w-5" />
-                    {item.name}
+                    {!isCollapsed && item.name}
                   </Link>
                 </Button>
               </li>
@@ -218,9 +245,11 @@ const Sidebar = ({ onClose }) => {
           </ul>
         </nav>
       </ScrollArea>
-      <div className="mt-auto p-4 border-t">
-        <p className="text-xs text-muted-foreground">Version 1.0</p>
-      </div>
+      {!isCollapsed && (
+        <div className="mt-auto p-4 border-t">
+          <p className="text-xs text-muted-foreground">Version 1.0</p>
+        </div>
+      )}
     </div>
   );
 };

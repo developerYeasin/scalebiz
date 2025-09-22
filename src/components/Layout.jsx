@@ -18,16 +18,22 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import { logout, isAuthenticated } from "@/utils/auth.js";
 import { showSuccess } from "@/utils/toast.js";
+import { cn } from "@/lib/utils.js"; // Import cn for conditional class names
 
 const Layout = ({ children }) => {
   const isMobile = useIsMobile();
   const [isSheetOpen, setIsSheetOpen] = React.useState(false);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = React.useState(false); // New state for sidebar collapse
   const navigate = useNavigate();
 
   const handleLogout = () => {
     logout();
     showSuccess("Logged out successfully!");
     navigate("/login");
+  };
+
+  const toggleSidebarCollapse = () => { // New function to toggle sidebar collapse
+    setIsSidebarCollapsed((prev) => !prev);
   };
 
   React.useEffect(() => {
@@ -46,15 +52,21 @@ const Layout = ({ children }) => {
             </Button>
           </SheetTrigger>
           <SheetContent side="left" className="p-0 w-64">
-            <Sidebar onClose={() => setIsSheetOpen(false)} />
+            <Sidebar onClose={() => setIsSheetOpen(false)} isCollapsed={false} onToggleCollapse={() => {}} />
           </SheetContent>
         </Sheet>
       ) : (
-        <aside className="hidden md:flex w-64 flex-col fixed inset-y-0 z-10">
-          <Sidebar />
+        <aside className={cn(
+          "hidden md:flex flex-col fixed inset-y-0 z-10 transition-all duration-200",
+          isSidebarCollapsed ? "w-16" : "w-64"
+        )}>
+          <Sidebar isCollapsed={isSidebarCollapsed} onToggleCollapse={toggleSidebarCollapse} />
         </aside>
       )}
-      <main className={isMobile ? "flex-1 pt-16" : "flex-1 ml-64 overflow-x-auto"}>
+      <main className={cn(
+        "flex-1 overflow-x-auto",
+        isMobile ? "pt-16" : (isSidebarCollapsed ? "ml-16" : "ml-64")
+      )}>
         <header className="sticky top-0 z-40 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6 justify-end">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
