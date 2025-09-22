@@ -34,7 +34,7 @@ const fetchOrdersSummary = async (period) => {
 
 // Create a new order
 const createOrder = async (newOrder) => {
-  const response = await api.post("/orders", newOrder);
+  const response = await api.post("/owner/orders", newOrder); // Updated API endpoint
   return response.data;
 };
 
