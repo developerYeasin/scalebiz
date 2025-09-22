@@ -8,7 +8,7 @@ const fetchCustomers = async ({ page = 1, limit = 10, search }) => {
   if (search) {
     params.search = search;
   }
-  const response = await api.get("/store/customers", { params });
+  const response = await api.get("/owner/store/customers", { params });
   return response.data;
 };
 

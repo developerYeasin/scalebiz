@@ -14,19 +14,19 @@ const fetchOrders = async ({ page = 1, limit = 10, status, search }) => {
   if (search) {
     params.search = search;
   }
-  const response = await api.get("/store/orders", { params });
+  const response = await api.get("/owner/store/orders", { params });
   return response.data;
 };
 
 // Fetch a single order by ID
 const fetchOrderById = async (id) => {
-  const response = await api.get(`/store/orders/${id}`);
+  const response = await api.get(`/store/orders/${id}`); // This endpoint was not specified to change, keeping as is.
   return response.data.data.order;
 };
 
 // Fetch orders summary
 const fetchOrdersSummary = async (period) => {
-  const response = await api.get("/store/orders-summary", {
+  const response = await api.get("/owner/store/orders-summary", {
     params: { period }
   });
   return response.data.data;
@@ -34,20 +34,20 @@ const fetchOrdersSummary = async (period) => {
 
 // Create a new order
 const createOrder = async (newOrder) => {
-  const response = await api.post("/owner/orders", newOrder); // Updated API endpoint
+  const response = await api.post("/owner/orders", newOrder);
   return response.data;
 };
 
 // Update an existing order
 const updateOrder = async (updatedOrder) => {
   const { id, ...payload } = updatedOrder;
-  const response = await api.put(`/orders/${id}`, payload);
+  const response = await api.put(`/owner/orders/${id}`, payload);
   return response.data;
 };
 
 // Delete an order
 const deleteOrder = async (id) => {
-  await api.delete(`/orders/${id}`);
+  await api.delete(`/owner/orders/${id}`);
   return id;
 };
 

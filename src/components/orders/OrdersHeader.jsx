@@ -14,7 +14,7 @@ const OrdersHeader = ({ searchTerm, onSearchChange, totalOrders }) => {
   const handleExport = async () => {
     showInfo("Exporting orders...");
     try {
-      const response = await api.get("/store/orders-export", {
+      const response = await api.get("/owner/store/orders-export", {
         responseType: 'blob', // Important to handle raw data
       });
       
