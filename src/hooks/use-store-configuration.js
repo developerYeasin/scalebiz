@@ -6,7 +6,7 @@ import { showSuccess, showError } from "@/utils/toast.js";
 
 // Fetch store configuration
 const fetchStoreConfiguration = async () => {
-  const response = await api.get("/store_configuration");
+  const response = await api.get("/owner/store-configuration");
   // Initialize missing nested objects to prevent errors in the UI
   const config = response.data.data.configuration || {};
   config.layout_settings = config.layout_settings || {};
@@ -30,7 +30,7 @@ const fetchStoreConfiguration = async () => {
 
 // Update store configuration
 const updateStoreConfiguration = async (configuration) => {
-  const response = await api.put("/store_configuration", configuration);
+  const response = await api.put("/owner/store-configuration", configuration);
   return response.data;
 };
 
