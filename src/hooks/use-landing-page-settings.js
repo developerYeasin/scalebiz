@@ -9,8 +9,10 @@ const fetchLandingPageSettings = async () => {
   const response = await api.get("/owner/landing-page-settings");
   // Ensure default structure if no settings exist yet
   const settings = response.data.data.landing_page_settings || {};
+  const defaultLandingPageTemplateId = 1; // Assuming 'Arcadia' template has ID 1 and is always available
+
   return {
-    landing_page_template_id: settings.landing_page_template_id || null, // Store the ID of the selected base template
+    landing_page_template_id: settings.landing_page_template_id !== null && settings.landing_page_template_id !== undefined ? settings.landing_page_template_id : defaultLandingPageTemplateId,
     general_primary_color: settings.general_primary_color || "#6B46C1",
     general_secondary_color: settings.general_secondary_color || "#000000",
     show_product_details: settings.show_product_details !== undefined ? settings.show_product_details : false,

@@ -9,8 +9,10 @@ const fetchThemeSettings = async () => {
   const response = await api.get("/owner/theme-settings");
   // Ensure default structure if no settings exist yet
   const settings = response.data.data.theme_settings || {};
+  const defaultThemeId = 1; // Assuming 'Basic' theme has ID 1 and is always available
+
   return {
-    theme_id: settings.theme_id || null, // Store the ID of the selected base theme
+    theme_id: settings.theme_id !== null && settings.theme_id !== undefined ? settings.theme_id : defaultThemeId,
     primary_color: settings.primary_color || "#000000",
     secondary_color: settings.secondary_color || "#FFFFFF", // Added secondary color default
     theme_mode: settings.theme_mode || "Light",
