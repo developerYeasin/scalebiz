@@ -63,11 +63,13 @@ const Layout = ({ children }) => {
           <Sidebar isCollapsed={isSidebarCollapsed} onToggleCollapse={toggleSidebarCollapse} />
         </aside>
       )}
-      <main className={cn(
-        "flex-1 overflow-x-auto",
-        isMobile ? "pt-16" : (isSidebarCollapsed ? "ml-16" : "ml-64")
-      )}>
-        <header className="sticky top-0 z-40 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6 justify-end">
+
+      {/* Fixed Header for Desktop */}
+      {!isMobile && (
+        <header className={cn(
+          "fixed top-0 right-0 z-40 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6 justify-end transition-all duration-200",
+          isSidebarCollapsed ? "left-16" : "left-64"
+        )}>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="secondary" size="icon" className="rounded-full">
@@ -98,6 +100,12 @@ const Layout = ({ children }) => {
             </DropdownMenuContent>
           </DropdownMenu>
         </header>
+      )}
+
+      <main className={cn(
+        "flex-1 overflow-x-auto pt-16", // Always add pt-16 to main for the fixed header
+        isMobile ? "" : (isSidebarCollapsed ? "ml-16" : "ml-64")
+      )}>
         <div className="p-4 md:p-6 bg-background">
           {children}
         </div>
