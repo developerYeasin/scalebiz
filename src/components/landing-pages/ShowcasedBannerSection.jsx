@@ -14,6 +14,10 @@ const ShowcasedBannerSection = () => {
   const imagesInputRef = React.useRef(null);
   const maxImages = 4;
 
+  // Debugging logs
+  console.log("ShowcasedBannerSection config:", config);
+  console.log("ShowcasedBannerSection showcased_banner_images:", config?.showcased_banner_images);
+
   const handleUpload = async (event) => {
     const files = Array.from(event.target.files);
     if (!files || files.length === 0) return;
@@ -92,7 +96,7 @@ const ShowcasedBannerSection = () => {
           <div className="flex flex-wrap gap-4">
             {config.showcased_banner_images.map((src, index) => (
               <div key={index} className="relative w-24 h-24 rounded-md overflow-hidden border">
-                <img src={src} alt={`Showcased ${index + 1}`} className="w-full h-full object-cover" />
+                <img src={src} alt={`Showcased ${index + 1}`} className="block w-full h-full object-cover border border-blue-500" />
                 <Button
                   variant="destructive"
                   size="icon"

@@ -12,6 +12,10 @@ const TopBannerSection = () => {
   const { config, isLoading, updateNested, save, isUpdating } = useLandingPageConfig();
   const bannerInputRef = React.useRef(null);
 
+  // Debugging logs
+  console.log("TopBannerSection config:", config);
+  console.log("TopBannerSection top_banner_image_url:", config?.top_banner_image_url);
+
   const handleUpload = async (event) => {
     const file = event.target.files[0];
     if (!file) return;
@@ -69,7 +73,7 @@ const TopBannerSection = () => {
         <div className="relative border-2 border-dashed border-gray-300 rounded-md p-6 text-center flex flex-col items-center justify-center h-48">
           {config.top_banner_image_url ? (
             <>
-              <img src={config.top_banner_image_url} alt="Top Banner" className="h-full w-full object-cover rounded-md absolute inset-0" />
+              <img src={config.top_banner_image_url} alt="Top Banner" className="block w-full h-full object-cover rounded-md border border-blue-500" />
               <Button
                 variant="destructive"
                 size="icon"
