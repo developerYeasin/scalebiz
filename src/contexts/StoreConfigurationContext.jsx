@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
 import { useStoreConfiguration } from '@/hooks/use-store-configuration';
 
 const StoreConfigurationContext = createContext();
@@ -10,12 +10,18 @@ export const useStoreConfig = () => useContext(StoreConfigurationContext);
 export const StoreConfigurationProvider = ({ children }) => {
   const { configuration, isLoading, error, updateConfiguration, isUpdating } = useStoreConfiguration();
   const [localConfig, setLocalConfig] = useState(null);
+  const localConfigRef = useRef(localConfig); // Create a ref for localConfig
 
   useEffect(() => {
     if (configuration) {
       setLocalConfig(JSON.parse(JSON.stringify(configuration))); // Deep copy
     }
   }, [configuration]);
+
+  // Keep the ref updated with the latest localConfig
+  useEffect(() => {
+    localConfigRef.current = localConfig;
+  }, [localConfig]);
 
   const updateNested = (path, value) => {
     setLocalConfig(prev => {
@@ -36,8 +42,10 @@ export const StoreConfigurationProvider = ({ children }) => {
   };
 
   const saveChanges = () => {
-    if (localConfig) {
-      updateConfiguration(localConfig);
+    if (localConfigRef.current) { // Use the ref to get the latest config
+      const payload = { ...localConfigRef.current };
+      // This context should call updateConfiguration, not updateLandingPageSettings
+      updateConfiguration(payload);
     }
   };
 

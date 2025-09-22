@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
 import { useThemeSettings } from '@/hooks/use-theme-settings';
 import { useAvailableThemes } from '@/hooks/use-available-themes'; // Import available themes
 
@@ -12,12 +12,18 @@ export const ThemeSettingsProvider = ({ children }) => {
   const { themeSettings, isLoading, error, updateThemeSettings, isUpdating } = useThemeSettings();
   const { data: availableThemes } = useAvailableThemes();
   const [localConfig, setLocalConfig] = useState(null);
+  const localConfigRef = useRef(localConfig); // Create a ref for localConfig
 
   useEffect(() => {
     if (themeSettings) {
       setLocalConfig(JSON.parse(JSON.stringify(themeSettings))); // Deep copy
     }
   }, [themeSettings]);
+
+  // Keep the ref updated with the latest localConfig
+  useEffect(() => {
+    localConfigRef.current = localConfig;
+  }, [localConfig]);
 
   const updateNested = (path, value) => {
     setLocalConfig(prev => {
@@ -38,9 +44,8 @@ export const ThemeSettingsProvider = ({ children }) => {
   };
 
   const saveChanges = () => {
-    if (localConfig) {
-      // When saving, ensure theme_id is sent to the API
-      const payload = { ...localConfig };
+    if (localConfigRef.current) { // Use the ref to get the latest config
+      const payload = { ...localConfigRef.current };
       // The selected_theme_name is a derived property for UI, not for API payload
       delete payload.selected_theme_name; 
       updateThemeSettings(payload);

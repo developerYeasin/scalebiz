@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
 import { useLandingPageSettings } from '@/hooks/use-landing-page-settings';
 import { useAvailableLandingPageTemplates } from '@/hooks/use-available-landing-page-templates'; // Import available templates
 
@@ -12,12 +12,18 @@ export const LandingPageSettingsProvider = ({ children }) => {
   const { landingPageSettings, isLoading, error, updateLandingPageSettings, isUpdating } = useLandingPageSettings();
   const { data: availableLandingPageTemplates } = useAvailableLandingPageTemplates();
   const [localConfig, setLocalConfig] = useState(null);
+  const localConfigRef = useRef(localConfig); // Create a ref for localConfig
 
   useEffect(() => {
     if (landingPageSettings) {
       setLocalConfig(JSON.parse(JSON.stringify(landingPageSettings))); // Deep copy
     }
   }, [landingPageSettings]);
+
+  // Keep the ref updated with the latest localConfig
+  useEffect(() => {
+    localConfigRef.current = localConfig;
+  }, [localConfig]);
 
   const updateNested = (path, value) => {
     setLocalConfig(prev => {
@@ -38,9 +44,8 @@ export const LandingPageSettingsProvider = ({ children }) => {
   };
 
   const saveChanges = () => {
-    if (localConfig) {
-      // When saving, ensure landing_page_template_id is sent to the API
-      const payload = { ...localConfig };
+    if (localConfigRef.current) { // Use the ref to get the latest config
+      const payload = { ...localConfigRef.current };
       // The selected_landing_theme_name is a derived property for UI, not for API payload
       delete payload.selected_landing_theme_name; 
       updateLandingPageSettings(payload);
