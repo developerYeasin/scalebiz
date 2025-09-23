@@ -32,6 +32,7 @@ const ShopTheme = () => {
 
   const themeColor = themeConfig.primary_color || '#000000';
   const isUpdating = isUpdatingStoreConfig || isUpdatingThemeConfig;
+  console.log('themeConfig >> ', themeConfig);
 
   return (
     <Card className="mb-6">

@@ -7,8 +7,8 @@ import { useAvailableThemes } from "./use-available-themes.js"; // Import the ne
 
 const fetchThemeSettings = async () => {
   const response = await api.get("/owner/theme-settings");
-  // Assuming the /owner/theme-settings endpoint returns the theme settings directly under data.data
-  const settings = response.data.data || {}; 
+  // Assuming the /owner/theme-settings endpoint returns the theme settings nested under 'settings' key
+  const settings = response.data.data.settings || {}; 
   const defaultThemeId = 1; // Assuming 'Basic' theme has ID 1 and is always available
 
   return {
