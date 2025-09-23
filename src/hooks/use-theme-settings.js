@@ -7,8 +7,8 @@ import { useAvailableThemes } from "./use-available-themes.js"; // Import the ne
 
 const fetchThemeSettings = async () => {
   const response = await api.get("/owner/theme-settings");
-  // Ensure default structure if no settings exist yet
-  const settings = response.data.data.theme_settings || {};
+  // Assuming the /owner/theme-settings endpoint returns the theme settings directly under data.data
+  const settings = response.data.data || {}; 
   const defaultThemeId = 1; // Assuming 'Basic' theme has ID 1 and is always available
 
   return {
@@ -22,7 +22,8 @@ const fetchThemeSettings = async () => {
 
 const updateThemeSettings = async (newSettings) => {
   const response = await api.put("/owner/theme-settings", newSettings);
-  return response.data.data.theme_settings;
+  // Assuming the /owner/theme-settings endpoint returns the updated theme settings directly under data.data
+  return response.data.data; 
 };
 
 export const useThemeSettings = () => {
