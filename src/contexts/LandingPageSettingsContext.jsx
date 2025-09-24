@@ -4,13 +4,22 @@ import React, { createContext, useContext, useState, useEffect, useRef } from 'r
 import { useLandingPageSettings } from '@/hooks/use-landing-page-settings';
 import { useAvailableLandingPageTemplates } from '@/hooks/use-available-landing-page-templates'; // Import available templates
 
-const LandingPageSettingsContext = createContext();
+// Provide a default value to createContext to ensure useContext always returns an object
+const LandingPageSettingsContext = createContext({
+  config: null,
+  isLoading: true, // Default loading state
+  error: null,
+  isUpdating: false,
+  updateNested: () => {},
+  save: () => {},
+  availableLandingPageTemplates: [],
+});
 
 export const useLandingPageConfig = () => useContext(LandingPageSettingsContext);
 
 export const LandingPageSettingsProvider = ({ children }) => {
-  const { landingPageSettings, isLoading, error, updateLandingPageSettings, isUpdating } = useLandingPageSettings();
-  const { data: availableLandingPageTemplates } = useAvailableLandingPageTemplates();
+  const { landingPageSettings, isLoading: landingPageSettingsLoading, error: landingPageSettingsError, updateLandingPageSettings, isUpdating } = useLandingPageSettings();
+  const { data: availableLandingPageTemplates, isLoading: availableTemplatesLoading, error: availableTemplatesError } = useAvailableLandingPageTemplates();
   const [localConfig, setLocalConfig] = useState(null);
   const localConfigRef = useRef(localConfig); // Create a ref for localConfig
 
@@ -51,6 +60,10 @@ export const LandingPageSettingsProvider = ({ children }) => {
       updateLandingPageSettings(payload);
     }
   };
+
+  // Combine loading and error states from both hooks
+  const isLoading = landingPageSettingsLoading || availableTemplatesLoading;
+  const error = landingPageSettingsError || availableTemplatesError;
 
   const value = {
     config: localConfig,

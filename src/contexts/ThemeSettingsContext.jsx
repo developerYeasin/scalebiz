@@ -4,13 +4,22 @@ import React, { createContext, useContext, useState, useEffect, useRef } from 'r
 import { useThemeSettings } from '@/hooks/use-theme-settings';
 import { useAvailableThemes } from '@/hooks/use-available-themes'; // Import available themes
 
-const ThemeSettingsContext = createContext();
+// Provide a default value to createContext to ensure useContext always returns an object
+const ThemeSettingsContext = createContext({
+  config: null,
+  isLoading: true, // Default loading state
+  error: null,
+  isUpdating: false,
+  updateNested: () => {},
+  save: () => {},
+  availableThemes: [],
+});
 
 export const useThemeConfig = () => useContext(ThemeSettingsContext);
 
 export const ThemeSettingsProvider = ({ children }) => {
-  const { themeSettings, isLoading, error, updateThemeSettings, isUpdating } = useThemeSettings();
-  const { data: availableThemes } = useAvailableThemes();
+  const { themeSettings, isLoading: themeSettingsLoading, error: themeSettingsError, updateThemeSettings, isUpdating } = useThemeSettings();
+  const { data: availableThemes, isLoading: availableThemesLoading, error: availableThemesError } = useAvailableThemes();
   const [localConfig, setLocalConfig] = useState(null);
   const localConfigRef = useRef(localConfig); // Create a ref for localConfig
 
@@ -51,6 +60,10 @@ export const ThemeSettingsProvider = ({ children }) => {
       updateThemeSettings(payload);
     }
   };
+
+  // Combine loading and error states from both hooks
+  const isLoading = themeSettingsLoading || availableThemesLoading;
+  const error = themeSettingsError || availableThemesError;
 
   const value = {
     config: localConfig,

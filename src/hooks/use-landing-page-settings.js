@@ -37,9 +37,9 @@ const updateLandingPageSettings = async (newSettings) => {
 
 export const useLandingPageSettings = () => {
   const queryClient = useQueryClient();
-  const { data: availableLandingPageTemplates } = useAvailableLandingPageTemplates(); // Fetch available templates
+  const { data: availableLandingPageTemplates, isLoading: isLoadingAvailableTemplates, error: errorAvailableTemplates } = useAvailableLandingPageTemplates(); // Fetch available templates
 
-  const { data: landingPageSettings, isLoading, error } = useQuery({
+  const { data: landingPageSettings, isLoading: isLoadingLandingPageSettings, error: errorLandingPageSettings } = useQuery({
     queryKey: ["landingPageSettings"],
     queryFn: fetchLandingPageSettings,
     select: (data) => {
@@ -66,8 +66,8 @@ export const useLandingPageSettings = () => {
 
   return {
     landingPageSettings,
-    isLoading: isLoading || !availableLandingPageTemplates, // Consider loading if availableTemplates are not yet loaded
-    error,
+    isLoading: isLoadingLandingPageSettings || isLoadingAvailableTemplates, // Combined loading state
+    error: errorLandingPageSettings || errorAvailableTemplates, // Combined error state
     updateLandingPageSettings: updateMutation.mutate,
     isUpdating: updateMutation.isPending,
   };

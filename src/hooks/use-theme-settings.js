@@ -28,9 +28,9 @@ const updateThemeSettings = async (newSettings) => {
 
 export const useThemeSettings = () => {
   const queryClient = useQueryClient();
-  const { data: availableThemes } = useAvailableThemes(); // Fetch available themes
+  const { data: availableThemes, isLoading: isLoadingAvailableThemes, error: errorAvailableThemes } = useAvailableThemes(); // Destructure error here too
 
-  const { data: themeSettings, isLoading, error } = useQuery({
+  const { data: themeSettings, isLoading: isLoadingThemeSettings, error: errorThemeSettings } = useQuery({ // Destructure error here
     queryKey: ["themeSettings"],
     queryFn: fetchThemeSettings,
     select: (data) => {
@@ -57,8 +57,8 @@ export const useThemeSettings = () => {
 
   return {
     themeSettings,
-    isLoading: isLoading || !availableThemes, // Consider loading if availableThemes are not yet loaded
-    error,
+    isLoading: isLoadingThemeSettings || isLoadingAvailableThemes, // Combined loading state
+    error: errorThemeSettings || errorAvailableThemes, // Combined error state
     updateThemeSettings: updateMutation.mutate,
     isUpdating: updateMutation.isPending,
   };

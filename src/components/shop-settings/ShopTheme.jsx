@@ -30,7 +30,8 @@ const ShopTheme = () => {
     );
   }
 
-  const themeColor = themeConfig.primary_color || '#000000';
+  const themePrimaryColor = themeConfig.primary_color || '#000000';
+  const themeSecondaryColor = themeConfig.secondary_color || '#FFFFFF'; // Get secondary color
   const isUpdating = isUpdatingStoreConfig || isUpdatingThemeConfig;
   console.log('themeConfig >> ', themeConfig);
 
@@ -42,31 +43,56 @@ const ShopTheme = () => {
       </CardHeader>
       <CardContent>
         <div className="mb-4">
-          <Label htmlFor="theme-color" className="block text-sm font-medium text-foreground mb-2">
-            Theme Color
+          <Label htmlFor="theme-primary-color" className="block text-sm font-medium text-foreground mb-2">
+            Theme Primary Color
           </Label>
           <div className="flex items-center gap-2">
             <div
               className="w-8 h-8 rounded-full border border-gray-300"
-              style={{ backgroundColor: themeColor }}
+              style={{ backgroundColor: themePrimaryColor }}
             />
             <Input
-              id="theme-color"
+              id="theme-primary-color"
               type="color"
-              value={themeColor}
+              value={themePrimaryColor}
               onChange={(e) => updateThemeNested('primary_color', e.target.value)}
               className="w-16 h-10 p-0 border-none cursor-pointer"
               disabled={isUpdating}
             />
             <Input
-              value={themeColor}
+              value={themePrimaryColor}
               onChange={(e) => updateThemeNested('primary_color', e.target.value)}
               className="flex-1"
               disabled={isUpdating}
             />
           </div>
+        </div>
+        <div className="mb-4">
+          <Label htmlFor="theme-secondary-color" className="block text-sm font-medium text-foreground mb-2">
+            Theme Secondary Color
+          </Label>
+          <div className="flex items-center gap-2">
+            <div
+              className="w-8 h-8 rounded-full border border-gray-300"
+              style={{ backgroundColor: themeSecondaryColor }}
+            />
+            <Input
+              id="theme-secondary-color"
+              type="color"
+              value={themeSecondaryColor}
+              onChange={(e) => updateThemeNested('secondary_color', e.target.value)}
+              className="w-16 h-10 p-0 border-none cursor-pointer"
+              disabled={isUpdating}
+            />
+            <Input
+              value={themeSecondaryColor}
+              onChange={(e) => updateThemeNested('secondary_color', e.target.value)}
+              className="flex-1"
+              disabled={isUpdating}
+            />
+          </div>
           <Button className="w-full mt-4" onClick={saveThemeConfig} disabled={isUpdating}>
-            {isUpdating ? 'Saving...' : 'Save Theme Color'}
+            {isUpdating ? 'Saving...' : 'Save Theme Colors'}
           </Button>
         </div>
         <div className="flex items-center justify-between mt-4">
