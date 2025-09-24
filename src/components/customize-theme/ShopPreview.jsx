@@ -29,6 +29,7 @@ const ShopPreview = () => {
 
   // Use theme settings for dynamic styling in preview
   const dynamicPrimaryColor = config.primary_color;
+  const dynamicSecondaryColor = config.secondary_color; // Get secondary color
   const dynamicThemeMode = config.theme_mode;
 
   return (
@@ -66,7 +67,7 @@ const ShopPreview = () => {
                   style={{ borderColor: dynamicPrimaryColor }}
                 />
                 <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-                <Button className="absolute right-0 top-0 h-full rounded-l-none" style={{ backgroundColor: dynamicPrimaryColor, borderColor: dynamicPrimaryColor }}>
+                <Button className="absolute right-0 top-0 h-full rounded-l-none" style={{ backgroundColor: dynamicSecondaryColor, borderColor: dynamicSecondaryColor }}>
                   <Search className="h-4 w-4" />
                 </Button>
               </div>

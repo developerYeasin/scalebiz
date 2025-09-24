@@ -4,13 +4,13 @@ import { useQuery } from "@tanstack/react-query";
 import api from "@/utils/api.js";
 
 const fetchAvailableLandingPageTemplates = async () => {
-  // In a real application, this would fetch from a '/api/v1/landing-page-templates' endpoint
-  // For now, we'll mock the data as it's static in the frontend components
-  return [
-    { id: 1, name: "Arcadia", imageSrc: "https://via.placeholder.com/300x200?text=Arcadia+Theme", status: "active" },
-    { id: 2, name: "Nirvana", imageSrc: "https://via.placeholder.com/300x200?text=Nirvana+Theme", status: "premium" },
-    { id: 3, name: "More themes coming", imageSrc: "", status: "coming-soon" },
-  ];
+  const response = await api.get("/owner/landing-page-templates");
+  return response.data.data.templates.map(template => ({
+    id: template.id,
+    name: template.name,
+    imageSrc: template.preview_image_url,
+    status: template.access_level === 'free' ? 'active' : (template.access_level === 'standard' ? 'premium' : 'coming-soon'), // Map access_level to status
+  }));
 };
 
 export const useAvailableLandingPageTemplates = () => {
