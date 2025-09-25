@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input.jsx";
 import { Label } from "@/components/ui/label.jsx";
 import { Textarea } from "@/components/ui/textarea.jsx";
 import { Button } from "@/components/ui/button.jsx";
-import { Plus, Trash2, Copy, Image as ImageIcon } from "lucide-react";
+import { Plus, Trash2, Copy, Image as ImageIcon, X } from "lucide-react"; // Added X here
 import { useStoreConfig } from "@/contexts/StoreConfigurationContext.jsx";
 import { Skeleton } from "@/components/ui/skeleton.jsx";
 import CollapsibleCard from "@/components/ui/CollapsibleCard.jsx";
@@ -99,7 +99,7 @@ const FooterSettingsSection = () => {
     try {
       const { imageUrl } = await uploadSingleImage(file);
       updateNested('layout_settings.footer.paymentIcons', [...paymentIcons, imageUrl]);
-      save(); // Save immediately after upload
+      save(); // Save immediately after successful upload
     } catch (error) {
       // Error is handled by the toast in the upload utility
     }
