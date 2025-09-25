@@ -127,9 +127,15 @@ export const useStoreConfiguration = () => {
 
   const updateMutation = useMutation({
     mutationFn: updateStoreConfiguration,
-    onSuccess: (data) => {
-      queryClient.setQueryData(["storeConfiguration"], data.data.configuration);
-      showSuccess(data.message || "Settings updated successfully!");
+    onSuccess: (responsePayload) => {
+      // If the API returns the updated configuration, update the cache directly.
+      // Otherwise, invalidate the query to trigger a refetch.
+      if (responsePayload.data && responsePayload.data.configuration) {
+        queryClient.setQueryData(["storeConfiguration"], responsePayload.data.configuration);
+      } else {
+        queryClient.invalidateQueries({ queryKey: ["storeConfiguration"] });
+      }
+      showSuccess(responsePayload.message || "Settings updated successfully!");
     },
     onError: (err) => {
       showError(err.response?.data?.message || "Failed to update settings.");
