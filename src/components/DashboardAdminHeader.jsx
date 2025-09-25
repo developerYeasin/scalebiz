@@ -16,10 +16,13 @@ import { User, LogOut, Settings } from "lucide-react";
 import { logout } from "@/utils/auth.js";
 import { showSuccess } from "@/utils/toast.js";
 import { useStoreConfig } from "@/contexts/StoreConfigurationContext.jsx"; // To get shop name for display
+import { cn } from "@/lib/utils.js"; // Import cn for conditional classes
+import { useIsMobile } from "@/hooks/use-mobile.js"; // Import useIsMobile
 
-const DashboardAdminHeader = () => {
+const DashboardAdminHeader = ({ isSidebarCollapsed }) => { // Accept isSidebarCollapsed prop
   const navigate = useNavigate();
   const { config, isLoading } = useStoreConfig();
+  const isMobile = useIsMobile(); // Use isMobile hook
 
   const handleLogout = () => {
     logout();
@@ -29,8 +32,13 @@ const DashboardAdminHeader = () => {
 
   const shopName = config?.store_name || "Admin Dashboard";
 
+  const headerLeftClass = isMobile ? "left-0" : (isSidebarCollapsed ? "left-16" : "left-64");
+
   return (
-    <header className="fixed top-0 left-0 right-0 z-30 flex h-16 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
+    <header className={cn(
+      "fixed top-0 right-0 z-30 flex h-16 items-center gap-4 border-b bg-background px-4 transition-all duration-200",
+      headerLeftClass
+    )}>
       <div className="flex-1">
         <h1 className="text-lg font-semibold text-foreground">{shopName}</h1>
       </div>

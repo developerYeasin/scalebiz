@@ -7,12 +7,12 @@ import { useIsMobile } from "@/hooks/use-mobile.js";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet.jsx";
 import { Button } from "@/components/ui/button.jsx";
 import { Menu } from "lucide-react";
-import { useNavigate, Outlet } from "react-router-dom"; // Import Outlet
+import { useNavigate, Outlet } from "react-router-dom";
 import { isAuthenticated } from "@/utils/auth.js";
 import { cn } from "@/lib/utils.js";
-import DashboardAdminHeader from "./DashboardAdminHeader.jsx"; // Import the new admin header
+import DashboardAdminHeader from "./DashboardAdminHeader.jsx";
 
-const Layout = () => { // No longer accepts 'children' prop
+const Layout = () => {
   const isMobile = useIsMobile();
   const [isSheetOpen, setIsSheetOpen] = React.useState(false);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = React.useState(false);
@@ -50,13 +50,14 @@ const Layout = () => { // No longer accepts 'children' prop
         </aside>
       )}
 
+      <DashboardAdminHeader isSidebarCollapsed={isSidebarCollapsed} /> {/* Pass the prop here */}
+
       <main className={cn(
-        "flex-1 overflow-x-auto",
-        isMobile ? "" : (isSidebarCollapsed ? "ml-16" : "ml-64")
+        "flex-1 overflow-x-auto pt-16", // pt-16 for header height
+        isMobile ? "" : (isSidebarCollapsed ? "ml-16" : "ml-64") // ml for sidebar width
       )}>
-        <DashboardAdminHeader /> {/* Render the new admin header here */}
-        <div className="p-4 md:p-6 bg-background pt-16"> {/* Added pt-16 for spacing below the fixed admin header */}
-          <Outlet /> {/* This is where child routes will render */}
+        <div className="p-4 md:p-6 bg-background">
+          <Outlet />
         </div>
         <MadeWithDyad />
       </main>
