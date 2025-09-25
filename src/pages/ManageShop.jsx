@@ -13,6 +13,7 @@ import {
   MessageSquare,
   MessageCircle,
   Share2,
+  LayoutBottom, // New icon for Footer Settings
 } from "lucide-react";
 
 const ManageShop = () => {
@@ -70,6 +71,12 @@ const ManageShop = () => {
       description: "Connect your shop with social media platforms to enhance visibility and engagement.",
       icon: Share2,
       link: "/manage-shop/social-links",
+    },
+    {
+      title: "Footer Settings", // New card
+      description: "Customize the content and layout of your shop's footer section.",
+      icon: LayoutBottom,
+      link: "/manage-shop/footer-settings",
     },
   ];
 

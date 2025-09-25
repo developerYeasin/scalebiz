@@ -33,6 +33,7 @@ import SeoMarketingPage from "./pages/shop-settings/SeoMarketingPage.jsx";
 import SmsSupportPage from "./pages/shop-settings/SmsSupportPage.jsx";
 import ChatSupportPage from "./pages/shop-settings/ChatSupportPage.jsx";
 import SocialLinksPage from "./pages/shop-settings/SocialLinksPage.jsx";
+import FooterSettingsPage from "./pages/shop-settings/FooterSettingsPage.jsx"; // New import
 
 // Import new pages
 import Billing from "./pages/Billing.jsx";
@@ -98,8 +99,9 @@ const App = () => (
             <Route path="/manage-shop/sms-support" element={<SmsSupportPage />} />
             <Route path="/manage-shop/chat-support" element={<ChatSupportPage />} />
             <Route path="/manage-shop/social-links" element={<SocialLinksPage />} />
-            <Route path="/customize-theme" element={<CustomizeTheme />} /> {/* Now uses SettingsLayout */}
-            <Route path="/landing-pages" element={<LandingPages />} /> {/* Now uses SettingsLayout */}
+            <Route path="/manage-shop/footer-settings" element={<FooterSettingsPage />} /> {/* New route */}
+            <Route path="/customize-theme" element={<CustomizeTheme />} />
+            <Route path="/landing-pages" element={<LandingPages />} />
           </Route>
           
           <Route path="/promo-codes" element={<ProtectedRoute><Layout><PromoCodes /></Layout></ProtectedRoute>} />
