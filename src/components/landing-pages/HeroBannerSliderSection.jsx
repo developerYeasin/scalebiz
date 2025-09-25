@@ -170,10 +170,9 @@ const HeroBannerSliderSection = () => {
                     disabled={isUpdating}
                   />
                 </div>
-                {/* The "Remove" button is now here, after the CTA Button Link input */}
                 <Button
                   variant="destructive"
-                  className="w-full mt-2" // Full width and some top margin
+                  className="mt-2" // Removed w-full
                   onClick={(e) => {
                     e.stopPropagation(); // Prevent collapsing when clicking the delete button
                     handleRemoveBanner(index);
