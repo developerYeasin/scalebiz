@@ -25,7 +25,7 @@ const CreateCategoryDialog = ({ isOpen, onClose, onSave, initialData }) => {
   const [shortDescription, setShortDescription] = React.useState(initialData?.description || "");
   const [bannerImageUrl, setBannerImageUrl] = React.useState(initialData?.image_url || "");
   const [squareImageUrl, setSquareImageUrl] = React.useState(initialData?.image_url || "");
-  const [parentId, setParentId] = React.useState(initialData?.parent_id ? String(initialData.parent_id) : null);
+  const [parentId, setParentId] = React.useState(initialData?.parent_id ? String(initialData.parent_id) : "none");
 
   const bannerInputRef = React.useRef(null);
   const squareInputRef = React.useRef(null);

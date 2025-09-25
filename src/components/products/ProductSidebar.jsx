@@ -5,7 +5,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card.j
 import { Input } from "@/components/ui/input.jsx";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select.jsx";
 import { ChevronUp } from "lucide-react";
-import ReactSelectMulti from "@/components/ui/ReactSelectMulti.jsx";
+import { Button } from "@/components/ui/button.jsx"; // Import Button
+import { Badge } from "@/components/ui/badge.jsx"; // Import Badge
+import AssignCategoriesDialog from "./AssignCategoriesDialog.jsx"; // Import new dialog
 
 const ProductSidebar = ({
   selectedCategoryIds,
@@ -19,20 +21,10 @@ const ProductSidebar = ({
   allCategories,
   categoriesLoading,
 }) => {
-  const categoryOptions = React.useMemo(() => {
-    return allCategories?.map(cat => ({
-      value: String(cat.id),
-      label: cat.name,
-    })) || [];
-  }, [allCategories]);
+  const [isAssignCategoriesDialogOpen, setIsAssignCategoriesDialogOpen] = React.useState(false);
 
-  const selectedValue = React.useMemo(() => {
-    return categoryOptions.filter(option => selectedCategoryIds.includes(option.value));
-  }, [selectedCategoryIds, categoryOptions]);
-
-  const handleCategoryChange = (selectedOptions) => {
-    const selectedIds = selectedOptions ? selectedOptions.map(option => option.value) : [];
-    setSelectedCategoryIds(selectedIds);
+  const getCategoryNameById = (id) => {
+    return allCategories?.find(cat => String(cat.id) === id)?.name || `Unknown Category (${id})`;
   };
 
   return (
@@ -46,14 +38,23 @@ const ProductSidebar = ({
           <p className="text-sm text-muted-foreground mb-4">
             Select categories for this product.
           </p>
-          <ReactSelectMulti
-            options={categoryOptions}
-            value={selectedValue}
-            onChange={handleCategoryChange}
-            placeholder="Select Categories..."
-            loading={categoriesLoading}
-          />
-          {categoriesLoading && <p className="text-xs text-muted-foreground mt-1">Categories are loading...</p>}
+          <div className="min-h-[40px] border rounded-md p-2 flex flex-wrap gap-2 mb-4">
+            {selectedCategoryIds.length === 0 ? (
+              <p className="text-sm text-muted-foreground">No assigned category found</p>
+            ) : (
+              selectedCategoryIds.map(id => (
+                <Badge key={id} variant="secondary" className="bg-purple-100 text-purple-700">
+                  {getCategoryNameById(id)}
+                </Badge>
+              ))
+            )}
+          </div>
+          <Button
+            className="w-full bg-purple-600 hover:bg-purple-700 text-white"
+            onClick={() => setIsAssignCategoriesDialogOpen(true)}
+          >
+            Assign category
+          </Button>
         </CardContent>
       </Card>
 
@@ -108,6 +109,13 @@ const ProductSidebar = ({
           </Select>
         </CardContent>
       </Card>
+
+      <AssignCategoriesDialog
+        isOpen={isAssignCategoriesDialogOpen}
+        onClose={() => setIsAssignCategoriesDialogOpen(false)}
+        selectedCategoryIds={selectedCategoryIds}
+        onSelectCategories={setSelectedCategoryIds}
+      />
     </div>
   );
 };
