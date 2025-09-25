@@ -1,11 +1,10 @@
 "use client";
 
-import React from "react"; // Added React import
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import React from "react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import api from "@/utils/api.js";
 import { showSuccess, showError } from "@/utils/toast.js";
-import { useAvailableThemes } from "./use-available-themes.js";
-import { useStoreConfig } from "@/contexts/StoreConfigurationContext.jsx"; // Import useStoreConfig
+import { useStoreConfig } from "@/contexts/StoreConfigurationContext.jsx";
 
 const updateThemeSettings = async ({ storeConfigId, newThemeSettings }) => {
   // This mutation will update the nested theme_settings within the main store configuration
@@ -18,21 +17,10 @@ const updateThemeSettings = async ({ storeConfigId, newThemeSettings }) => {
 
 export const useThemeSettings = () => {
   const queryClient = useQueryClient();
-  const { config: storeConfig, isLoading: storeConfigLoading, error: storeConfigError, updateConfiguration, isUpdating: isUpdatingStoreConfig } = useStoreConfig();
-  const { data: availableThemes, isLoading: isLoadingAvailableThemes, error: errorAvailableThemes } = useAvailableThemes();
+  const { config: storeConfig, isLoading: storeConfigLoading, error: storeConfigError, isUpdating: isUpdatingStoreConfig } = useStoreConfig();
 
-  // Extract theme settings from the main store config
+  // themeSettings directly refers to the nested object from storeConfig
   const themeSettings = storeConfig?.theme_settings;
-
-  // Add selected_theme_name for UI display
-  const selectedThemeSettings = React.useMemo(() => {
-    if (!themeSettings || !availableThemes) return null;
-    const selectedTheme = availableThemes.find(theme => theme.id === themeSettings.theme_id);
-    return {
-      ...themeSettings,
-      selected_theme_name: selectedTheme ? selectedTheme.name : "Basic",
-    };
-  }, [themeSettings, availableThemes]);
 
   const updateMutation = useMutation({
     mutationFn: (newThemeSettings) => updateThemeSettings({ storeConfigId: storeConfig.id, newThemeSettings }),
@@ -47,9 +35,9 @@ export const useThemeSettings = () => {
   });
 
   return {
-    themeSettings: selectedThemeSettings,
-    isLoading: storeConfigLoading || isLoadingAvailableThemes,
-    error: storeConfigError || errorAvailableThemes,
+    themeSettings: themeSettings, // Directly expose the nested theme_settings
+    isLoading: storeConfigLoading,
+    error: storeConfigError,
     updateThemeSettings: updateMutation.mutate,
     isUpdating: updateMutation.isPending || isUpdatingStoreConfig, // Combine updating states
   };

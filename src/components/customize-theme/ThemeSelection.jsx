@@ -37,12 +37,12 @@ const ThemeSelection = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         {availableThemes.map((theme) => (
           <ThemeCard
-            key={theme.id} // theme.id here is the theme_id string from the API, e.g., "basic-1"
+            key={theme.id} // Use the unique database ID for React keys
             title={theme.name}
             imageSrc={theme.imageSrc}
             status={theme.status}
-            isSelected={storeConfig.theme_id === theme.id} // Compare with the top-level theme_id
-            onSelect={() => handleSelectTheme(theme.id)}
+            isSelected={storeConfig.theme_id === theme.theme_id} // Compare with the theme_id string
+            onSelect={() => handleSelectTheme(theme.theme_id)} // Pass the theme_id string
             disabled={isLoading}
           />
         ))}

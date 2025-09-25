@@ -2,7 +2,8 @@
 
 import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
 import { useThemeSettings } from '@/hooks/use-theme-settings';
-import { useAvailableThemes } from '@/hooks/use-available-themes'; // Import available themes
+import { useAvailableThemes } from '@/hooks/use-available-themes';
+import { useStoreConfig } from '@/contexts/StoreConfigurationContext.jsx'; // Import useStoreConfig
 
 // Provide a default value to createContext to ensure useContext always returns an object
 const ThemeSettingsContext = createContext({
@@ -18,8 +19,9 @@ const ThemeSettingsContext = createContext({
 export const useThemeConfig = () => useContext(ThemeSettingsContext);
 
 export const ThemeSettingsProvider = ({ children }) => {
-  const { themeSettings, isLoading, error, updateThemeSettings, isUpdating } = useThemeSettings();
-  const { data: availableThemes } = useAvailableThemes(); // Get available themes directly
+  const { config: storeConfig, isLoading: storeConfigLoading, error: storeConfigError, isUpdating: isUpdatingStoreConfig } = useStoreConfig(); // Get store config
+  const { themeSettings, isLoading: themeSettingsLoading, error: themeSettingsError, updateThemeSettings, isUpdating: isUpdatingThemeSettings } = useThemeSettings();
+  const { data: availableThemes, isLoading: isLoadingAvailableThemes, error: errorAvailableThemes } = useAvailableThemes();
 
   const [localConfig, setLocalConfig] = useState(null);
   const localConfigRef = useRef(localConfig); // Create a ref for localConfig
@@ -34,6 +36,17 @@ export const ThemeSettingsProvider = ({ children }) => {
   useEffect(() => {
     localConfigRef.current = localConfig;
   }, [localConfig]);
+
+  // Derive selectedThemeSettings here, using storeConfig.theme_id
+  const selectedThemeSettings = React.useMemo(() => {
+    if (!localConfig || !availableThemes || !storeConfig) return null;
+    const selectedTheme = availableThemes.find(theme => theme.theme_id === storeConfig.theme_id); // Use storeConfig.theme_id (string)
+    return {
+      ...localConfig,
+      selected_theme_name: selectedTheme ? selectedTheme.name : "Basic",
+    };
+  }, [localConfig, availableThemes, storeConfig]);
+
 
   const updateNested = (path, value) => {
     setLocalConfig(prev => {
@@ -58,15 +71,15 @@ export const ThemeSettingsProvider = ({ children }) => {
       const payload = { ...localConfigRef.current };
       // The selected_theme_name is a derived property for UI, not for API payload
       delete payload.selected_theme_name;
-      updateThemeSettings(payload);
+      updateThemeSettings(payload); // This updates the nested theme_settings
     }
   };
 
   const value = {
-    config: localConfig,
-    isLoading,
-    error,
-    isUpdating,
+    config: selectedThemeSettings, // Provide the derived config
+    isLoading: storeConfigLoading || themeSettingsLoading || isLoadingAvailableThemes,
+    error: storeConfigError || themeSettingsError || errorAvailableThemes,
+    isUpdating: isUpdatingThemeSettings || isUpdatingStoreConfig, // Combine updating states
     updateNested,
     save: saveChanges,
     availableThemes, // Provide available themes to components
