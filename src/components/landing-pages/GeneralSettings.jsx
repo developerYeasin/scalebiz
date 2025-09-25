@@ -10,6 +10,7 @@ import { cn } from "@/lib/utils.js";
 import { useStoreLandingPageSettings } from "@/hooks/use-store-landing-page-settings.js"; // Updated import
 import { Skeleton } from "@/components/ui/skeleton.jsx";
 import CollapsibleCard from "@/components/ui/CollapsibleCard.jsx"; // Import CollapsibleCard
+import ColorPicker from "@/components/ui/ColorPicker.jsx"; // Import the new ColorPicker
 
 const GeneralSettings = () => {
   const { config, isLoading, updateNested, isUpdating } = useStoreLandingPageSettings(); // Updated hook usage
@@ -39,51 +40,23 @@ const GeneralSettings = () => {
           <Label htmlFor="primaryColor" className="block text-sm font-medium text-foreground mb-2">
             Primary color
           </Label>
-          <div className="flex items-center gap-2">
-            <div
-              className="w-8 h-8 rounded-full border border-gray-300"
-              style={{ backgroundColor: config.general_primary_color }}
-            />
-            <Input
-              id="primaryColor"
-              type="color"
-              value={config.general_primary_color}
-              onChange={(e) => updateNested('general_primary_color', e.target.value)}
-              className="w-16 h-10 p-0 border-none cursor-pointer"
-              disabled={isUpdating}
-            />
-            <Input
-              value={config.general_primary_color}
-              onChange={(e) => updateNested('general_primary_color', e.target.value)}
-              className="flex-1"
-              disabled={isUpdating}
-            />
-          </div>
+          <ColorPicker
+            color={config.general_primary_color}
+            onChange={(color) => updateNested('general_primary_color', color)}
+            className="w-full"
+            disabled={isUpdating}
+          />
         </div>
         <div>
           <Label htmlFor="secondaryColor" className="block text-sm font-medium text-foreground mb-2">
             Secondary color
           </Label>
-          <div className="flex items-center gap-2">
-            <div
-              className="w-8 h-8 rounded-full border border-gray-300"
-              style={{ backgroundColor: config.general_secondary_color }}
-            />
-            <Input
-              id="secondaryColor"
-              type="color"
-              value={config.general_secondary_color}
-              onChange={(e) => updateNested('general_secondary_color', e.target.value)}
-              className="w-16 h-10 p-0 border-none cursor-pointer"
-              disabled={isUpdating}
-            />
-            <Input
-              value={config.general_secondary_color}
-              onChange={(e) => updateNested('general_secondary_color', e.target.value)}
-              className="flex-1"
-              disabled={isUpdating}
-            />
-          </div>
+          <ColorPicker
+            color={config.general_secondary_color}
+            onChange={(color) => updateNested('general_secondary_color', color)}
+            className="w-full"
+            disabled={isUpdating}
+          />
         </div>
         <div>
           <Label className="block text-sm font-medium text-foreground mb-2">
