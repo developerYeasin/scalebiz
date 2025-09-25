@@ -3,6 +3,7 @@
 import React from "react";
 import { MadeWithDyad } from "@/components/made-with-scalebiz.jsx";
 import Sidebar from "@/components/Sidebar.jsx";
+import Header from "@/components/Header.tsx"; // Import the new Header component
 import { useIsMobile } from "@/hooks/use-mobile.js";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet.jsx";
 import { Button } from "@/components/ui/button.jsx";
@@ -18,12 +19,12 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import { logout, isAuthenticated } from "@/utils/auth.js";
 import { showSuccess } from "@/utils/toast.js";
-import { cn } from "@/lib/utils.js"; // Import cn for conditional class names
+import { cn } from "@/lib/utils.js";
 
 const Layout = ({ children }) => {
   const isMobile = useIsMobile();
   const [isSheetOpen, setIsSheetOpen] = React.useState(false);
-  const [isSidebarCollapsed, setIsSidebarCollapsed] = React.useState(false); // New state for sidebar collapse
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = React.useState(false);
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -32,7 +33,7 @@ const Layout = ({ children }) => {
     navigate("/login");
   };
 
-  const toggleSidebarCollapse = () => { // New function to toggle sidebar collapse
+  const toggleSidebarCollapse = () => {
     setIsSidebarCollapsed((prev) => !prev);
   };
 
@@ -64,46 +65,11 @@ const Layout = ({ children }) => {
         </aside>
       )}
 
-      {/* Fixed Header for Desktop */}
-      {!isMobile && (
-        <header className={cn(
-          "fixed top-0 right-0 z-40 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6 justify-end transition-all duration-200",
-          isSidebarCollapsed ? "left-16" : "left-64"
-        )}>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="secondary" size="icon" className="rounded-full">
-                <User className="h-5 w-5" />
-                <span className="sr-only">Toggle user menu</span>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>My Account</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem asChild>
-                <Link to="/profile" className="flex items-center">
-                  <User className="mr-2 h-4 w-4" />
-                  Profile
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link to="/settings" className="flex items-center">
-                  <Settings className="mr-2 h-4 w-4" />
-                  Settings
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={handleLogout} className="flex items-center text-destructive">
-                <LogOut className="mr-2 h-4 w-4" />
-                Logout
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </header>
-      )}
+      {/* New Header Component */}
+      <Header />
 
       <main className={cn(
-        "flex-1 overflow-x-auto pt-16", // Always add pt-16 to main for the fixed header
+        "flex-1 overflow-x-auto pt-[120px]", // Adjusted padding-top to account for the new fixed header's height (approx 120px for all three rows)
         isMobile ? "" : (isSidebarCollapsed ? "ml-16" : "ml-64")
       )}>
         <div className="p-4 md:p-6 bg-background">

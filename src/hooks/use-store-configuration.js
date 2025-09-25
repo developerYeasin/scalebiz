@@ -25,6 +25,39 @@ const fetchStoreConfiguration = async () => {
   config.layout_settings.productCard = config.layout_settings.productCard || {};
   config.layout_settings.announcementBar = config.layout_settings.announcementBar || {};
 
+  // NEW: Initialize header sections
+  config.layout_settings.header.topBar = config.layout_settings.header.topBar || {
+    enabled: true,
+    messages: ["Lifetime Warranty", "Easy Returns", "Free US Shipping on $75+"],
+  };
+  config.layout_settings.header.utilityBar = config.layout_settings.header.utilityBar || {
+    enabled: true,
+    announcementText: "Add anything here or just remove it...",
+    showLanguageSelector: true,
+    showCurrencySelector: true,
+    showAuthLinks: true,
+  };
+  config.layout_settings.header.mainNav = config.layout_settings.header.mainNav || {
+    enabled: true,
+    logoUrl: "https://picsum.photos/seed/elessi-logo/100/30", // Placeholder logo
+    navItems: [
+      { label: "Home", href: "/", hasDropdown: false },
+      { label: "Categories", href: "/categories", hasDropdown: true, dropdownItems: [{ label: "Electronics", href: "/categories/electronics" }, { label: "Clothing", href: "/categories/clothing" }] },
+      { label: "Shop", href: "/products", hasDropdown: true, dropdownItems: [{ label: "All Products", href: "/products" }, { label: "Featured", href: "/products?filter=featured" }] },
+      { label: "Elements", href: "#", hasDropdown: true, dropdownItems: [] },
+      { label: "Pages", href: "#", hasDropdown: true, dropdownItems: [] },
+      { label: "Blog", href: "#", hasDropdown: true, dropdownItems: [] },
+      { label: "Contact", href: "/contact", hasDropdown: false },
+      { label: "Vendors", href: "/vendor-dashboard", hasDropdown: true, dropdownItems: [] },
+    ],
+    showGridIcon: true,
+    showCartIcon: true,
+    showWishlistIcon: true,
+    showCompareIcon: true, // Using refresh icon for now
+    showSearchIcon: true,
+  };
+
+
   // Initialize delivery_settings
   config.delivery_settings = config.delivery_settings || { zones: [], default_charge: "0", charge_not_refundable: false };
 

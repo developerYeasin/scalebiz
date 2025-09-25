@@ -13,7 +13,8 @@ import {
   MessageSquare,
   MessageCircle,
   Share2,
-  PanelBottom, // Corrected icon import
+  PanelBottom,
+  PanelTop, // New icon for Header Settings
 } from "lucide-react";
 
 const ManageShop = () => {
@@ -23,6 +24,12 @@ const ManageShop = () => {
       description: "General shop configurations customize your shop's core settings for a seamless experience.",
       icon: Settings,
       link: "/manage-shop/shop-settings",
+    },
+    {
+      title: "Header Settings", // New card
+      description: "Configure your shop's header, including top bar, utility bar, and main navigation.",
+      icon: PanelTop,
+      link: "/manage-shop/header-settings",
     },
     {
       title: "Shop Domain",
@@ -75,7 +82,7 @@ const ManageShop = () => {
     {
       title: "Footer Settings",
       description: "Customize the content and layout of your shop's footer section.",
-      icon: PanelBottom, // Using PanelBottom icon
+      icon: PanelBottom,
       link: "/manage-shop/footer-settings",
     },
   ];
