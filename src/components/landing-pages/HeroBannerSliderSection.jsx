@@ -102,25 +102,23 @@ const HeroBannerSliderSection = () => {
           banners.map((banner, index) => (
             <CollapsibleCard
               key={index}
-              title={
-                <div className="flex items-center justify-between w-full">
-                  <span>{`Banner ${index + 1}: ${banner.title || 'Untitled'}`}</span>
-                  <Button
-                    variant="destructive"
-                    size="sm"
-                    className="h-6 px-2 rounded-full"
-                    onClick={(e) => {
-                      e.stopPropagation(); // Prevent collapsing when clicking the delete button
-                      handleRemoveBanner(index);
-                    }}
-                    disabled={isUpdating}
-                  >
-                    <X className="h-4 w-4 mr-1" />
-                    Remove
-                  </Button>
-                </div>
-              }
+              title={`Banner ${index + 1}: ${banner.title || 'Untitled'}`}
               className="border-purple-300" // Add a distinct border for individual banner cards
+              actionButton={
+                <Button
+                  variant="destructive"
+                  size="default"
+                  className="bg-red-500 hover:bg-red-600 text-white"
+                  onClick={(e) => {
+                    e.stopPropagation(); // Prevent collapsing when clicking the delete button
+                    handleRemoveBanner(index);
+                  }}
+                  disabled={isUpdating}
+                >
+                  <X className="h-4 w-4 mr-2" />
+                  Remove
+                </Button>
+              }
             >
               <div className="grid gap-4">
                 <div>
