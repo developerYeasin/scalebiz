@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react"; // Added React import
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import api from "@/utils/api.js";
 import { showSuccess, showError } from "@/utils/toast.js";
