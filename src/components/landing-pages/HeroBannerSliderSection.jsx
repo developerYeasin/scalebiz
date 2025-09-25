@@ -31,20 +31,34 @@ const HeroBannerSliderSection = () => {
   const banners = heroBannerSlider?.data?.banners || [];
 
   const handleAddBanner = () => {
-    const newBanner = {
+    const newBannerData = {
       title: "New Banner Title",
       imageUrl: "",
       subtitle: "New Banner Subtitle",
       ctaButton: { link: "#", text: "Shop Now" },
     };
-    const newBanners = [...banners, newBanner];
-    updateNested(`page_settings.landingPage.components.${heroBannerSliderIndex}.data.banners`, newBanners);
+
+    if (heroBannerSliderIndex === -1) {
+      // If heroBannerSlider component doesn't exist, create it and add to components array
+      const newHeroBannerSliderComponent = {
+        type: "heroBannerSlider",
+        data: {
+          banners: [newBannerData], // Add the first banner directly
+        },
+      };
+      // Update the entire components array with the new component added
+      updateNested('components', [...(config.components || []), newHeroBannerSliderComponent]);
+    } else {
+      // If it exists, get current banners and add the new one
+      const updatedBanners = [...banners, newBannerData];
+      updateNested(`components.${heroBannerSliderIndex}.data.banners`, updatedBanners);
+    }
     save();
   };
 
   const handleRemoveBanner = (indexToRemove) => {
     const newBanners = banners.filter((_, index) => index !== indexToRemove);
-    updateNested(`page_settings.landingPage.components.${heroBannerSliderIndex}.data.banners`, newBanners);
+    updateNested(`components.${heroBannerSliderIndex}.data.banners`, newBanners);
     save();
     showError("Banner removed.");
   };
@@ -56,7 +70,7 @@ const HeroBannerSliderSection = () => {
     } else {
       newBanners[index][field] = value;
     }
-    updateNested(`page_settings.landingPage.components.${heroBannerSliderIndex}.data.banners`, newBanners);
+    updateNested(`components.${heroBannerSliderIndex}.data.banners`, newBanners);
   };
 
   const handleImageUpload = async (event, index) => {
@@ -79,7 +93,7 @@ const HeroBannerSliderSection = () => {
       </p>
 
       <div className="space-y-6 mb-6">
-        {banners.length === 0 ? (
+        {banners.length === 0 && heroBannerSliderIndex === -1 ? (
           <div className="border-2 border-dashed border-gray-300 rounded-md p-6 text-center text-muted-foreground h-32 flex flex-col items-center justify-center">
             <ImageIcon className="h-8 w-8 mb-2" />
             No banners added yet. Click "Add New Banner" to get started.
