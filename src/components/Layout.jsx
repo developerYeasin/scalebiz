@@ -3,35 +3,20 @@
 import React from "react";
 import { MadeWithDyad } from "@/components/made-with-scalebiz.jsx";
 import Sidebar from "@/components/Sidebar.jsx";
-// Removed Header from here as it's for an external app landing page
 import { useIsMobile } from "@/hooks/use-mobile.js";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet.jsx";
 import { Button } from "@/components/ui/button.jsx";
-import { Menu, User, LogOut, Settings } from "lucide-react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu.jsx";
-import { Link, useNavigate } from "react-router-dom";
-import { logout, isAuthenticated } from "@/utils/auth.js";
-import { showSuccess } from "@/utils/toast.js";
+import { Menu } from "lucide-react";
+import { useNavigate, Outlet } from "react-router-dom"; // Import Outlet
+import { isAuthenticated } from "@/utils/auth.js";
 import { cn } from "@/lib/utils.js";
+import DashboardAdminHeader from "./DashboardAdminHeader.jsx"; // Import the new admin header
 
-const Layout = ({ children }) => {
+const Layout = () => { // No longer accepts 'children' prop
   const isMobile = useIsMobile();
   const [isSheetOpen, setIsSheetOpen] = React.useState(false);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = React.useState(false);
   const navigate = useNavigate();
-
-  const handleLogout = () => {
-    logout();
-    showSuccess("Logged out successfully!");
-    navigate("/login");
-  };
 
   const toggleSidebarCollapse = () => {
     setIsSidebarCollapsed((prev) => !prev);
@@ -65,15 +50,13 @@ const Layout = ({ children }) => {
         </aside>
       )}
 
-      {/* The Header component is for an external app landing page, not this admin dashboard. */}
-      {/* It is configured via the "Header Settings" page. */}
-
       <main className={cn(
-        "flex-1 overflow-x-auto", // Reverted padding-top
+        "flex-1 overflow-x-auto",
         isMobile ? "" : (isSidebarCollapsed ? "ml-16" : "ml-64")
       )}>
-        <div className="p-4 md:p-6 bg-background">
-          {children}
+        <DashboardAdminHeader /> {/* Render the new admin header here */}
+        <div className="p-4 md:p-6 bg-background pt-16"> {/* Added pt-16 for spacing below the fixed admin header */}
+          <Outlet /> {/* This is where child routes will render */}
         </div>
         <MadeWithDyad />
       </main>

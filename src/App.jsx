@@ -6,7 +6,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import React from "react";
 import Index from "./pages/Index.jsx";
 import NotFound from "./pages/NotFound.jsx";
-import Layout from "./components/Layout.jsx";
+import Layout from "./components/Layout.jsx"; // Layout now renders Outlet
 import Dashboard from "./pages/Dashboard.jsx";
 import Orders from "./pages/Orders.jsx";
 import CreateOrder from "./pages/CreateOrder.jsx";
@@ -34,7 +34,7 @@ import SmsSupportPage from "./pages/shop-settings/SmsSupportPage.jsx";
 import ChatSupportPage from "./pages/shop-settings/ChatSupportPage.jsx";
 import SocialLinksPage from "./pages/shop-settings/SocialLinksPage.jsx";
 import FooterSettingsPage from "./pages/shop-settings/FooterSettingsPage.jsx";
-import HeaderSettingsPage from "./pages/shop-settings/HeaderSettingsPage.jsx"; // New import
+import HeaderSettingsPage from "./pages/shop-settings/HeaderSettingsPage.jsx";
 
 // Import new pages
 import Billing from "./pages/Billing.jsx";
@@ -48,8 +48,8 @@ import ProductViewPage from "./pages/products/ProductViewPage.jsx";
 import ProductEditPage from "./pages/products/ProductEditPage.jsx";
 
 import { isAuthenticated } from "./utils/auth.js";
-import { StoreConfigurationProvider } from './contexts/StoreConfigurationContext.jsx'; // Import providers
-import { ThemeSettingsProvider } from './contexts/ThemeSettingsContext.jsx'; // Import providers
+import { StoreConfigurationProvider } from './contexts/StoreConfigurationContext.jsx';
+import { ThemeSettingsProvider } from './contexts/ThemeSettingsContext.jsx';
 
 const queryClient = new QueryClient();
 
@@ -80,12 +80,13 @@ const App = () => (
           />
 
           {/* Application Routes - Protected with Layout and Context Providers */}
+          {/* The Layout component now renders an <Outlet /> for its children */}
           <Route
             element={
               <ProtectedRoute>
                 <StoreConfigurationProvider>
                   <ThemeSettingsProvider>
-                    <Layout />
+                    <Layout /> {/* Layout now contains the Outlet */}
                   </ThemeSettingsProvider>
                 </StoreConfigurationProvider>
               </ProtectedRoute>
@@ -103,7 +104,7 @@ const App = () => (
             <Route path="/manage-shop" element={<ManageShop />} />
             
             {/* Settings-related Routes with new SettingsLayout */}
-            <Route element={<SettingsLayout />}>
+            <Route element={<SettingsLayout />}> {/* SettingsLayout also needs an Outlet */}
               <Route path="/manage-shop/shop-settings" element={<ShopSettingsPage />} />
               <Route path="/manage-shop/header-settings" element={<HeaderSettingsPage />} />
               <Route path="/manage-shop/shop-domain" element={<ShopDomainPage />} />
