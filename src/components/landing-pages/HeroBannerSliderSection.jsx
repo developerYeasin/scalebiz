@@ -86,18 +86,25 @@ const HeroBannerSliderSection = () => {
           </div>
         ) : (
           banners.map((banner, index) => (
-            <div key={index} className="border p-4 rounded-md relative">
-              <Button
-                variant="destructive"
-                size="icon"
-                className="absolute top-2 right-2 h-6 w-6 rounded-full"
-                onClick={() => handleRemoveBanner(index)}
-                disabled={isUpdating}
-              >
-                <X className="h-4 w-4" />
-              </Button>
-              <h3 className="text-lg font-semibold mb-4">Banner {index + 1}</h3>
-
+            <CollapsibleCard
+              key={index}
+              title={`Banner ${index + 1}: ${banner.title || 'Untitled'}`}
+              className="border-purple-300" // Add a distinct border for individual banner cards
+              actionButton={
+                <Button
+                  variant="destructive"
+                  size="icon"
+                  className="h-6 w-6 rounded-full"
+                  onClick={(e) => {
+                    e.stopPropagation(); // Prevent collapsing when clicking the delete button
+                    handleRemoveBanner(index);
+                  }}
+                  disabled={isUpdating}
+                >
+                  <X className="h-4 w-4" />
+                </Button>
+              }
+            >
               <div className="grid gap-4">
                 <div>
                   <Label htmlFor={`banner-title-${index}`}>Title</Label>
@@ -164,7 +171,7 @@ const HeroBannerSliderSection = () => {
                   />
                 </div>
               </div>
-            </div>
+            </CollapsibleCard>
           ))
         )}
       </div>
