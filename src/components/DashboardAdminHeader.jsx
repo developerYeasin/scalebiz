@@ -30,7 +30,7 @@ const DashboardAdminHeader = () => {
   const shopName = config?.store_name || "Admin Dashboard";
 
   return (
-    <header className="sticky top-0 z-30 flex h-16 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
+    <header className="fixed top-0 left-0 right-0 z-30 flex h-16 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
       <div className="flex-1">
         <h1 className="text-lg font-semibold text-foreground">{shopName}</h1>
       </div>
