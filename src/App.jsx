@@ -48,6 +48,8 @@ import ProductViewPage from "./pages/products/ProductViewPage.jsx";
 import ProductEditPage from "./pages/products/ProductEditPage.jsx";
 
 import { isAuthenticated } from "./utils/auth.js";
+import { StoreConfigurationProvider } from './contexts/StoreConfigurationContext.jsx'; // Import providers
+import { ThemeSettingsProvider } from './contexts/ThemeSettingsContext.jsx'; // Import providers
 
 const queryClient = new QueryClient();
 
@@ -77,45 +79,57 @@ const App = () => (
             element={isAuthenticated() ? <Navigate to="/dashboard" replace /> : <Navigate to="/login" replace />}
           />
 
-          {/* Application Routes - Protected with Layout */}
-          <Route path="/dashboard" element={<ProtectedRoute><Layout><Dashboard /></Layout></ProtectedRoute>} />
-          <Route path="/orders" element={<ProtectedRoute><Layout><Orders /></Layout></ProtectedRoute>} />
-          <Route path="/orders/create" element={<ProtectedRoute><Layout><CreateOrder /></Layout></ProtectedRoute>} />
-          <Route path="/products" element={<ProtectedRoute><Layout><Products /></Layout></ProtectedRoute>} />
-          <Route path="/products/add" element={<ProtectedRoute><Layout><AddProduct /></Layout></ProtectedRoute>} />
-          <Route path="/products/:productId" element={<ProtectedRoute><Layout><ProductViewPage /></Layout></ProtectedRoute>} />
-          <Route path="/products/:productId/edit" element={<ProtectedRoute><Layout><ProductEditPage /></Layout></ProtectedRoute>} />
-          <Route path="/categories" element={<ProtectedRoute><Layout><Categories /></Layout></ProtectedRoute>} />
-          <Route path="/customers" element={<ProtectedRoute><Layout><Customers /></Layout></ProtectedRoute>} />
-          <Route path="/manage-shop" element={<ProtectedRoute><Layout><ManageShop /></Layout></ProtectedRoute>} />
-          
-          {/* Settings-related Routes with new SettingsLayout */}
-          <Route element={<ProtectedRoute><Layout><SettingsLayout /></Layout></ProtectedRoute>}>
-            <Route path="/manage-shop/shop-settings" element={<ShopSettingsPage />} />
-            <Route path="/manage-shop/header-settings" element={<HeaderSettingsPage />} /> {/* New route */}
-            <Route path="/manage-shop/shop-domain" element={<ShopDomainPage />} />
-            <Route path="/manage-shop/shop-policy" element={<ShopPolicyPage />} />
-            <Route path="/manage-shop/delivery-support" element={<DeliverySupportPage />} />
-            <Route path="/manage-shop/payment-gateway" element={<PaymentGatewayPage />} />
-            <Route path="/manage-shop/seo-marketing" element={<SeoMarketingPage />} />
-            <Route path="/manage-shop/sms-support" element={<SmsSupportPage />} />
-            <Route path="/manage-shop/chat-support" element={<ChatSupportPage />} />
-            <Route path="/manage-shop/social-links" element={<SocialLinksPage />} />
-            <Route path="/manage-shop/footer-settings" element={<FooterSettingsPage />} />
-            <Route path="/customize-theme" element={<CustomizeTheme />} />
-            <Route path="/landing-pages" element={<LandingPages />} />
+          {/* Application Routes - Protected with Layout and Context Providers */}
+          <Route
+            element={
+              <ProtectedRoute>
+                <StoreConfigurationProvider>
+                  <ThemeSettingsProvider>
+                    <Layout />
+                  </ThemeSettingsProvider>
+                </StoreConfigurationProvider>
+              </ProtectedRoute>
+            }
+          >
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/orders" element={<Orders />} />
+            <Route path="/orders/create" element={<CreateOrder />} />
+            <Route path="/products" element={<Products />} />
+            <Route path="/products/add" element={<AddProduct />} />
+            <Route path="/products/:productId" element={<ProductViewPage />} />
+            <Route path="/products/:productId/edit" element={<ProductEditPage />} />
+            <Route path="/categories" element={<Categories />} />
+            <Route path="/customers" element={<Customers />} />
+            <Route path="/manage-shop" element={<ManageShop />} />
+            
+            {/* Settings-related Routes with new SettingsLayout */}
+            <Route element={<SettingsLayout />}>
+              <Route path="/manage-shop/shop-settings" element={<ShopSettingsPage />} />
+              <Route path="/manage-shop/header-settings" element={<HeaderSettingsPage />} />
+              <Route path="/manage-shop/shop-domain" element={<ShopDomainPage />} />
+              <Route path="/manage-shop/shop-policy" element={<ShopPolicyPage />} />
+              <Route path="/manage-shop/delivery-support" element={<DeliverySupportPage />} />
+              <Route path="/manage-shop/payment-gateway" element={<PaymentGatewayPage />} />
+              <Route path="/manage-shop/seo-marketing" element={<SeoMarketingPage />} />
+              <Route path="/manage-shop/sms-support" element={<SmsSupportPage />} />
+              <Route path="/manage-shop/chat-support" element={<ChatSupportPage />} />
+              <Route path="/manage-shop/social-links" element={<SocialLinksPage />} />
+              <Route path="/manage-shop/footer-settings" element={<FooterSettingsPage />} />
+              <Route path="/customize-theme" element={<CustomizeTheme />} />
+              <Route path="/landing-pages" element={<LandingPages />} />
+            </Route>
+            
+            <Route path="/promo-codes" element={<PromoCodes />} />
+            <Route path="/users-and-permissions" element={<UsersAndPermissions />} />
+            <Route path="/settings" element={<Settings />} />
+            <Route path="/analytics" element={<Analytics />} />
+            {/* New Routes */}
+            <Route path="/billing" element={<Billing />} />
+            <Route path="/subscription" element={<Subscription />} />
+            <Route path="/zatiq-academy" element={<ZatiqAcademy />} />
+            <Route path="/vendor-dashboard" element={<VendorDashboard />} />
+            <Route path="/profile" element={<Profile />} />
           </Route>
-          
-          <Route path="/promo-codes" element={<ProtectedRoute><Layout><PromoCodes /></Layout></ProtectedRoute>} />
-          <Route path="/users-and-permissions" element={<ProtectedRoute><Layout><UsersAndPermissions /></Layout></ProtectedRoute>} />
-          <Route path="/settings" element={<ProtectedRoute><Layout><Settings /></Layout></ProtectedRoute>} />
-          <Route path="/analytics" element={<ProtectedRoute><Layout><Analytics /></Layout></ProtectedRoute>} />
-          {/* New Routes */}
-          <Route path="/billing" element={<ProtectedRoute><Layout><Billing /></Layout></ProtectedRoute>} />
-          <Route path="/subscription" element={<ProtectedRoute><Layout><Subscription /></Layout></ProtectedRoute>} />
-          <Route path="/zatiq-academy" element={<ProtectedRoute><Layout><ZatiqAcademy /></Layout></ProtectedRoute>} />
-          <Route path="/vendor-dashboard" element={<ProtectedRoute><Layout><VendorDashboard /></Layout></ProtectedRoute>} />
-          <Route path="/profile" element={<ProtectedRoute><Layout><Profile /></Layout></ProtectedRoute>} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

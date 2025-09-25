@@ -2,16 +2,11 @@
 
 import React from 'react';
 import { Outlet } from 'react-router-dom';
-import { StoreConfigurationProvider } from '@/contexts/StoreConfigurationContext.jsx';
-import { ThemeSettingsProvider } from '@/contexts/ThemeSettingsContext.jsx';
+// Removed StoreConfigurationProvider and ThemeSettingsProvider as they are now in App.jsx
 
 const SettingsLayout = () => {
   return (
-    <StoreConfigurationProvider>
-      <ThemeSettingsProvider>
-        <Outlet />
-      </ThemeSettingsProvider>
-    </StoreConfigurationProvider>
+    <Outlet />
   );
 };
 
