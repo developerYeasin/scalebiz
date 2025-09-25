@@ -107,15 +107,16 @@ const HeroBannerSliderSection = () => {
               actionButton={
                 <Button
                   variant="destructive"
-                  size="icon"
-                  className="h-6 w-6 rounded-full"
+                  size="sm" // Changed from "icon"
+                  className="h-6 px-2 rounded-full" // Adjusted padding for text
                   onClick={(e) => {
                     e.stopPropagation(); // Prevent collapsing when clicking the delete button
                     handleRemoveBanner(index);
                   }}
                   disabled={isUpdating}
                 >
-                  <X className="h-4 w-4" />
+                  <X className="h-4 w-4 mr-1" /> {/* Added margin-right */}
+                  Remove
                 </Button>
               }
             >
