@@ -1,12 +1,13 @@
 "use client";
 
 import React from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card.jsx";
+import { CardContent } from "@/components/ui/card.jsx";
 import { Button } from "@/components/ui/button.jsx";
-import { ChevronUp, Upload } from "lucide-react";
+import { Upload } from "lucide-react";
 import { uploadSingleImage } from "@/utils/upload.js";
 import { useStoreConfig } from "@/contexts/StoreConfigurationContext.jsx";
 import { Skeleton } from "@/components/ui/skeleton.jsx";
+import CollapsibleCard from "@/components/ui/CollapsibleCard.jsx"; // Import CollapsibleCard
 
 const ShopLogo = () => {
   const { config, isLoading, updateNested, save } = useStoreConfig();
@@ -27,23 +28,14 @@ const ShopLogo = () => {
 
   if (isLoading || !config) {
     return (
-      <Card className="mb-6">
-        <CardHeader>
-          <CardTitle>Shop Logo</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <Skeleton className="h-24 w-full" />
-        </CardContent>
-      </Card>
+      <CollapsibleCard title="Shop Logo">
+        <Skeleton className="h-24 w-full" />
+      </CollapsibleCard>
     );
   }
 
   return (
-    <Card className="mb-6">
-      <CardHeader className="flex flex-row items-center justify-between">
-        <CardTitle>Shop Logo</CardTitle>
-        <ChevronUp className="h-5 w-5 text-muted-foreground" />
-      </CardHeader>
+    <CollapsibleCard title="Shop Logo">
       <CardContent className="text-center">
         <div className="flex flex-col items-center justify-center p-4 border rounded-md mb-4 min-h-[120px]">
           {config.logo_url ? (
@@ -65,7 +57,7 @@ const ShopLogo = () => {
           Upload Shop Logo
         </Button>
       </CardContent>
-    </Card>
+    </CollapsibleCard>
   );
 };
 

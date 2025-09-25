@@ -1,9 +1,8 @@
 "use client";
 
 import React from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card.jsx";
+import { CardContent } from "@/components/ui/card.jsx";
 import { Button } from "@/components/ui/button.jsx";
-import { ChevronUp } from "lucide-react";
 import { Switch } from "@/components/ui/switch.jsx";
 import { Label } from "@/components/ui/label.jsx";
 import { Input } from "@/components/ui/input.jsx";
@@ -11,6 +10,7 @@ import { useStoreConfig } from "@/contexts/StoreConfigurationContext.jsx"; // Ke
 import { useThemeConfig } from "@/contexts/ThemeSettingsContext.jsx"; // New import for theme settings
 import { Skeleton } from "@/components/ui/skeleton.jsx";
 import { Link } from "react-router-dom";
+import CollapsibleCard from "@/components/ui/CollapsibleCard.jsx"; // Import CollapsibleCard
 
 const ShopTheme = () => {
   const { config: storeConfig, isLoading: storeConfigLoading, save: saveStoreConfig, isUpdating: isUpdatingStoreConfig } = useStoreConfig();
@@ -18,15 +18,12 @@ const ShopTheme = () => {
 
   if (storeConfigLoading || themeConfigLoading || !storeConfig || !themeConfig) {
     return (
-      <Card className="mb-6">
-        <CardHeader>
-          <CardTitle>Shop Theme</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
+      <CollapsibleCard title="Shop Theme">
+        <div className="space-y-4">
           <Skeleton className="h-10 w-full" />
           <Skeleton className="h-10 w-full" />
-        </CardContent>
-      </Card>
+        </div>
+      </CollapsibleCard>
     );
   }
 
@@ -36,11 +33,7 @@ const ShopTheme = () => {
   console.log('themeConfig >> ', themeConfig);
 
   return (
-    <Card className="mb-6">
-      <CardHeader className="flex flex-row items-center justify-between">
-        <CardTitle>Shop Theme</CardTitle>
-        <ChevronUp className="h-5 w-5 text-muted-foreground" />
-      </CardHeader>
+    <CollapsibleCard title="Shop Theme">
       <CardContent>
         <div className="mb-4">
           <Label htmlFor="theme-primary-color" className="block text-sm font-medium text-foreground mb-2">
@@ -110,7 +103,7 @@ const ShopTheme = () => {
           <Link to="/customize-theme">Customize Shop Theme</Link>
         </Button>
       </CardContent>
-    </Card>
+    </CollapsibleCard>
   );
 };
 

@@ -1,26 +1,22 @@
 "use client";
 
 import React from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card.jsx";
+import { CardContent } from "@/components/ui/card.jsx";
 import { Button } from "@/components/ui/button.jsx";
-import { ChevronUp, Download } from "lucide-react";
+import { Download } from "lucide-react";
 import { showSuccess } from "@/utils/toast.js";
 import { useStoreConfig } from "@/contexts/StoreConfigurationContext.jsx";
 import { Skeleton } from "@/components/ui/skeleton.jsx";
+import CollapsibleCard from "@/components/ui/CollapsibleCard.jsx"; // Import CollapsibleCard
 
 const ShopQR = () => {
   const { config, isLoading } = useStoreConfig();
 
   if (isLoading || !config) {
     return (
-      <Card className="mb-6">
-        <CardHeader>
-          <CardTitle>Shop QR</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <Skeleton className="h-40 w-full" />
-        </CardContent>
-      </Card>
+      <CollapsibleCard title="Shop QR">
+        <Skeleton className="h-40 w-full" />
+      </CollapsibleCard>
     );
   }
 
@@ -39,11 +35,7 @@ const ShopQR = () => {
   };
 
   return (
-    <Card className="mb-6">
-      <CardHeader className="flex flex-row items-center justify-between">
-        <CardTitle>Shop QR</CardTitle>
-        <ChevronUp className="h-5 w-5 text-muted-foreground" />
-      </CardHeader>
+    <CollapsibleCard title="Shop QR">
       <CardContent className="text-center">
         <div className="flex flex-col items-center justify-center p-4 border rounded-md mb-4">
           <img src={qrCodeUrl} alt="Shop QR Code" className="w-32 h-32 mb-2" />
@@ -57,7 +49,7 @@ const ShopQR = () => {
           Save QR Code
         </Button>
       </CardContent>
-    </Card>
+    </CollapsibleCard>
   );
 };
 
