@@ -14,11 +14,12 @@ import ShowcasedBannerSection from "@/components/landing-pages/ShowcasedBannerSe
 import StaticBannerSection from "@/components/landing-pages/StaticBannerSection.jsx";
 import ProductImagesSection from "@/components/landing-pages/ProductImagesSection.jsx";
 import ApplyThemeButton from "@/components/landing-pages/ApplyThemeButton.jsx";
-import { useStoreLandingPageSettings } from "@/hooks/use-store-landing-page-settings.js"; // Import the new hook
+import HeroBannerSliderSection from "@/components/landing-pages/HeroBannerSliderSection.jsx"; // New import
+import { useStoreLandingPageSettings } from "@/hooks/use-store-landing-page-settings.js";
 import { Skeleton } from "@/components/ui/skeleton.jsx";
 
 const LandingPages = () => {
-  const { isLoading, error } = useStoreLandingPageSettings(); // Use the new hook
+  const { isLoading, error } = useStoreLandingPageSettings();
 
   if (isLoading) {
     return (
@@ -45,6 +46,7 @@ const LandingPages = () => {
       <GeneralSettings />
       <ScrollingBannerText />
       <TopBannerSection />
+      <HeroBannerSliderSection /> {/* Added the new section here */}
       <FeaturedSection />
       <FeaturedVideoSection />
       <ShowcasedBannerSection />

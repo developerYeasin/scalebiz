@@ -29,14 +29,31 @@ export const StoreConfigurationProvider = ({ children }) => {
       const newConfig = JSON.parse(JSON.stringify(prev)); // Deep copy
       let current = newConfig;
       const keys = path.split('.');
+
       for (let i = 0; i < keys.length - 1; i++) {
         const key = keys[i];
-        if (current[key] === undefined || current[key] === null) {
-          current[key] = {};
+        // Check if the current segment is an array and the key is a numeric index
+        if (Array.isArray(current) && !isNaN(parseInt(key))) {
+          const index = parseInt(key);
+          if (current[index] === undefined || current[index] === null) {
+            // Initialize as an object if it's an array element that doesn't exist
+            current[index] = {}; 
+          }
+          current = current[index];
+        } else { // Treat as object key
+          if (current[key] === undefined || current[key] === null) {
+            current[key] = {};
+          }
+          current = current[key];
         }
-        current = current[key];
       }
-      current[keys[keys.length - 1]] = value;
+
+      const finalKey = keys[keys.length - 1];
+      if (Array.isArray(current) && !isNaN(parseInt(finalKey))) {
+        current[parseInt(finalKey)] = value;
+      } else {
+        current[finalKey] = value;
+      }
       return newConfig;
     });
   };
