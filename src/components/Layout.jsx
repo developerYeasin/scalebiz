@@ -3,7 +3,7 @@
 import React from "react";
 import { MadeWithDyad } from "@/components/made-with-scalebiz.jsx";
 import Sidebar from "@/components/Sidebar.jsx";
-import Header from "@/components/Header.tsx"; // Import the new Header component
+// Removed Header from here as it's for an external app landing page
 import { useIsMobile } from "@/hooks/use-mobile.js";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet.jsx";
 import { Button } from "@/components/ui/button.jsx";
@@ -65,11 +65,11 @@ const Layout = ({ children }) => {
         </aside>
       )}
 
-      {/* New Header Component */}
-      <Header />
+      {/* The Header component is for an external app landing page, not this admin dashboard. */}
+      {/* It is configured via the "Header Settings" page. */}
 
       <main className={cn(
-        "flex-1 overflow-x-auto pt-[120px]", // Adjusted padding-top to account for the new fixed header's height (approx 120px for all three rows)
+        "flex-1 overflow-x-auto", // Reverted padding-top
         isMobile ? "" : (isSidebarCollapsed ? "ml-16" : "ml-64")
       )}>
         <div className="p-4 md:p-6 bg-background">
