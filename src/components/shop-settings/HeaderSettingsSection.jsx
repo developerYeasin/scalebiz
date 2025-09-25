@@ -40,7 +40,7 @@ const HeaderSettingsSection = () => {
   const topBar = header.topBar || {};
   const utilityBar = header.utilityBar || {};
   const mainNav = header.mainNav || {}; // Still needed for logo and icons
-  const navItems = header.navItems || []; // NOW THIS IS THE ONE TO EDIT
+  const navItems = header.navItems || []; // THIS IS THE ONE TO EDIT
 
   // --- Top Bar Handlers ---
   const handleAddTopBarMessage = () => {
@@ -114,15 +114,32 @@ const HeaderSettingsSection = () => {
     updateNested('layout_settings.header.navItems', newNavItems);
   };
 
-  // For mega-menu, I'll simplify editing to just the main title/path and a single column of sub-categories for now.
-  // Full mega-menu column editing is too complex for this scope.
-  const handleAddMenuColumnSubCategory = (navItemIndex, colIndex = 0) => {
+  // --- Mega Menu Column Handlers ---
+  const handleAddMenuColumn = (navItemIndex) => {
     const newNavItems = [...navItems];
     if (!newNavItems[navItemIndex].menuColumns) {
-      newNavItems[navItemIndex].menuColumns = [{ title: 'Column 1', path: '#', subCategories: [] }]; // Initialize first column
+      newNavItems[navItemIndex].menuColumns = [];
     }
-    if (!newNavItems[navItemIndex].menuColumns[colIndex]) {
-      newNavItems[navItemIndex].menuColumns[colIndex] = { title: `Column ${colIndex + 1}`, path: '#', subCategories: [] };
+    newNavItems[navItemIndex].menuColumns = [...newNavItems[navItemIndex].menuColumns, { title: `Column ${newNavItems[navItemIndex].menuColumns.length + 1}`, path: '#', subCategories: [] }];
+    updateNested('layout_settings.header.navItems', newNavItems);
+  };
+
+  const handleRemoveMenuColumn = (navItemIndex, colIndex) => {
+    const newNavItems = [...navItems];
+    newNavItems[navItemIndex].menuColumns = newNavItems[navItemIndex].menuColumns.filter((_, i) => i !== colIndex);
+    updateNested('layout_settings.header.navItems', newNavItems);
+  };
+
+  const handleUpdateMenuColumnField = (navItemIndex, colIndex, field, value) => {
+    const newNavItems = [...navItems];
+    newNavItems[navItemIndex].menuColumns[colIndex] = { ...newNavItems[navItemIndex].menuColumns[colIndex], [field]: value };
+    updateNested('layout_settings.header.navItems', newNavItems);
+  };
+
+  const handleAddMenuColumnSubCategory = (navItemIndex, colIndex) => {
+    const newNavItems = [...navItems];
+    if (!newNavItems[navItemIndex].menuColumns[colIndex].subCategories) {
+      newNavItems[navItemIndex].menuColumns[colIndex].subCategories = [];
     }
     newNavItems[navItemIndex].menuColumns[colIndex].subCategories = [...newNavItems[navItemIndex].menuColumns[colIndex].subCategories, { title: '', path: '' }];
     updateNested('layout_settings.header.navItems', newNavItems);
@@ -365,37 +382,71 @@ const HeaderSettingsSection = () => {
               )}
 
               {(item.type === "mega-menu" && item.menuColumns) && (
-                <div className="ml-4 border-l pl-4 space-y-2">
-                  <h4 className="font-medium mb-2">Mega Menu (Simplified Editing)</h4>
-                  {/* For simplicity, only allow editing sub-categories of the first column */}
-                  {item.menuColumns[0] && (
-                    <>
-                      <p className="text-sm text-muted-foreground mb-2">Editing sub-categories for "{item.menuColumns[0].title || 'Column 1'}"</p>
-                      {(item.menuColumns[0].subCategories || []).map((subCat, subCatIndex) => (
-                        <div key={subCatIndex} className="flex items-center gap-2">
+                <div className="ml-4 border-l pl-4 space-y-4">
+                  <h4 className="font-medium mb-2">Mega Menu Columns</h4>
+                  {(item.menuColumns || []).map((column, colIndex) => (
+                    <div key={colIndex} className="border p-3 rounded-md relative">
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="absolute top-2 right-2 text-destructive hover:text-destructive"
+                        onClick={() => handleRemoveMenuColumn(itemIndex, colIndex)}
+                        disabled={isUpdating}
+                      >
+                        <X className="h-4 w-4" />
+                      </Button>
+                      <div className="mb-3">
+                        <Label htmlFor={`colTitle-${itemIndex}-${colIndex}`}>Column Title</Label>
+                        <Input
+                          id={`colTitle-${itemIndex}-${colIndex}`}
+                          value={column.title}
+                          onChange={(e) => handleUpdateMenuColumnField(itemIndex, colIndex, 'title', e.target.value)}
+                          placeholder={`Column ${colIndex + 1} Title`}
+                          className="mt-1"
+                          disabled={isUpdating}
+                        />
+                      </div>
+                      <div className="mb-3">
+                        <Label htmlFor={`colPath-${itemIndex}-${colIndex}`}>Column Path (Optional)</Label>
+                        <Input
+                          id={`colPath-${itemIndex}-${colIndex}`}
+                          value={column.path}
+                          onChange={(e) => handleUpdateMenuColumnField(itemIndex, colIndex, 'path', e.target.value)}
+                          placeholder={`Column ${colIndex + 1} Path`}
+                          className="mt-1"
+                          disabled={isUpdating}
+                        />
+                      </div>
+                      <h5 className="font-medium text-sm mb-2">Sub-categories</h5>
+                      {(column.subCategories || []).map((subCat, subCatIndex) => (
+                        <div key={subCatIndex} className="flex items-center gap-2 mb-2">
                           <Input
                             value={subCat.title}
-                            onChange={(e) => handleUpdateMenuColumnSubCategory(itemIndex, 0, subCatIndex, 'title', e.target.value)}
+                            onChange={(e) => handleUpdateMenuColumnSubCategory(itemIndex, colIndex, subCatIndex, 'title', e.target.value)}
                             placeholder="Sub-category Title"
                             disabled={isUpdating}
                           />
                           <Input
                             value={subCat.path}
-                            onChange={(e) => handleUpdateMenuColumnSubCategory(itemIndex, 0, subCatIndex, 'path', e.target.value)}
+                            onChange={(e) => handleUpdateMenuColumnSubCategory(itemIndex, colIndex, subCatIndex, 'path', e.target.value)}
                             placeholder="Sub-category Path"
                             disabled={isUpdating}
                           />
-                          <Button variant="outline" size="icon" className="text-destructive hover:text-destructive" onClick={() => handleRemoveMenuColumnSubCategory(itemIndex, 0, subCatIndex)} disabled={isUpdating}>
+                          <Button variant="outline" size="icon" className="text-destructive hover:text-destructive" onClick={() => handleRemoveMenuColumnSubCategory(itemIndex, colIndex, subCatIndex)} disabled={isUpdating}>
                             <X className="h-4 w-4" />
                           </Button>
                         </div>
                       ))}
-                      <Button variant="outline" size="sm" onClick={() => handleAddMenuColumnSubCategory(itemIndex, 0)} disabled={isUpdating}>
+                      <Button variant="outline" size="sm" onClick={() => handleAddMenuColumnSubCategory(itemIndex, colIndex)} disabled={isUpdating}>
                         <Plus className="h-4 w-4 mr-2" />
-                        Add Sub-category to Column 1
+                        Add Sub-category
                       </Button>
-                    </>
-                  )}
+                    </div>
+                  ))}
+                  <Button variant="outline" className="mt-4" onClick={() => handleAddMenuColumn(itemIndex)} disabled={isUpdating}>
+                    <Plus className="h-4 w-4 mr-2" />
+                    Add New Column
+                  </Button>
                 </div>
               )}
             </div>
