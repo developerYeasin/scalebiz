@@ -11,6 +11,7 @@ import { Skeleton } from "@/components/ui/skeleton.jsx";
 import CollapsibleCard from "@/components/ui/CollapsibleCard.jsx";
 import { showSuccess, showError } from "@/utils/toast.js";
 import { uploadSingleImage } from "@/utils/upload.js";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select.jsx";
 
 const HeaderSettingsSection = () => {
   const { config, isLoading, updateNested, save, isUpdating } = useStoreConfig();
@@ -38,7 +39,8 @@ const HeaderSettingsSection = () => {
   const header = config.layout_settings?.header || {};
   const topBar = header.topBar || {};
   const utilityBar = header.utilityBar || {};
-  const mainNav = header.mainNav || {};
+  const mainNav = header.mainNav || {}; // Still needed for logo and icons
+  const navItems = header.navItems || []; // NOW THIS IS THE ONE TO EDIT
 
   // --- Top Bar Handlers ---
   const handleAddTopBarMessage = () => {
@@ -56,13 +58,13 @@ const HeaderSettingsSection = () => {
     updateNested('layout_settings.header.topBar.messages', newMessages);
   };
 
-  // --- Main Nav Handlers ---
+  // --- Main Nav Handlers (for logo and icons) ---
   const handleUploadLogo = async (event) => {
     const file = event.target.files[0];
     if (!file) return;
     try {
       const { imageUrl } = await uploadSingleImage(file);
-      updateNested('layout_settings.header.mainNav.logoUrl', imageUrl);
+      updateNested('layout_settings.header.mainNav.logoUrl', imageUrl); // Correct path for logo
       save(); // Save immediately after successful upload
     } catch (error) {
       // Error is handled by the toast in the upload utility
@@ -70,42 +72,72 @@ const HeaderSettingsSection = () => {
   };
 
   const handleRemoveLogo = () => {
-    updateNested('layout_settings.header.mainNav.logoUrl', '');
+    updateNested('layout_settings.header.mainNav.logoUrl', ''); // Correct path for logo
     save();
     showError("Logo removed.");
   };
 
+  // --- Navigation Items Handlers (for the new structure) ---
   const handleAddNavItem = () => {
-    updateNested('layout_settings.header.mainNav.navItems', [...mainNav.navItems, { label: '', href: '', hasDropdown: false, dropdownItems: [] }]);
+    updateNested('layout_settings.header.navItems', [...navItems, { title: '', path: '', type: 'link' }]);
   };
 
   const handleUpdateNavItem = (index, field, value) => {
-    const newNavItems = [...mainNav.navItems];
+    const newNavItems = [...navItems];
     newNavItems[index] = { ...newNavItems[index], [field]: value };
-    updateNested('layout_settings.header.mainNav.navItems', newNavItems);
+    updateNested('layout_settings.header.navItems', newNavItems);
   };
 
   const handleRemoveNavItem = (index) => {
-    const newNavItems = mainNav.navItems.filter((_, i) => i !== index);
-    updateNested('layout_settings.header.mainNav.navItems', newNavItems);
+    const newNavItems = navItems.filter((_, i) => i !== index);
+    updateNested('layout_settings.header.navItems', newNavItems);
   };
 
-  const handleAddDropdownItem = (navItemIndex) => {
-    const newNavItems = [...mainNav.navItems];
-    newNavItems[navItemIndex].dropdownItems = [...(newNavItems[navItemIndex].dropdownItems || []), { label: '', href: '' }];
-    updateNested('layout_settings.header.mainNav.navItems', newNavItems);
+  const handleAddSubLink = (navItemIndex) => {
+    const newNavItems = [...navItems];
+    if (!newNavItems[navItemIndex].subLinks) {
+      newNavItems[navItemIndex].subLinks = [];
+    }
+    newNavItems[navItemIndex].subLinks = [...newNavItems[navItemIndex].subLinks, { title: '', path: '' }];
+    updateNested('layout_settings.header.navItems', newNavItems);
   };
 
-  const handleUpdateDropdownItem = (navItemIndex, dropdownItemIndex, field, value) => {
-    const newNavItems = [...mainNav.navItems];
-    newNavItems[navItemIndex].dropdownItems[dropdownItemIndex] = { ...newNavItems[navItemIndex].dropdownItems[dropdownItemIndex], [field]: value };
-    updateNested('layout_settings.header.mainNav.navItems', newNavItems);
+  const handleUpdateSubLink = (navItemIndex, subLinkIndex, field, value) => {
+    const newNavItems = [...navItems];
+    newNavItems[navItemIndex].subLinks[subLinkIndex] = { ...newNavItems[navItemIndex].subLinks[subLinkIndex], [field]: value };
+    updateNested('layout_settings.header.navItems', newNavItems);
   };
 
-  const handleRemoveDropdownItem = (navItemIndex, dropdownItemIndex) => {
-    const newNavItems = [...mainNav.navItems];
-    newNavItems[navItemIndex].dropdownItems = newNavItems[navItemIndex].dropdownItems.filter((_, i) => i !== dropdownItemIndex);
-    updateNested('layout_settings.header.mainNav.navItems', newNavItems);
+  const handleRemoveSubLink = (navItemIndex, subLinkIndex) => {
+    const newNavItems = [...navItems];
+    newNavItems[navItemIndex].subLinks = newNavItems[navItemIndex].subLinks.filter((_, i) => i !== subLinkIndex);
+    updateNested('layout_settings.header.navItems', newNavItems);
+  };
+
+  // For mega-menu, I'll simplify editing to just the main title/path and a single column of sub-categories for now.
+  // Full mega-menu column editing is too complex for this scope.
+  const handleAddMenuColumnSubCategory = (navItemIndex, colIndex = 0) => {
+    const newNavItems = [...navItems];
+    if (!newNavItems[navItemIndex].menuColumns) {
+      newNavItems[navItemIndex].menuColumns = [{ title: 'Column 1', path: '#', subCategories: [] }]; // Initialize first column
+    }
+    if (!newNavItems[navItemIndex].menuColumns[colIndex]) {
+      newNavItems[navItemIndex].menuColumns[colIndex] = { title: `Column ${colIndex + 1}`, path: '#', subCategories: [] };
+    }
+    newNavItems[navItemIndex].menuColumns[colIndex].subCategories = [...newNavItems[navItemIndex].menuColumns[colIndex].subCategories, { title: '', path: '' }];
+    updateNested('layout_settings.header.navItems', newNavItems);
+  };
+
+  const handleUpdateMenuColumnSubCategory = (navItemIndex, colIndex, subCatIndex, field, value) => {
+    const newNavItems = [...navItems];
+    newNavItems[navItemIndex].menuColumns[colIndex].subCategories[subCatIndex] = { ...newNavItems[navItemIndex].menuColumns[colIndex].subCategories[subCatIndex], [field]: value };
+    updateNested('layout_settings.header.navItems', newNavItems);
+  };
+
+  const handleRemoveMenuColumnSubCategory = (navItemIndex, colIndex, subCatIndex) => {
+    const newNavItems = [...navItems];
+    newNavItems[navItemIndex].menuColumns[colIndex].subCategories = newNavItems[navItemIndex].menuColumns[colIndex].subCategories.filter((_, i) => i !== subCatIndex);
+    updateNested('layout_settings.header.navItems', newNavItems);
   };
 
 
@@ -248,9 +280,9 @@ const HeaderSettingsSection = () => {
           )}
         </div>
 
-        <h3 className="text-lg font-semibold mb-2">Navigation Items</h3>
+        <h3 className="text-lg font-semibold mt-6 mb-2">Navigation Items</h3>
         <div className="space-y-4 mb-4">
-          {mainNav.navItems.map((item, itemIndex) => (
+          {navItems.map((item, itemIndex) => (
             <div key={itemIndex} className="border p-4 rounded-md relative">
               <Button
                 variant="ghost"
@@ -263,66 +295,107 @@ const HeaderSettingsSection = () => {
               </Button>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                 <div>
-                  <Label htmlFor={`navLabel-${itemIndex}`}>Label</Label>
+                  <Label htmlFor={`navTitle-${itemIndex}`}>Title</Label>
                   <Input
-                    id={`navLabel-${itemIndex}`}
-                    value={item.label}
-                    onChange={(e) => handleUpdateNavItem(itemIndex, 'label', e.target.value)}
+                    id={`navTitle-${itemIndex}`}
+                    value={item.title}
+                    onChange={(e) => handleUpdateNavItem(itemIndex, 'title', e.target.value)}
                     placeholder="e.g., Home, Shop"
                     className="mt-1"
                     disabled={isUpdating}
                   />
                 </div>
                 <div>
-                  <Label htmlFor={`navHref-${itemIndex}`}>Path/URL</Label>
+                  <Label htmlFor={`navPath-${itemIndex}`}>Path/URL</Label>
                   <Input
-                    id={`navHref-${itemIndex}`}
-                    value={item.href}
-                    onChange={(e) => handleUpdateNavItem(itemIndex, 'href', e.target.value)}
+                    id={`navPath-${itemIndex}`}
+                    value={item.path}
+                    onChange={(e) => handleUpdateNavItem(itemIndex, 'path', e.target.value)}
                     placeholder="/home or https://example.com"
                     className="mt-1"
                     disabled={isUpdating}
                   />
                 </div>
               </div>
-              <div className="flex items-center justify-between mb-4">
-                <Label htmlFor={`hasDropdown-${itemIndex}`} className="text-sm">
-                  Has Dropdown
-                </Label>
-                <Switch
-                  id={`hasDropdown-${itemIndex}`}
-                  checked={item.hasDropdown}
-                  onCheckedChange={(checked) => handleUpdateNavItem(itemIndex, 'hasDropdown', checked)}
+              <div className="mb-4">
+                <Label htmlFor={`navType-${itemIndex}`}>Navigation Type</Label>
+                <Select
+                  value={item.type || 'link'}
+                  onValueChange={(value) => handleUpdateNavItem(itemIndex, 'type', value)}
                   disabled={isUpdating}
-                />
+                >
+                  <SelectTrigger id={`navType-${itemIndex}`} className="mt-1">
+                    <SelectValue placeholder="Select Type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="link">Simple Link</SelectItem>
+                    <SelectItem value="dropdown">Dropdown</SelectItem>
+                    <SelectItem value="mega-menu">Mega Menu</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
 
-              {item.hasDropdown && (
+              {(item.type === "dropdown" && item.subLinks) && (
                 <div className="ml-4 border-l pl-4 space-y-2">
                   <h4 className="font-medium mb-2">Dropdown Items</h4>
-                  {(item.dropdownItems || []).map((dropdownItem, ddIndex) => (
-                    <div key={ddIndex} className="flex items-center gap-2">
+                  {(item.subLinks || []).map((subLink, subLinkIndex) => (
+                    <div key={subLinkIndex} className="flex items-center gap-2">
                       <Input
-                        value={dropdownItem.label}
-                        onChange={(e) => handleUpdateDropdownItem(itemIndex, ddIndex, 'label', e.target.value)}
-                        placeholder="Dropdown Item Label"
+                        value={subLink.title}
+                        onChange={(e) => handleUpdateSubLink(itemIndex, subLinkIndex, 'title', e.target.value)}
+                        placeholder="Dropdown Item Title"
                         disabled={isUpdating}
                       />
                       <Input
-                        value={dropdownItem.href}
-                        onChange={(e) => handleUpdateDropdownItem(itemIndex, ddIndex, 'href', e.target.value)}
+                        value={subLink.path}
+                        onChange={(e) => handleUpdateSubLink(itemIndex, subLinkIndex, 'path', e.target.value)}
                         placeholder="Dropdown Item Path"
                         disabled={isUpdating}
                       />
-                      <Button variant="outline" size="icon" className="text-destructive hover:text-destructive" onClick={() => handleRemoveDropdownItem(itemIndex, ddIndex)} disabled={isUpdating}>
+                      <Button variant="outline" size="icon" className="text-destructive hover:text-destructive" onClick={() => handleRemoveSubLink(itemIndex, subLinkIndex)} disabled={isUpdating}>
                         <X className="h-4 w-4" />
                       </Button>
                     </div>
                   ))}
-                  <Button variant="outline" size="sm" onClick={() => handleAddDropdownItem(itemIndex)} disabled={isUpdating}>
+                  <Button variant="outline" size="sm" onClick={() => handleAddSubLink(itemIndex)} disabled={isUpdating}>
                     <Plus className="h-4 w-4 mr-2" />
                     Add Dropdown Item
                   </Button>
+                </div>
+              )}
+
+              {(item.type === "mega-menu" && item.menuColumns) && (
+                <div className="ml-4 border-l pl-4 space-y-2">
+                  <h4 className="font-medium mb-2">Mega Menu (Simplified Editing)</h4>
+                  {/* For simplicity, only allow editing sub-categories of the first column */}
+                  {item.menuColumns[0] && (
+                    <>
+                      <p className="text-sm text-muted-foreground mb-2">Editing sub-categories for "{item.menuColumns[0].title || 'Column 1'}"</p>
+                      {(item.menuColumns[0].subCategories || []).map((subCat, subCatIndex) => (
+                        <div key={subCatIndex} className="flex items-center gap-2">
+                          <Input
+                            value={subCat.title}
+                            onChange={(e) => handleUpdateMenuColumnSubCategory(itemIndex, 0, subCatIndex, 'title', e.target.value)}
+                            placeholder="Sub-category Title"
+                            disabled={isUpdating}
+                          />
+                          <Input
+                            value={subCat.path}
+                            onChange={(e) => handleUpdateMenuColumnSubCategory(itemIndex, 0, subCatIndex, 'path', e.target.value)}
+                            placeholder="Sub-category Path"
+                            disabled={isUpdating}
+                          />
+                          <Button variant="outline" size="icon" className="text-destructive hover:text-destructive" onClick={() => handleRemoveMenuColumnSubCategory(itemIndex, 0, subCatIndex)} disabled={isUpdating}>
+                            <X className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      ))}
+                      <Button variant="outline" size="sm" onClick={() => handleAddMenuColumnSubCategory(itemIndex, 0)} disabled={isUpdating}>
+                        <Plus className="h-4 w-4 mr-2" />
+                        Add Sub-category to Column 1
+                      </Button>
+                    </>
+                  )}
                 </div>
               )}
             </div>

@@ -21,7 +21,7 @@ const fetchStoreConfiguration = async () => {
   config.layout_settings.footer.openingHours = config.layout_settings.footer.openingHours || [];
   config.layout_settings.footer.paymentIcons = config.layout_settings.footer.paymentIcons || [];
   config.layout_settings.header = config.layout_settings.header || {};
-  config.layout_settings.header.navItems = config.layout_settings.header.navItems || [];
+  // Removed config.layout_settings.header.navItems initialization here as it's now handled below with the new structure.
   config.layout_settings.productCard = config.layout_settings.productCard || {};
   config.layout_settings.announcementBar = config.layout_settings.announcementBar || {};
 
@@ -37,25 +37,32 @@ const fetchStoreConfiguration = async () => {
     showCurrencySelector: true,
     showAuthLinks: true,
   };
+  // Initialize mainNav for logo and icon settings (without navItems)
   config.layout_settings.header.mainNav = config.layout_settings.header.mainNav || {
     enabled: true,
     logoUrl: "https://picsum.photos/seed/elessi-logo/100/30", // Placeholder logo
-    navItems: [
-      { label: "Home", href: "/", hasDropdown: false },
-      { label: "Categories", href: "/categories", hasDropdown: true, dropdownItems: [{ label: "Electronics", href: "/categories/electronics" }, { label: "Clothing", href: "/categories/clothing" }] },
-      { label: "Shop", href: "/products", hasDropdown: true, dropdownItems: [{ label: "All Products", href: "/products" }, { label: "Featured", href: "/products?filter=featured" }] },
-      { label: "Elements", href: "#", hasDropdown: true, dropdownItems: [] },
-      { label: "Pages", href: "#", hasDropdown: true, dropdownItems: [] },
-      { label: "Blog", href: "#", hasDropdown: true, dropdownItems: [] },
-      { label: "Contact", href: "/contact", hasDropdown: false },
-      { label: "Vendors", href: "/vendor-dashboard", hasDropdown: true, dropdownItems: [] },
-    ],
     showGridIcon: true,
     showCartIcon: true,
     showWishlistIcon: true,
-    showCompareIcon: true, // Using refresh icon for now
+    showCompareIcon: true,
     showSearchIcon: true,
   };
+
+  // Initialize config.layout_settings.header.navItems with the structure from user's JSON
+  config.layout_settings.header.navItems = config.layout_settings.header.navItems || [
+    { path: "/", title: "Home" },
+    {
+      type: "dropdown",
+      title: "SHOP",
+      subLinks: [
+        { path: "/collections/new", title: "New Arrivals" },
+        { path: "/collections/best-sellers", title: "Best Sellers" },
+        { path: "/collections/sale", title: "Sale" },
+        { path: "/collections/all", title: "All Products" },
+      ],
+    },
+    { path: "/contact", title: "Contact" },
+  ];
 
 
   // Initialize delivery_settings

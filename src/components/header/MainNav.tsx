@@ -14,10 +14,11 @@ import { cn } from "@/lib/utils.js";
 import { showInfo } from "@/utils/toast.js";
 
 interface NavItem {
-  label: string;
-  href: string;
-  hasDropdown: boolean;
-  dropdownItems?: NavItem[];
+  title: string;
+  path: string;
+  type?: "link" | "dropdown" | "mega-menu";
+  subLinks?: { path: string; title: string }[];
+  menuColumns?: { title: string; path: string; subCategories: { path: string; title: string }[] }[];
 }
 
 interface MainNavProps {
@@ -53,24 +54,34 @@ const MainNav: React.FC<MainNavProps> = ({
           <ul className="hidden lg:flex items-center space-x-6">
             {navItems.map((item, index) => (
               <li key={index}>
-                {item.hasDropdown ? (
+                {item.type === "dropdown" || item.type === "mega-menu" ? (
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                       <Button variant="ghost" className="text-base font-medium">
-                        {item.label} <ChevronDown className="ml-1 h-4 w-4" />
+                        {item.title} <ChevronDown className="ml-1 h-4 w-4" />
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>
-                      {item.dropdownItems?.map((dropdownItem, ddIndex) => (
-                        <DropdownMenuItem key={ddIndex} asChild>
-                          <Link to={dropdownItem.href}>{dropdownItem.label}</Link>
+                      {item.type === "dropdown" && item.subLinks?.map((subLink, subIndex) => (
+                        <DropdownMenuItem key={subIndex} asChild>
+                          <Link to={subLink.path}>{subLink.title}</Link>
                         </DropdownMenuItem>
+                      ))}
+                      {item.type === "mega-menu" && item.menuColumns?.map((column, colIndex) => (
+                        // For mega-menu, simplify to just showing subCategories from all columns as flat list
+                        <React.Fragment key={colIndex}>
+                          {column.subCategories?.map((subCat, subCatIndex) => (
+                            <DropdownMenuItem key={`${colIndex}-${subCatIndex}`} asChild>
+                              <Link to={subCat.path}>{subCat.title}</Link>
+                            </DropdownMenuItem>
+                          ))}
+                        </React.Fragment>
                       ))}
                     </DropdownMenuContent>
                   </DropdownMenu>
                 ) : (
                   <Button variant="ghost" asChild className="text-base font-medium">
-                    <Link to={item.href}>{item.label}</Link>
+                    <Link to={item.path}>{item.title}</Link>
                   </Button>
                 )}
               </li>

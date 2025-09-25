@@ -45,7 +45,7 @@ const Header: React.FC = () => {
       />
       <MainNav
         logoUrl={headerSettings?.mainNav?.logoUrl || ""}
-        navItems={headerSettings?.mainNav?.navItems || []}
+        navItems={headerSettings?.navItems || []} // Now uses header.navItems
         showGridIcon={headerSettings?.mainNav?.showGridIcon || false}
         showCartIcon={headerSettings?.mainNav?.showCartIcon || false}
         showWishlistIcon={headerSettings?.mainNav?.showWishlistIcon || false}
