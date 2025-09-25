@@ -9,10 +9,14 @@ import { Switch } from "@/components/ui/switch.jsx";
 import { Check, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils.js";
 import { useThemeConfig } from "@/contexts/ThemeSettingsContext.jsx";
+import { useStoreConfig } from "@/contexts/StoreConfigurationContext.jsx"; // Import useStoreConfig
 import { Skeleton } from "@/components/ui/skeleton.jsx";
 
 const ThemeControls = () => {
-  const { config, isLoading, updateNested, save, isUpdating } = useThemeConfig();
+  const { config, isLoading, updateNested, isUpdating: isUpdatingThemeConfig } = useThemeConfig();
+  const { save: saveStoreConfig, isUpdating: isUpdatingStoreConfig } = useStoreConfig(); // Get save and isUpdating from StoreConfig
+
+  const isUpdating = isUpdatingThemeConfig || isUpdatingStoreConfig; // Combine for button disabled state
 
   if (isLoading || !config) {
     return (
@@ -125,7 +129,7 @@ const ThemeControls = () => {
         <p className="text-sm text-muted-foreground mb-4">
           Basic is a default theme. No need to setup anything.
         </p>
-        <Button className="w-full md:w-auto" onClick={save} disabled={isUpdating}>
+        <Button className="w-full md:w-auto" onClick={saveStoreConfig} disabled={isUpdating}> {/* Changed to saveStoreConfig */}
           <Sparkles className="h-4 w-4 mr-2" />
           {isUpdating ? 'Applying...' : 'Apply Theme'}
         </Button>
