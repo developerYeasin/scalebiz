@@ -8,7 +8,8 @@ import React from "react";
 
 export const useStoreLandingPageSettings = () => {
   const queryClient = useQueryClient();
-  const { config: storeConfig, isLoading: storeConfigLoading, error: storeConfigError, updateConfiguration, isUpdating: isUpdatingStoreConfig } = useStoreConfig();
+  // Destructure updateNested and save from useStoreConfig
+  const { config: storeConfig, isLoading: storeConfigLoading, error: storeConfigError, updateNested: updateStoreConfigNested, save: saveStoreConfig, isUpdating: isUpdatingStoreConfig } = useStoreConfig();
   const { data: availableLandingPageTemplates, isLoading: isLoadingAvailableTemplates, error: errorAvailableTemplates } = useAvailableLandingPageTemplates();
 
   // Extract landing page settings from the main store config
@@ -24,56 +25,46 @@ export const useStoreLandingPageSettings = () => {
     };
   }, [landingPageSettings, availableLandingPageTemplates]);
 
-  const updateLandingPageSettings = (newLandingPageSettings) => {
+  // This function is no longer needed as updateNestedLandingPage will handle direct updates
+  // const updateLandingPageSettings = (newLandingPageSettings) => {
+  //   if (!storeConfig) {
+  //     showError("Store configuration not loaded.");
+  //     return;
+  //   }
+
+  //   const updatedPageSettings = {
+  //     ...storeConfig.page_settings,
+  //     landingPage: newLandingPageSettings,
+  //   };
+
+  //   updateConfiguration({
+  //     ...storeConfig,
+  //     page_settings: updatedPageSettings,
+  //   }, {
+  //     onSuccess: () => {
+  //       queryClient.invalidateQueries({ queryKey: ["storeConfiguration"] });
+  //       showSuccess("Landing page settings updated successfully!");
+  //     },
+  //     onError: (err) => {
+  //       showError(err.response?.data?.message || "Failed to update landing page settings.");
+  //     },
+  //   });
+  // };
+
+  const updateNestedLandingPage = (path, value) => {
     if (!storeConfig) {
       showError("Store configuration not loaded.");
       return;
     }
-
-    const updatedPageSettings = {
-      ...storeConfig.page_settings,
-      landingPage: newLandingPageSettings,
-    };
-
-    updateConfiguration({
-      ...storeConfig,
-      page_settings: updatedPageSettings,
-    }, {
-      onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ["storeConfiguration"] });
-        showSuccess("Landing page settings updated successfully!");
-      },
-      onError: (err) => {
-        showError(err.response?.data?.message || "Failed to update landing page settings.");
-      },
-    });
-  };
-
-  const updateNestedLandingPage = (path, value) => {
-    if (!storeConfig) return;
-
-    const newStoreConfig = JSON.parse(JSON.stringify(storeConfig));
-    let current = newStoreConfig.page_settings.landingPage;
-    const keys = path.split('.');
-    for (let i = 0; i < keys.length - 1; i++) {
-      const key = keys[i];
-      if (current[key] === undefined || current[key] === null) {
-        current[key] = {};
-      }
-      current = current[key];
-    }
-    current[keys[keys.length - 1]] = value;
-    updateConfiguration(newStoreConfig);
+    // Construct the full path to the landing page setting within the store config
+    const fullPath = `page_settings.landingPage.${path}`;
+    updateStoreConfigNested(fullPath, value);
   };
 
   const saveLandingPageChanges = () => {
-    // The updateConfiguration in useStoreConfig already handles saving the entire config
-    // So, if updateNestedLandingPage is used, it already triggers a save.
-    // This function can be used if there are direct modifications to `landingPageSettings`
-    // that need to be explicitly saved.
-    if (storeConfig) {
-      updateConfiguration(storeConfig);
-    }
+    // This will trigger the save in the parent context (StoreConfigurationProvider)
+    saveStoreConfig();
+    showSuccess("Landing page settings saved!");
   };
 
   return {
