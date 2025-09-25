@@ -6,10 +6,10 @@ import api from "@/utils/api.js";
 const fetchAvailableThemes = async () => {
   const response = await api.get("/owner/themes");
   return response.data.data.themes.map(theme => ({
-    id: theme.id,
+    id: theme.theme_id, // Use theme.theme_id (e.g., "basic-1") as the identifier for selection
     name: theme.name,
     imageSrc: theme.preview_image_url,
-    status: theme.access_level === 'free' ? 'active' : (theme.access_level === 'standard' ? 'premium' : 'coming-soon'), // Map access_level to status
+    status: theme.access_level === 'free' ? 'active' : (theme.access_level === 'standard' ? 'premium' : 'coming-soon'),
   }));
 };
 
