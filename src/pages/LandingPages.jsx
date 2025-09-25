@@ -14,11 +14,11 @@ import ShowcasedBannerSection from "@/components/landing-pages/ShowcasedBannerSe
 import StaticBannerSection from "@/components/landing-pages/StaticBannerSection.jsx";
 import ProductImagesSection from "@/components/landing-pages/ProductImagesSection.jsx";
 import ApplyThemeButton from "@/components/landing-pages/ApplyThemeButton.jsx";
-import { useLandingPageConfig } from "@/contexts/LandingPageSettingsContext.jsx"; // Import the new hook
+import { useStoreLandingPageSettings } from "@/hooks/use-store-landing-page-settings.js"; // Import the new hook
 import { Skeleton } from "@/components/ui/skeleton.jsx";
 
 const LandingPages = () => {
-  const { isLoading, error } = useLandingPageConfig(); // Use the new hook
+  const { isLoading, error } = useStoreLandingPageSettings(); // Use the new hook
 
   if (isLoading) {
     return (

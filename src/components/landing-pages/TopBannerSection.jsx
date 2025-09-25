@@ -5,13 +5,13 @@ import { CardContent } from "@/components/ui/card.jsx";
 import { Button } from "@/components/ui/button.jsx";
 import { Image, X } from "lucide-react";
 import { uploadSingleImage } from "@/utils/upload.js";
-import { useLandingPageConfig } from "@/contexts/LandingPageSettingsContext.jsx";
+import { useStoreLandingPageSettings } from "@/hooks/use-store-landing-page-settings.js"; // Updated import
 import { Skeleton } from "@/components/ui/skeleton.jsx";
 import { cn } from "@/lib/utils.js";
 import CollapsibleCard from "@/components/ui/CollapsibleCard.jsx"; // Import CollapsibleCard
 
 const TopBannerSection = () => {
-  const { config, isLoading, updateNested, save, isUpdating } = useLandingPageConfig();
+  const { config, isLoading, updateNested, save, isUpdating } = useStoreLandingPageSettings(); // Updated hook usage
   const bannerInputRef = React.useRef(null);
 
   const handleUpload = async (event) => {

@@ -44,7 +44,6 @@ export const StoreConfigurationProvider = ({ children }) => {
   const saveChanges = () => {
     if (localConfigRef.current) { // Use the ref to get the latest config
       const payload = { ...localConfigRef.current };
-      // This context should call updateConfiguration, not updateLandingPageSettings
       updateConfiguration(payload);
     }
   };

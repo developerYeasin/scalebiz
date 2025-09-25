@@ -7,12 +7,12 @@ import { Label } from "@/components/ui/label.jsx";
 import { Button } from "@/components/ui/button.jsx";
 import { Check } from "lucide-react";
 import { cn } from "@/lib/utils.js";
-import { useLandingPageConfig } from "@/contexts/LandingPageSettingsContext.jsx";
+import { useStoreLandingPageSettings } from "@/hooks/use-store-landing-page-settings.js"; // Updated import
 import { Skeleton } from "@/components/ui/skeleton.jsx";
 import CollapsibleCard from "@/components/ui/CollapsibleCard.jsx"; // Import CollapsibleCard
 
 const GeneralSettings = () => {
-  const { config, isLoading, updateNested, save, isUpdating } = useLandingPageConfig();
+  const { config, isLoading, updateNested, isUpdating } = useStoreLandingPageSettings(); // Updated hook usage
 
   if (isLoading || !config) {
     return (

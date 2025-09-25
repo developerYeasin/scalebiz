@@ -8,12 +8,12 @@ import { Label } from "@/components/ui/label.jsx";
 import { X } from "lucide-react";
 import { showSuccess, showError } from "@/utils/toast.js";
 import { uploadMultipleImages } from "@/utils/upload.js";
-import { useLandingPageConfig } from "@/contexts/LandingPageSettingsContext.jsx";
+import { useStoreLandingPageSettings } from "@/hooks/use-store-landing-page-settings.js"; // Updated import
 import { Skeleton } from "@/components/ui/skeleton.jsx";
 import CollapsibleCard from "@/components/ui/CollapsibleCard.jsx"; // Import CollapsibleCard
 
 const ProductImagesSection = () => {
-  const { config, isLoading, updateNested, save, isUpdating } = useLandingPageConfig();
+  const { config, isLoading, updateNested, save, isUpdating } = useStoreLandingPageSettings(); // Updated hook usage
   const maxLength = 100;
   const imagesInputRef = React.useRef(null);
   const maxImages = 6;

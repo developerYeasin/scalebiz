@@ -4,12 +4,12 @@ import React from "react";
 import { CardContent } from "@/components/ui/card.jsx";
 import { Input } from "@/components/ui/input.jsx";
 import { Label } from "@/components/ui/label.jsx";
-import { useLandingPageConfig } from "@/contexts/LandingPageSettingsContext.jsx";
+import { useStoreLandingPageSettings } from "@/hooks/use-store-landing-page-settings.js"; // Updated import
 import { Skeleton } from "@/components/ui/skeleton.jsx";
 import CollapsibleCard from "@/components/ui/CollapsibleCard.jsx"; // Import CollapsibleCard
 
 const ScrollingBannerText = () => {
-  const { config, isLoading, updateNested, isUpdating } = useLandingPageConfig();
+  const { config, isLoading, updateNested, isUpdating } = useStoreLandingPageSettings(); // Updated hook usage
   const maxLength = 150;
 
   if (isLoading || !config) {

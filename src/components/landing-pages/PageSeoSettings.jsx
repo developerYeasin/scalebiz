@@ -5,12 +5,12 @@ import { CardContent } from "@/components/ui/card.jsx";
 import { Input } from "@/components/ui/input.jsx";
 import { Label } from "@/components/ui/label.jsx";
 import { Textarea } from "@/components/ui/textarea.jsx";
-import { useLandingPageConfig } from "@/contexts/LandingPageSettingsContext.jsx";
+import { useStoreLandingPageSettings } from "@/hooks/use-store-landing-page-settings.js"; // Updated import
 import { Skeleton } from "@/components/ui/skeleton.jsx";
 import CollapsibleCard from "@/components/ui/CollapsibleCard.jsx"; // Import CollapsibleCard
 
 const PageSeoSettings = () => {
-  const { config, isLoading, updateNested, isUpdating } = useLandingPageConfig();
+  const { config, isLoading, updateNested, isUpdating } = useStoreLandingPageSettings(); // Updated hook usage
 
   if (isLoading || !config) {
     return (

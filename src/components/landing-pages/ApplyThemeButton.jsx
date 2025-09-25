@@ -3,11 +3,11 @@
 import React from "react";
 import { Button } from "@/components/ui/button.jsx";
 import { Sparkles } from "lucide-react";
-import { useLandingPageConfig } from "@/contexts/LandingPageSettingsContext.jsx";
+import { useStoreLandingPageSettings } from "@/hooks/use-store-landing-page-settings.js"; // Updated import
 import { Skeleton } from "@/components/ui/skeleton.jsx";
 
 const ApplyThemeButton = () => {
-  const { save, isUpdating } = useLandingPageConfig();
+  const { save, isUpdating } = useStoreLandingPageSettings(); // Updated hook usage
 
   return (
     <div className="flex justify-end mt-6">

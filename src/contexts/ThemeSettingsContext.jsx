@@ -18,8 +18,9 @@ const ThemeSettingsContext = createContext({
 export const useThemeConfig = () => useContext(ThemeSettingsContext);
 
 export const ThemeSettingsProvider = ({ children }) => {
-  const { themeSettings, isLoading: themeSettingsLoading, error: themeSettingsError, updateThemeSettings, isUpdating } = useThemeSettings();
-  const { data: availableThemes, isLoading: availableThemesLoading, error: availableThemesError } = useAvailableThemes();
+  const { themeSettings, isLoading, error, updateThemeSettings, isUpdating } = useThemeSettings();
+  const { data: availableThemes } = useAvailableThemes(); // Get available themes directly
+
   const [localConfig, setLocalConfig] = useState(null);
   const localConfigRef = useRef(localConfig); // Create a ref for localConfig
 
@@ -56,14 +57,10 @@ export const ThemeSettingsProvider = ({ children }) => {
     if (localConfigRef.current) { // Use the ref to get the latest config
       const payload = { ...localConfigRef.current };
       // The selected_theme_name is a derived property for UI, not for API payload
-      delete payload.selected_theme_name; 
+      delete payload.selected_theme_name;
       updateThemeSettings(payload);
     }
   };
-
-  // Combine loading and error states from both hooks
-  const isLoading = themeSettingsLoading || availableThemesLoading;
-  const error = themeSettingsError || availableThemesError;
 
   const value = {
     config: localConfig,

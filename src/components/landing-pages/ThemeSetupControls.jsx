@@ -3,11 +3,11 @@
 import React from "react";
 import { Button } from "@/components/ui/button.jsx";
 import { cn } from "@/lib/utils.js";
-import { useLandingPageConfig } from "@/contexts/LandingPageSettingsContext.jsx";
+import { useStoreLandingPageSettings } from "@/hooks/use-store-landing-page-settings.js"; // Updated import
 import { Skeleton } from "@/components/ui/skeleton.jsx";
 
 const ThemeSetupControls = () => {
-  const { isLoading, isUpdating } = useLandingPageConfig();
+  const { isLoading, isUpdating } = useStoreLandingPageSettings(); // Updated hook usage
   const [activePreview, setActivePreview] = React.useState("Demo preview"); // This state is local to the component
 
   if (isLoading) {

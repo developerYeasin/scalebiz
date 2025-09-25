@@ -4,11 +4,11 @@ import React from "react";
 import { Button } from "@/components/ui/button.jsx";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select.jsx";
 import { Sparkles } from "lucide-react";
-import { useLandingPageConfig } from "@/contexts/LandingPageSettingsContext.jsx";
+import { useStoreLandingPageSettings } from "@/hooks/use-store-landing-page-settings.js"; // Updated import
 import { Skeleton } from "@/components/ui/skeleton.jsx";
 
 const LandingPageHeader = () => {
-  const { config, isLoading, updateNested, isUpdating } = useLandingPageConfig();
+  const { config, isLoading, isUpdating } = useStoreLandingPageSettings(); // Updated hook usage
 
   if (isLoading || !config) {
     return (

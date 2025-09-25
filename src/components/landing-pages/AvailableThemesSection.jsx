@@ -2,11 +2,11 @@
 
 import React from "react";
 import ThemeCard from "@/components/customize-theme/ThemeCard.jsx";
-import { useLandingPageConfig } from "@/contexts/LandingPageSettingsContext.jsx";
+import { useStoreLandingPageSettings } from "@/hooks/use-store-landing-page-settings.js"; // Updated import
 import { Skeleton } from "@/components/ui/skeleton.jsx";
 
 const AvailableThemesSection = () => {
-  const { config, isLoading, updateNested, isUpdating, availableLandingPageTemplates } = useLandingPageConfig();
+  const { config, isLoading, updateNested, isUpdating, availableLandingPageTemplates } = useStoreLandingPageSettings(); // Updated hook usage
 
   if (isLoading || !config || !availableLandingPageTemplates) {
     return (
