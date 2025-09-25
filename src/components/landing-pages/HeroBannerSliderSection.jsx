@@ -172,7 +172,7 @@ const HeroBannerSliderSection = () => {
                 </div>
                 <Button
                   variant="destructive"
-                  className="mt-2" // Removed w-full
+                  className="mt-2 w-[175px]" // Added w-[175px] for specific width
                   onClick={(e) => {
                     e.stopPropagation(); // Prevent collapsing when clicking the delete button
                     handleRemoveBanner(index);
