@@ -104,21 +104,6 @@ const HeroBannerSliderSection = () => {
               key={index}
               title={`Banner ${index + 1}: ${banner.title || 'Untitled'}`}
               className="border-purple-300" // Add a distinct border for individual banner cards
-              actionButton={
-                <Button
-                  variant="destructive"
-                  size="default"
-                  className="bg-red-500 hover:bg-red-600 text-white"
-                  onClick={(e) => {
-                    e.stopPropagation(); // Prevent collapsing when clicking the delete button
-                    handleRemoveBanner(index);
-                  }}
-                  disabled={isUpdating}
-                >
-                  <X className="h-4 w-4 mr-2" />
-                  Remove
-                </Button>
-              }
             >
               <div className="grid gap-4">
                 <div>
@@ -185,6 +170,19 @@ const HeroBannerSliderSection = () => {
                     disabled={isUpdating}
                   />
                 </div>
+                {/* The "Remove" button is now here, after the CTA Button Link input */}
+                <Button
+                  variant="destructive"
+                  className="w-full mt-2" // Full width and some top margin
+                  onClick={(e) => {
+                    e.stopPropagation(); // Prevent collapsing when clicking the delete button
+                    handleRemoveBanner(index);
+                  }}
+                  disabled={isUpdating}
+                >
+                  <X className="h-4 w-4 mr-2" />
+                  Remove Banner
+                </Button>
               </div>
             </CollapsibleCard>
           ))
